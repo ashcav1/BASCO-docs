@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 270" role="img" aria-labelledby="title desc">
+<title id="title">BASCO's coupled binary model</title><desc id="desc">Two extended bodies linked by mutual gravity. Shape and mass inform dynamics; observations and derivatives inform covariance.</desc>
+<defs><pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#aab4c1" stroke-opacity=".13"/></pattern><linearGradient id="bodyA" x2="1" y2="1"><stop stop-color="#a69acb"/><stop offset="1" stop-color="#655495"/></linearGradient><linearGradient id="bodyB" x2="1" y2="1"><stop stop-color="#7f9fca"/><stop offset="1" stop-color="#29446f"/></linearGradient></defs>
+<rect width="800" height="270" fill="#f3f2f7"/><rect width="800" height="270" fill="url(#grid)"/>
+<ellipse cx="400" cy="139" rx="239" ry="79" fill="none" stroke="#a9a2bb" stroke-dasharray="4 5" transform="rotate(-8 400 139)"/>
+<path d="M246 150L576 118" stroke="#c8773e" stroke-width="1.5" stroke-dasharray="5 5"/>
+<g transform="translate(261 145) rotate(-13)"><ellipse rx="81" ry="62" fill="url(#bodyA)"/><ellipse rx="81" ry="62" fill="none" stroke="#655495"/><ellipse rx="36" ry="62" fill="none" stroke="#ded7ed" stroke-opacity=".45"/><path d="M-78-10Q0 22 79-9M-69-32Q0-6 68-32M-71 31Q0 55 72 31" fill="none" stroke="#ded7ed" stroke-opacity=".4"/></g>
+<g transform="translate(581 113) rotate(22)"><ellipse rx="39" ry="27" fill="url(#bodyB)"/><ellipse rx="17" ry="27" fill="none" stroke="#c4d2e6" stroke-opacity=".55"/><path d="M-36-8Q0 11 37-8M-32 15Q0 28 32 15" fill="none" stroke="#c4d2e6" stroke-opacity=".45"/></g>
+<circle cx="442" cy="132" r="4" fill="#c8773e"/><path d="M442 113v38m-19-19h38" stroke="#c8773e" stroke-width="1"/>
+<g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" fill="#263d65"><text x="190" y="53" font-size="10" letter-spacing="2">PRIMARY / A</text><text x="555" y="54" font-size="10" letter-spacing="2">SECONDARY / B</text><text x="383" y="204" font-size="10" fill="#9c582a">mutual Hou interaction</text><text x="30" y="242" font-size="9" letter-spacing="1.5" fill="#6c7384">SHAPE + MASS → DYNAMICS → OBSERVATIONS → COVARIANCE</text><text x="718" y="242" font-size="9" fill="#6c7384">SCHEMATIC</text></g>
+</svg>

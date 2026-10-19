@@ -1,0 +1,37 @@
+{
+  "source": {
+    "revision": "c00d5ff1d19c84c7e28a88507ad1f354f67f86c1",
+    "source_sha256": "f2ffa9ec0970e1b31b257fb8cd50e2a8dd3fcbb5ce766f19a067c2d0cc2e26b8",
+    "method": "Python AST; no BASCO import, native extension load, JAX import or numerical execution"
+  },
+  "coverage": {
+    "module_count": 87,
+    "symbol_count": 1075,
+    "definition_count": 944,
+    "definition_nodes_covered": 944,
+    "module_assignment_count": 131,
+    "class_field_count": 608,
+    "export_count": 158,
+    "top_level_export_count": 84,
+    "unresolved_exports": [],
+    "external_exports": [
+      "basco.ad._jax.jax",
+      "basco.ad._jax.jnp"
+    ],
+    "by_kind": {
+      "class": 134,
+      "constant": 116,
+      "function": 342,
+      "method": 369,
+      "property": 99,
+      "variable": 15
+    },
+    "by_tier": {
+      "advanced": 157,
+      "internal": 221,
+      "legacy": 411,
+      "public": 286
+    },
+    "missing_definitions": []
+  }
+}

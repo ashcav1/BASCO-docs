@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Results, plots and exported files · BASCO</title><meta name="description" content="Interpret null-aware uncertainty, preserve cross covariance and create consistent tables and figures."><meta name="theme-color" content="#192439"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/katex/katex.min.css"><script>try{const t=JSON.parse(localStorage.getItem('basco:manual:theme'));if(t)document.documentElement.dataset.theme=t;}catch{}</script><script src="assets/search-index.js" defer></script><script src="assets/katex/katex.min.js" defer></script><script src="assets/site.js" defer></script></head>
+<body data-page-title="Results, plots and exported files"><a class="skip-link" href="#main-content">Skip to content</a>
+<aside class="sidebar" aria-label="Documentation navigation"><a class="brand" href="index.html"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="#9a8ebd" transform="rotate(-29 24 24)"/><ellipse cx="19" cy="26" rx="10" ry="13" fill="#a696cf" transform="rotate(-29 19 26)"/><ellipse cx="38" cy="16" rx="5" ry="4" fill="#e5aa72"/></svg><span><b>BASCO</b><small>The user manual</small></span></a><button class="nav-search" data-search-open><span>⌕ &nbsp; Search the manual</span><kbd>⌘ K</kbd></button><nav><details class="nav-group" data-group="Start here" open><summary>Start here</summary><a href="index.html">Overview</a><a href="quickstart.html">Your first covariance study</a><a href="concepts.html">What BASCO computes</a><a href="workflow.html">Compose a study</a></details><details class="nav-group" data-group="Build the model" open><summary>Build the model</summary><a href="bodies-and-states.html">Bodies, moments &amp; state</a><a href="parameters.html">Gravity order and estimated parameters</a><a href="observations.html">Observations, barycenter and schedules</a><a href="statistics.html">Noise, priors and numerical support</a></details><details class="nav-group" data-group="Run &amp; interpret" open><summary>Run &amp; interpret</summary><a href="hera.html">Hera paper reproduction</a><a href="results.html" aria-current="page">Results, plots and exported files</a><a href="reuse-and-trades.html">Reuse &amp; degree trades</a><a href="shapes-and-kaula.html">Shapes &amp; Kaula priors</a><a href="multi-arc.html">Multi-arc &amp; estimation</a></details><details class="nav-group" data-group="Verify &amp; extend" open><summary>Verify &amp; extend</summary><a href="derivatives.html">AD, native &amp; FD</a><a href="extending.html">Extend one component at a time</a><a href="examples.html">Example gallery</a><a href="capabilities.html">Capabilities and limits</a><a href="troubleshooting.html">Troubleshooting and reproducibility</a></details><details class="nav-group" data-group="Reference" open><summary>Reference</summary><a href="api.html">API reference</a><a href="modules.html">Module map</a><a href="glossary.html">Glossary and notation</a><a href="coverage.html">Coverage &amp; provenance</a><a href="handbook.html">Printable handbook</a></details></nav><div class="side-footer"><span class="version-dot"></span>0.1.0 · source c00d5ff<a href="basco-handbook.pdf">↓ Download the handbook</a></div></aside>
+<div class="mobile-backdrop"></div><header class="topbar"><button class="icon-button menu-button" data-menu aria-label="Open navigation" aria-expanded="false">☰</button><div class="breadcrumbs"><a href="index.html">Manual</a><span>/</span><span>Analyze and present</span><span>/</span><span>Results, plots and exported files</span></div><div class="top-actions"><button class="icon-button" data-back aria-label="Go back" title="Go back">←</button><button class="icon-button" data-forward aria-label="Go forward" title="Go forward">→</button><button class="icon-button" data-theme-toggle aria-label="Use dark theme" title="Toggle theme">◐</button><button class="icon-button" data-search-open aria-label="Search" title="Search (Ctrl/⌘ K)">⌕</button><a class="header-source" href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/results.md" target="_blank" rel="noopener">View source ↗</a></div><div class="reading-progress"></div></header>
+<div class="page-layout"><main class="article" id="main-content" tabindex="-1"><div class="resume" aria-label="Saved reading position"></div><div class="eyebrow">Analyze and present</div><h1>Results, plots and exported files</h1><p class="page-description">Interpret null-aware uncertainty, preserve cross covariance and create consistent tables and figures.</p><div class="page-meta"><span class="pill">BASCO 0.1.0</span><span>Hou AD default · native available</span><span>Source c00d5ff</span></div><p>Read uncertainty availability before reading its numerical value. BASCO separates quantities supported by the experiment, quantities fixed by configuration and unresolved directions. Tables, plots and exports all consume the same canonical presentation so those distinctions remain consistent.</p>
+<p>Snippets use the <code>rows</code> and <code>result</code> produced by the <a href="quickstart.html">quickstart</a>.</p>
+<h2 id="start-with-the-summary">Start with the summary</h2>
+<div class="codehilite"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">mass_properties</span><span class="p">()</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">degree2</span><span class="p">()</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">harmonics</span><span class="p">(</span><span class="n">max_degree</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</code></pre></div>
+
+<p><a href="api-basco-results.html#basco-results-CovarianceResult">CovarianceResult</a> retains data rank, posterior rank, marginal physical rank, singular values, thresholds, nullspace and diagnostics. Priors may make a posterior supported without making its data-only counterpart observable.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Report</th>
+<th>Contents and convention</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mass_properties()</code></td>
+<td>Individual and total mass, fixed-G individual/total GM, secondary/primary mass ratio</td>
+</tr>
+<tr>
+<td><code>degree2()</code></td>
+<td>Normalized moments, unnormalized C20/C22 and dimensional Izz</td>
+</tr>
+<tr>
+<td><code>harmonics(max_degree=4)</code></td>
+<td>Unnormalized exterior C/S at the model's declared fixed reference radii</td>
+</tr>
+</tbody>
+</table></div>
+<p><a href="api-basco-results.html#basco-results-DerivedReport">DerivedReport</a> holds labels, values, units, Jacobian, covariance, row statuses, conventions and <code>sigma</code>. A fixed quantity with zero error is distinct from a measured quantity with high precision. A zero nominal coefficient can have a meaningful absolute sigma but has no defined relative percentage uncertainty.</p>
+<h2 id="keep-cross-covariance">Keep cross covariance</h2>
+<p>Mass sum, mass ratio and gravity transforms need the relevant off-diagonal terms. Do not combine individual sigma values as if independent unless independence is part of the actual covariance.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">full_rank</span><span class="p">:</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;primary.mass&quot;</span><span class="p">,</span> <span class="s2">&quot;secondary.mass&quot;</span><span class="p">)</span>
+    <span class="n">mass_covariance</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">covariance_for</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    <span class="n">mass_correlation</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">correlation_for</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+</code></pre></div>
+
+<p>These named methods preserve the requested order and return protected copies. <code>parameter_covariance</code> is the physical-parameter block; <code>state_parameter_covariance</code> retains the local-state/nuisance to physical-parameter cross block when available.</p>
+<p>For a deficient joint solution, <code>joint_covariance</code> is unavailable. <code>supported_subspace_covariance</code> is only valid for functions that annihilate the reported nullspace. It is not a finite full covariance for arbitrary unresolved coordinates.</p>
+<h2 id="define-a-custom-derived-quantity">Define a custom derived quantity</h2>
+<p>This fragment computes total mass from the full named coordinate layout, using the same null-aware transform as built-in reports:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">labels</span> <span class="o">=</span> <span class="n">rows</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">labels</span>
+<span class="n">jacobian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)))</span>
+<span class="n">jacobian</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;primary.mass&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">jacobian</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;secondary.mass&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">total</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">derived</span><span class="p">(</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;custom.total_mass&quot;</span><span class="p">,),</span>
+    <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="n">study</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">primary</span><span class="o">.</span><span class="n">mass</span> <span class="o">+</span> <span class="n">study</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">secondary</span><span class="o">.</span><span class="n">mass</span><span class="p">],</span>
+    <span class="n">units</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;kg&quot;</span><span class="p">,),</span>
+    <span class="n">jacobian</span><span class="o">=</span><span class="n">jacobian</span><span class="p">,</span>
+    <span class="n">conventions</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;definition&quot;</span><span class="p">:</span> <span class="s2">&quot;primary.mass + secondary.mass&quot;</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">total</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</code></pre></div>
+
+<p>It assumes both masses were selected and NumPy is imported. Normally use <code>mass_properties()</code> for this quantity; the example shows the public custom-transform boundary. The Jacobian columns must match the entire joint layout, including local columns.</p>
+<h2 id="export-a-complete-run">Export a complete run</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">folder</span> <span class="o">=</span> <span class="n">bc</span><span class="o">.</span><span class="n">export_study</span><span class="p">(</span>
+    <span class="n">rows</span><span class="p">,</span>
+    <span class="n">result</span><span class="p">,</span>
+    <span class="n">root</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;results&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;my-binary-g06-e04&quot;</span><span class="p">,</span>
+    <span class="n">reports</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;mass&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">mass_properties</span><span class="p">(),</span>
+        <span class="s2">&quot;harmonics&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">harmonics</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="n">figures</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">theme</span><span class="o">=</span><span class="n">bc</span><span class="o">.</span><span class="n">PlotTheme</span><span class="p">(</span><span class="n">tex</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>This needs <code>Path</code> from <code>pathlib</code> and the plotting environment. Omit <code>figures=True</code> for a numeric/table-only run. The standard folder name includes a readable label, UTC timestamp and scientific analysis digest.</p>
+<div class="codehilite"><pre><span></span><code>my-binary-g06-e04__UTC-TIMESTAMP__DIGEST/
+  README.md
+  configuration.json
+  run.json
+  manifest.json
+  reports/
+    report.md
+    report.json
+    tables/
+    figures/
+    manifest.json
+  arrays/
+    metadata.json
+    *.npy
+  validation/
+    README.md
+</code></pre></div>
+
+<p><code>configuration.json</code> stores configuration. <code>run.json</code> names matrix axes, layouts, units, identities, diagnostics and prior provenance. Plan sigmas are retained separately from the actual analysis weighting. Numeric arrays include states, sensitivities, rows, scales, covariance when available and the rank spectrum/nullspace.</p>
+<p>Files are staged, checksummed and published together. Existing destinations are refused. Export does not automatically launch derivative checks: the validation directory states what is known, and checks remain explicitly requested.</p>
+<p>The analysis digest retains scientific/statistical choices and scales but excludes elapsed runtime. Creation time remains in folder names/metadata; timing remains available for operational evidence.</p>
+<h2 id="reload-without-dynamics">Reload without dynamics</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">arrays</span><span class="p">,</span> <span class="n">presentation</span><span class="p">,</span> <span class="n">run</span> <span class="o">=</span> <span class="n">bc</span><span class="o">.</span><span class="n">read_run</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">&quot;design_rows_SI&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">run</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;layouts&quot;</span><span class="p">][</span><span class="s2">&quot;joint_coordinate&quot;</span><span class="p">][</span><span class="s2">&quot;labels&quot;</span><span class="p">])</span>
+<span class="n">bc</span><span class="o">.</span><span class="n">write_presentation</span><span class="p">(</span>
+    <span class="n">presentation</span><span class="p">,</span>
+    <span class="s2">&quot;restyled-results&quot;</span><span class="p">,</span>
+    <span class="n">figures</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">theme</span><span class="o">=</span><span class="n">bc</span><span class="o">.</span><span class="n">PlotTheme</span><span class="p">(</span><span class="n">tex</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mf">11.0</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p><a href="api-basco-exports.html#basco-exports-read_run">read_run</a> verifies checksums and returns data, not a reconstructed live study. <a href="api-basco-presentation.html#basco-presentation-read_presentation">read_presentation</a> reloads just a canonical report. A damaged manifest, incomplete run or escaping manifest path is an error.</p>
+<p>For standalone numeric/string evidence, <a href="api-basco-artifacts.html#basco-artifacts-write_artifact">write_artifact</a> and <a href="api-basco-artifacts.html#basco-artifacts-read_artifact">read_artifact</a> provide verified JSON/NPY folders. Object arrays and pickle are refused. Each array needs meaningful names and accompanying axis/unit metadata supplied by the producer.</p>
+<h2 id="one-plotting-theme">One plotting theme</h2>
+<p><a href="api-basco-plot_style.html#basco-plot_style-PlotTheme">PlotTheme</a> owns widths, DPI, font sizes, math text/external LaTeX, grids, palette and PNG/SVG/PDF formats. Standard figures use the paper-inspired navy/blue, purple and orange scheme. Rendering uses a local Matplotlib context, not global import-time style changes.</p>
+<p><code>tex=False</code> works with built-in mathematical text. <code>tex=True</code> requires a functioning external LaTeX installation. Share one theme across figures in a study for consistent labels and visual scale.</p>
+<h2 id="grouped-comparison-bars">Grouped comparison bars</h2>
+<p>Use canonical case reports, not copied sigma arrays or hardcoded coefficient indices:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">basco.plotting</span><span class="w"> </span><span class="kn">import</span> <span class="n">uncertainty_comparison_plot</span>
+
+<span class="n">changed</span> <span class="o">=</span> <span class="n">rows</span><span class="o">.</span><span class="n">covariance</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="n">bc</span><span class="o">.</span><span class="n">DiagonalNoise</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">rows</span><span class="o">.</span><span class="n">sigmas</span><span class="p">))</span>
+<span class="n">cases</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Baseline&quot;</span><span class="p">:</span> <span class="n">bc</span><span class="o">.</span><span class="n">make_presentation</span><span class="p">(</span>
+        <span class="n">result</span><span class="p">,</span> <span class="n">reports</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;mass&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">mass_properties</span><span class="p">()},</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;Twice the measurement noise&quot;</span><span class="p">:</span> <span class="n">bc</span><span class="o">.</span><span class="n">make_presentation</span><span class="p">(</span>
+        <span class="n">changed</span><span class="p">,</span> <span class="n">reports</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;mass&quot;</span><span class="p">:</span> <span class="n">changed</span><span class="o">.</span><span class="n">mass_properties</span><span class="p">()},</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+<span class="n">comparison</span> <span class="o">=</span> <span class="n">uncertainty_comparison_plot</span><span class="p">(</span>
+    <span class="n">cases</span><span class="p">,</span>
+    <span class="n">table</span><span class="o">=</span><span class="s2">&quot;mass&quot;</span><span class="p">,</span>
+    <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;relative_percent&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;primary.mass&quot;</span><span class="p">,</span> <span class="s2">&quot;secondary.mass&quot;</span><span class="p">),</span>
+    <span class="n">identifier</span><span class="o">=</span><span class="s2">&quot;mass_noise_trade&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Individual mass uncertainty&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">bc</span><span class="o">.</span><span class="n">write_presentation</span><span class="p">(</span>
+    <span class="n">cases</span><span class="p">[</span><span class="s2">&quot;Baseline&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;mass-noise-comparison&quot;</span><span class="p">,</span>
+    <span class="n">figures</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">plots</span><span class="o">=</span><span class="p">(</span><span class="n">comparison</span><span class="p">,),</span>
+    <span class="n">theme</span><span class="o">=</span><span class="n">bc</span><span class="o">.</span><span class="n">PlotTheme</span><span class="p">(</span><span class="n">tex</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Available metrics are <code>"sigma"</code>, <code>"relative_percent"</code> and <code>"gain"</code>; gain requires an explicit reference presentation. Report IDs, quantity units and conventions must be compatible. Unsupported quantities stay visibly unavailable.</p>
+<p>For a new figure, <a href="api-basco-plot_style.html#basco-plot_style-PlotDefinition">PlotDefinition</a> supplies a named <code>draw(dataset, theme)</code> callback returning a Matplotlib figure or <code>None</code>, plus a caption. Pass it through the same writer. See <a href="extending.html">extensions</a> and the <a href="https://github.com/ashcav1/BASCO/blob/c00d5ff1d19c84c7e28a88507ad1f354f67f86c1/docs/design/RESULT_EXPORTS.md">filesystem contract</a>.</p><nav class="page-pager" aria-label="Adjacent pages"><a href="hera.html"><span>← Previous</span>Reproduce the Hera paper</a><a href="reuse-and-trades.html"><span>Next →</span>Reuse and trade studies</a></nav><footer class="site-footer"><span>BASCO · Binary Asteroid Simulation, Covariance, and Observability</span><span><a href="coverage.html">Source & coverage</a> · <a href="capabilities.html">Capabilities & limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#start-with-the-summary">Start with the summary</a><a class="toc-h2" href="#keep-cross-covariance">Keep cross covariance</a><a class="toc-h2" href="#define-a-custom-derived-quantity">Define a custom derived quantity</a><a class="toc-h2" href="#export-a-complete-run">Export a complete run</a><a class="toc-h2" href="#reload-without-dynamics">Reload without dynamics</a><a class="toc-h2" href="#one-plotting-theme">One plotting theme</a><a class="toc-h2" href="#grouped-comparison-bars">Grouped comparison bars</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">Printable handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/results.md" target="_blank" rel="noopener">Implementation / source ↗</a></div></aside></div>
+<dialog class="search-dialog" id="search-dialog" aria-label="Search the BASCO manual"><form class="search-field" method="dialog"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search tasks, functions, variables…" aria-label="Search the manual" autocomplete="off"><button type="button" data-search-close>Esc</button></form><div id="search-results" class="search-results" role="region" aria-label="Search results" aria-live="polite"></div><div class="search-hint">↑ ↓ to choose &nbsp; Enter to open &nbsp; Esc to close &nbsp; · &nbsp; Search works offline</div></dialog></body></html>

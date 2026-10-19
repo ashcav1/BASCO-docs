@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bodies, moments, units and frames · BASCO</title><meta name="description" content="Supply physical geometry and states without losing the native-to-physical conventions."><meta name="theme-color" content="#192439"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/katex/katex.min.css"><script>try{const t=JSON.parse(localStorage.getItem('basco:manual:theme'));if(t)document.documentElement.dataset.theme=t;}catch{}</script><script src="assets/search-index.js" defer></script><script src="assets/katex/katex.min.js" defer></script><script src="assets/site.js" defer></script></head>
+<body data-page-title="Bodies, moments, units and frames"><a class="skip-link" href="#main-content">Skip to content</a>
+<aside class="sidebar" aria-label="Documentation navigation"><a class="brand" href="index.html"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="#9a8ebd" transform="rotate(-29 24 24)"/><ellipse cx="19" cy="26" rx="10" ry="13" fill="#a696cf" transform="rotate(-29 19 26)"/><ellipse cx="38" cy="16" rx="5" ry="4" fill="#e5aa72"/></svg><span><b>BASCO</b><small>The user manual</small></span></a><button class="nav-search" data-search-open><span>⌕ &nbsp; Search the manual</span><kbd>⌘ K</kbd></button><nav><details class="nav-group" data-group="Start here" open><summary>Start here</summary><a href="index.html">Overview</a><a href="quickstart.html">Your first covariance study</a><a href="concepts.html">What BASCO computes</a><a href="workflow.html">Compose a study</a></details><details class="nav-group" data-group="Build the model" open><summary>Build the model</summary><a href="bodies-and-states.html" aria-current="page">Bodies, moments &amp; state</a><a href="parameters.html">Gravity order and estimated parameters</a><a href="observations.html">Observations, barycenter and schedules</a><a href="statistics.html">Noise, priors and numerical support</a></details><details class="nav-group" data-group="Run &amp; interpret" open><summary>Run &amp; interpret</summary><a href="hera.html">Hera paper reproduction</a><a href="results.html">Results, plots and exported files</a><a href="reuse-and-trades.html">Reuse &amp; degree trades</a><a href="shapes-and-kaula.html">Shapes &amp; Kaula priors</a><a href="multi-arc.html">Multi-arc &amp; estimation</a></details><details class="nav-group" data-group="Verify &amp; extend" open><summary>Verify &amp; extend</summary><a href="derivatives.html">AD, native &amp; FD</a><a href="extending.html">Extend one component at a time</a><a href="examples.html">Example gallery</a><a href="capabilities.html">Capabilities and limits</a><a href="troubleshooting.html">Troubleshooting and reproducibility</a></details><details class="nav-group" data-group="Reference" open><summary>Reference</summary><a href="api.html">API reference</a><a href="modules.html">Module map</a><a href="glossary.html">Glossary and notation</a><a href="coverage.html">Coverage &amp; provenance</a><a href="handbook.html">Printable handbook</a></details></nav><div class="side-footer"><span class="version-dot"></span>0.1.0 · source c00d5ff<a href="basco-handbook.pdf">↓ Download the handbook</a></div></aside>
+<div class="mobile-backdrop"></div><header class="topbar"><button class="icon-button menu-button" data-menu aria-label="Open navigation" aria-expanded="false">☰</button><div class="breadcrumbs"><a href="index.html">Manual</a><span>/</span><span>Build a study</span><span>/</span><span>Bodies, moments, units and frames</span></div><div class="top-actions"><button class="icon-button" data-back aria-label="Go back" title="Go back">←</button><button class="icon-button" data-forward aria-label="Go forward" title="Go forward">→</button><button class="icon-button" data-theme-toggle aria-label="Use dark theme" title="Toggle theme">◐</button><button class="icon-button" data-search-open aria-label="Search" title="Search (Ctrl/⌘ K)">⌕</button><a class="header-source" href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/bodies-and-states.md" target="_blank" rel="noopener">View source ↗</a></div><div class="reading-progress"></div></header>
+<div class="page-layout"><main class="article" id="main-content" tabindex="-1"><div class="resume" aria-label="Saved reading position"></div><div class="eyebrow">Build a study</div><h1>Bodies, moments, units and frames</h1><p class="page-description">Supply physical geometry and states without losing the native-to-physical conventions.</p><div class="page-meta"><span class="pill">BASCO 0.1.0</span><span>Hou AD default · native available</span><span>Source c00d5ff</span></div><p>BASCO's public physical inputs use metres, kilograms, seconds and radians. Physical-boundary classes also accept compatible Astropy quantities. Internal native translation is kilometre-based; let the codecs convert it. A plausible numerical answer can still be physically wrong when frames or moment normalization are mixed, so keep these conventions with every input and export.</p>
+<h2 id="analytic-ellipsoids">Analytic ellipsoids</h2>
+<p><a href="api-basco-models.html#basco-models-UniformEllipsoid">UniformEllipsoid</a> is the simplest complete moment source:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">basco</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bc</span>
+
+<span class="n">primary</span> <span class="o">=</span> <span class="n">bc</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span>
+    <span class="s2">&quot;primary&quot;</span><span class="p">,</span>
+    <span class="n">bc</span><span class="o">.</span><span class="n">UniformEllipsoid</span><span class="p">(</span><span class="n">axes</span><span class="o">=</span><span class="p">[</span><span class="mf">400.0</span><span class="p">,</span> <span class="mf">350.0</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">],</span> <span class="n">density</span><span class="o">=</span><span class="mf">2200.0</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">primary</span><span class="o">.</span><span class="n">mass</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">primary</span><span class="o">.</span><span class="n">inertia</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The axes are three positive <strong>semi-axes</strong>, in metres; density is kg/m³. The distribution generates mass-weighted raw moments through degree 6. It has analytic homogeneous-ellipsoid moments, unlike a finite-resolution triangulated ellipsoid.</p>
+<p><code>Body.mass</code> is kilograms and <code>Body.inertia</code> contains principal inertias in kg m². The body's display name does not replace the physical-coordinate IDs <code>primary</code> and <code>secondary</code> assigned by its role in the binary.</p>
+<h2 id="explicit-moment-distributions">Explicit moment distributions</h2>
+<p><a href="api-basco-models.html#basco-models-MomentDistribution">MomentDistribution</a> accepts your own centered principal-axis table. A key <code>(l, m, n)</code> represents:</p>
+<pre class="math-source">T_{lmn}=\int x^l y^m z^n\,dm,
+\qquad [T_{lmn}]=\mathrm{kg}\,\mathrm{m}^{l+m+n}.</pre>
+<p><code>(0, 0, 0)</code> is the mass. First moments and degree-2 products of inertia vanish in the required frame. The three positive diagonal second moments determine principal inertia through sums, for example <code>Izz = T200 + T020</code>.</p>
+<p>For a safe miniature example, start with a complete analytic table and make the roles explicit:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">ellipsoid</span> <span class="o">=</span> <span class="n">bc</span><span class="o">.</span><span class="n">UniformEllipsoid</span><span class="p">([</span><span class="mf">400.0</span><span class="p">,</span> <span class="mf">350.0</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">],</span> <span class="mf">2200.0</span><span class="p">)</span>
+<span class="n">distribution</span> <span class="o">=</span> <span class="n">bc</span><span class="o">.</span><span class="n">MomentDistribution</span><span class="p">(</span>
+    <span class="n">raw_moments</span><span class="o">=</span><span class="n">ellipsoid</span><span class="o">.</span><span class="n">moments</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">6</span><span class="p">),</span>
+    <span class="n">reference_radius</span><span class="o">=</span><span class="n">ellipsoid</span><span class="o">.</span><span class="n">reference_radius</span><span class="p">,</span>
+    <span class="n">bounding_radius</span><span class="o">=</span><span class="n">ellipsoid</span><span class="o">.</span><span class="n">bounding_radius</span><span class="p">,</span>
+    <span class="n">characteristic_length</span><span class="o">=</span><span class="n">ellipsoid</span><span class="o">.</span><span class="n">characteristic_length</span><span class="p">,</span>
+    <span class="n">available_degree</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">missing</span><span class="o">=</span><span class="s2">&quot;error&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">primary</span> <span class="o">=</span> <span class="n">bc</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span> <span class="n">distribution</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Replace the moment table only when its units, frame, centering and degree completeness are known. <code>missing="zero"</code> is an explicit scientific declaration that omitted nonstructural moments are zero. It is not an automatic repair for an incomplete data file.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reference_radius</code></td>
+<td>Fixed radius used for harmonic normalization/reporting</td>
+</tr>
+<tr>
+<td><code>bounding_radius</code></td>
+<td>Enclosing sphere used in non-overlap/separation checks</td>
+</tr>
+<tr>
+<td><code>characteristic_length</code></td>
+<td>Positive numerical coordinate scale</td>
+</tr>
+<tr>
+<td><code>available_degree</code></td>
+<td>Completeness of the supplied nominal moment table</td>
+</tr>
+</tbody>
+</table></div>
+<p>These radii/lengths can differ. Changing a report radius is a convention change that must travel with the coefficients and covariance.</p>
+<p>For OBJ ingestion, mesh alignment and fresh shape campaigns, use <a href="shapes-and-kaula.html">shapes and Kaula priors</a>. In particular, geometric volume moments are not already mass-weighted moments.</p>
+<h2 id="binary-state-convention">Binary state convention</h2>
+<p><a href="api-basco-models.html#basco-models-BinaryState">BinaryState</a> contains six physical fields:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>position</code></td>
+<td>Inertial secondary-minus-primary position, expressed in primary-body components</td>
+<td>m</td>
+</tr>
+<tr>
+<td><code>velocity</code></td>
+<td>Inertial relative velocity, expressed in primary-body components</td>
+<td>m/s</td>
+</tr>
+<tr>
+<td><code>omega_primary</code></td>
+<td>Primary inertial angular velocity, expressed in primary components</td>
+<td>rad/s</td>
+</tr>
+<tr>
+<td><code>omega_secondary</code></td>
+<td>Secondary inertial angular velocity, expressed in primary components</td>
+<td>rad/s</td>
+</tr>
+<tr>
+<td><code>A_to_N</code></td>
+<td>Rotation mapping primary-body components to inertial components</td>
+<td>dimensionless</td>
+</tr>
+<tr>
+<td><code>B_to_A</code></td>
+<td>Rotation mapping secondary-body components to primary-body components</td>
+<td>dimensionless</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>velocity</code> is <strong>not</strong> the time derivative of <code>position</code> in the rotating primary frame. Similarly, the secondary spin is not supplied in secondary-body components. Rotate those inputs explicitly before building the state.</p>
+<p>Both input matrices must be proper rotations. The initial state is a physical input, not an arbitrary 30-element vector. An order-6 mutual model also needs adequate separation relative to the declared body bounds.</p>
+<h2 id="system-and-fixed-g">System and fixed G</h2>
+<p>The quickstart's complete <code>primary</code>, <code>secondary</code> and <code>state</code> objects compose as:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">system</span> <span class="o">=</span> <span class="n">bc</span><span class="o">.</span><span class="n">BinarySystem</span><span class="p">(</span>
+    <span class="n">primary</span><span class="p">,</span> <span class="n">secondary</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span>
+    <span class="n">G</span><span class="o">=</span><span class="n">bc</span><span class="o">.</span><span class="n">G_SI</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;my binary&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">bc</span><span class="o">.</span><span class="n">BinaryDynamics</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">gravity</span><span class="o">=</span><span class="n">bc</span><span class="o">.</span><span class="n">HouGravity</span><span class="p">(</span><span class="n">mutual_order</span><span class="o">=</span><span class="mi">6</span><span class="p">))</span>
+</code></pre></div>
+
+<p><code>G</code> is fixed in this model. Mass reports transform its mass covariance into GM covariance using that fixed value; they do not estimate uncertainty in the gravitational constant.</p>
+<h2 id="native30-and-physical18">Native30 and physical18</h2>
+<p>The retained integration representation has 30 components: translation/spins and two nine-entry rotation matrices. <code>BinaryState.to_native()</code> and <code>BinaryState.from_native(...)</code> own its codec. Export metadata names each native axis and its unit convention.</p>
+<p>Physical state uncertainty has 18 coordinates: relative position, relative velocity, two spins and two three-component local attitude errors. <a href="api-basco-coordinates.html#basco-coordinates-physical_lift">physical_lift</a> and <a href="api-basco-coordinates.html#basco-coordinates-physical_dual">physical_dual</a> map between those tangents and native entries. <a href="api-basco-state.html#basco-state-retract_native">retract_native</a> applies a finite physical state update using a consistent attitude retraction.</p>
+<p><code>BinaryState.from_native(native, project=True)</code> explicitly projects matrix roundoff to SO(3); it is used when passing propagated arc-end states into the next nominal arc. It is not a general license to repair arbitrary invalid attitude inputs or perturb nine DCM entries independently for validation.</p>
+<p>Source owners: <a href="https://github.com/ashcav1/BASCO/blob/c00d5ff1d19c84c7e28a88507ad1f354f67f86c1/src/basco/models.py">models.py</a>, <a href="https://github.com/ashcav1/BASCO/blob/c00d5ff1d19c84c7e28a88507ad1f354f67f86c1/src/basco/coordinates.py">coordinates.py</a>, <a href="https://github.com/ashcav1/BASCO/blob/c00d5ff1d19c84c7e28a88507ad1f354f67f86c1/src/basco/state.py">state.py</a>. Continue with <a href="parameters.html">estimated parameter coordinates</a>.</p><nav class="page-pager" aria-label="Adjacent pages"><a href="workflow.html"><span>← Previous</span>Compose a study from scratch</a><a href="parameters.html"><span>Next →</span>Gravity order and estimated parameters</a></nav><footer class="site-footer"><span>BASCO · Binary Asteroid Simulation, Covariance, and Observability</span><span><a href="coverage.html">Source & coverage</a> · <a href="capabilities.html">Capabilities & limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#analytic-ellipsoids">Analytic ellipsoids</a><a class="toc-h2" href="#explicit-moment-distributions">Explicit moment distributions</a><a class="toc-h2" href="#binary-state-convention">Binary state convention</a><a class="toc-h2" href="#system-and-fixed-g">System and fixed G</a><a class="toc-h2" href="#native30-and-physical18">Native30 and physical18</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">Printable handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/bodies-and-states.md" target="_blank" rel="noopener">Implementation / source ↗</a></div></aside></div>
+<dialog class="search-dialog" id="search-dialog" aria-label="Search the BASCO manual"><form class="search-field" method="dialog"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search tasks, functions, variables…" aria-label="Search the manual" autocomplete="off"><button type="button" data-search-close>Esc</button></form><div id="search-results" class="search-results" role="region" aria-label="Search results" aria-live="polite"></div><div class="search-hint">↑ ↓ to choose &nbsp; Enter to open &nbsp; Esc to close &nbsp; · &nbsp; Search works offline</div></dialog></body></html>

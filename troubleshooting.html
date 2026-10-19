@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Troubleshooting and reproducibility · BASCO</title><meta name="description" content="Diagnose environment, rank, transport, plotting and export problems while preserving a traceable scientific run."><meta name="theme-color" content="#192439"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/katex/katex.min.css"><script>try{const t=JSON.parse(localStorage.getItem('basco:manual:theme'));if(t)document.documentElement.dataset.theme=t;}catch{}</script><script src="assets/search-index.js" defer></script><script src="assets/katex/katex.min.js" defer></script><script src="assets/site.js" defer></script></head>
+<body data-page-title="Troubleshooting and reproducibility"><a class="skip-link" href="#main-content">Skip to content</a>
+<aside class="sidebar" aria-label="Documentation navigation"><a class="brand" href="index.html"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="#9a8ebd" transform="rotate(-29 24 24)"/><ellipse cx="19" cy="26" rx="10" ry="13" fill="#a696cf" transform="rotate(-29 19 26)"/><ellipse cx="38" cy="16" rx="5" ry="4" fill="#e5aa72"/></svg><span><b>BASCO</b><small>The user manual</small></span></a><button class="nav-search" data-search-open><span>⌕ &nbsp; Search the manual</span><kbd>⌘ K</kbd></button><nav><details class="nav-group" data-group="Start here" open><summary>Start here</summary><a href="index.html">Overview</a><a href="quickstart.html">Your first covariance study</a><a href="concepts.html">What BASCO computes</a><a href="workflow.html">Compose a study</a></details><details class="nav-group" data-group="Build the model" open><summary>Build the model</summary><a href="bodies-and-states.html">Bodies, moments &amp; state</a><a href="parameters.html">Gravity order and estimated parameters</a><a href="observations.html">Observations, barycenter and schedules</a><a href="statistics.html">Noise, priors and numerical support</a></details><details class="nav-group" data-group="Run &amp; interpret" open><summary>Run &amp; interpret</summary><a href="hera.html">Hera paper reproduction</a><a href="results.html">Results, plots and exported files</a><a href="reuse-and-trades.html">Reuse &amp; degree trades</a><a href="shapes-and-kaula.html">Shapes &amp; Kaula priors</a><a href="multi-arc.html">Multi-arc &amp; estimation</a></details><details class="nav-group" data-group="Verify &amp; extend" open><summary>Verify &amp; extend</summary><a href="derivatives.html">AD, native &amp; FD</a><a href="extending.html">Extend one component at a time</a><a href="examples.html">Example gallery</a><a href="capabilities.html">Capabilities and limits</a><a href="troubleshooting.html" aria-current="page">Troubleshooting and reproducibility</a></details><details class="nav-group" data-group="Reference" open><summary>Reference</summary><a href="api.html">API reference</a><a href="modules.html">Module map</a><a href="glossary.html">Glossary and notation</a><a href="coverage.html">Coverage &amp; provenance</a><a href="handbook.html">Printable handbook</a></details></nav><div class="side-footer"><span class="version-dot"></span>0.1.0 · source c00d5ff<a href="basco-handbook.pdf">↓ Download the handbook</a></div></aside>
+<div class="mobile-backdrop"></div><header class="topbar"><button class="icon-button menu-button" data-menu aria-label="Open navigation" aria-expanded="false">☰</button><div class="breadcrumbs"><a href="index.html">Manual</a><span>/</span><span>Reference and help</span><span>/</span><span>Troubleshooting and reproducibility</span></div><div class="top-actions"><button class="icon-button" data-back aria-label="Go back" title="Go back">←</button><button class="icon-button" data-forward aria-label="Go forward" title="Go forward">→</button><button class="icon-button" data-theme-toggle aria-label="Use dark theme" title="Toggle theme">◐</button><button class="icon-button" data-search-open aria-label="Search" title="Search (Ctrl/⌘ K)">⌕</button><a class="header-source" href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/troubleshooting.md" target="_blank" rel="noopener">View source ↗</a></div><div class="reading-progress"></div></header>
+<div class="page-layout"><main class="article" id="main-content" tabindex="-1"><div class="resume" aria-label="Saved reading position"></div><div class="eyebrow">Reference and help</div><h1>Troubleshooting and reproducibility</h1><p class="page-description">Diagnose environment, rank, transport, plotting and export problems while preserving a traceable scientific run.</p><div class="page-meta"><span class="pill">BASCO 0.1.0</span><span>Hou AD default · native available</span><span>Source c00d5ff</span></div><p>When something fails, identify the boundary first: environment/build, physical inputs, propagation identity, observation layout, statistical support or presentation. Fixing one boundary by quietly changing another can produce plausible but scientifically different results.</p>
+<h2 id="environment-and-build-problems">Environment and build problems</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Check and action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Source changes appear ignored</td>
+<td>The runner uses the installed wheel. Rebuild with <code>python3 -B tools/dev.py build</code> after library edits.</td>
+</tr>
+<tr>
+<td>JAX dependency error</td>
+<td>Plain studies default to AD. Prepare <code>ad_environment</code> or install the AD extra; for native-only work explicitly select <code>NativeAnalyticTransport()</code> and <code>run --native</code>.</td>
+</tr>
+<tr>
+<td>Matplotlib unavailable</td>
+<td>Prepare <code>plot_environment</code> and run with <code>--plot</code>; numeric exports do not need plotting.</td>
+</tr>
+<tr>
+<td>CMake/compiler/Armadillo/OpenBLAS failure</td>
+<td>Check the host compiler and native development dependencies. Do not repair global Python packages or install into read-only original projects.</td>
+</tr>
+<tr>
+<td>Relative input file not found</td>
+<td>The managed runner starts outside the checkout. Resolve script-owned paths from <code>Path(__file__)</code> or pass absolute paths.</td>
+</tr>
+<tr>
+<td>Different machine fails</td>
+<td>macOS arm64 is the currently validated deployment. Portability/build acceptance on other targets remains separate work.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The host Python launches the helper; the managed interpreter executes science; the wheel/native libraries provide the installed implementation. Record all three identities when diagnosing a build or run. Do not reinstall a shared runtime role while another scientific process is using it.</p>
+<h2 id="physical-input-errors">Physical input errors</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Error or suspicious behavior</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Missing moments</td>
+<td>Nominal table completeness does not satisfy the chosen order. Supply them, or explicitly declare scientifically justified zeros.</td>
+</tr>
+<tr>
+<td>Center/principal-axis rejection</td>
+<td>First moments or products of inertia violate the supported representation. Align the geometry/moments correctly.</td>
+</tr>
+<tr>
+<td>Unexpected scales/masses</td>
+<td>Verify semi-axes versus diameters, density units, mass-weighted versus geometric moments and OBJ length conversion.</td>
+</tr>
+<tr>
+<td>Invalid rotation</td>
+<td>Supply proper mapping-direction rotations; do not silently project arbitrary invalid inputs.</td>
+</tr>
+<tr>
+<td>Unexpected relative motion</td>
+<td>Public velocity is inertial relative velocity expressed in primary components, not the rotating-frame derivative. Secondary spin is also expressed in primary components.</td>
+</tr>
+</tbody>
+</table></div>
+<p>See <a href="bodies-and-states.html">units and frames</a> and <a href="shapes-and-kaula.html">shape ingestion</a>. High-degree models are especially sensitive to incomplete nominal data and incompatible normalization.</p>
+<h2 id="grid-and-schedule-errors">Grid and schedule errors</h2>
+<p>Cadence must be positive, duration must include at least one cadence, and the output grid must align with fixed RK4 steps. Multi-arc lengths must also align with the cadence/grid. Uniform plans start one cadence after the arc origin.</p>
+<p>Schedules select existing epochs only. A pass window narrower than the grid can select no observations; that is a plan issue, not a reason to invent an epoch. <code>schedule_offset</code> determines mission-time phase, and <code>Windows</code> uses half-open intervals. Inspect <code>plan.visibility()</code> and <code>plan.schedule_description()</code> before propagation.</p>
+<h2 id="transport-reuse-rejected">Transport reuse rejected</h2>
+<p>A retained trajectory's shape alone is not enough to establish compatibility. Physics, nominal state, parameter map/raw slots, epochs, derivative provider and integration policy enter its checked identity.</p>
+<p>If a study was native, construct its reuse target with explicit native transport too; an AD default must not relabel native evidence. Changing gravity order or integration step requires new matching propagation. For supported statistical/channel changes, follow <a href="reuse-and-trades.html">reuse and trades</a> instead of editing identity fields.</p>
+<h2 id="missing-or-surprising-uncertainty">Missing or surprising uncertainty</h2>
+<p>An unresolved direction is a result, not necessarily a software failure. Check:</p>
+<ol>
+<li>Whether the duration, geometry and channel selection can identify the chosen quantities.</li>
+<li>Whether initial state and barycenter nuisance are coestimated or fixed.</li>
+<li>Whether raw higher-degree trace directions require explicitly stated prior knowledge.</li>
+<li>Data rank versus posterior/marginal rank, coordinate scales, singular spectrum and solver policy.</li>
+<li>Integration-step refinement and basis/threshold sensitivity where conditioning matters.</li>
+</ol>
+<p>An unavailable full covariance cannot be replaced by arbitrary diagonals of a supported-subspace matrix. Zero nominal coefficients have no percentage uncertainty. A fixed coefficient's zero sigma means conditioned, not measured perfectly.</p>
+<p>The projected solver's nuisance-condition error identifies a local block it cannot safely eliminate. Do not loosen its guard merely to obtain finite numbers. Reassess arc length/geometry, parameterization and the intended support policy, and preserve the rejected configuration as part of the analysis record.</p>
+<h2 id="prior-problems">Prior problems</h2>
+<p>Labels and units must match the coordinate layout. Priors with correlated quantities must retain their covariance. Shared multi-arc knowledge is supplied once globally; arc-local copies touching shared parameters are rejected.</p>
+<p>A Kaula radius/normalization mismatch must be resolved at the physical mapping boundary, not by changing its label. For iterative fitting, maintain fixed observations, noise and prior means while rebuilding current references. <a href="statistics.html">Noise and priors</a> explains the distinction.</p>
+<h2 id="plotting-and-export-problems">Plotting and export problems</h2>
+<p><code>tex=True</code> needs external LaTeX. Use <code>tex=False</code> for built-in math text when a TeX toolchain is unavailable. The plotting environment must be installed even when the covariance calculation itself succeeded.</p>
+<p>Writers refuse an existing destination. Choose a fresh run folder instead of overwriting evidence. A failed checksum or incomplete-artifact error means the folder is not verified evidence; preserve it for diagnosis rather than bypassing verification.</p>
+<p><code>read_run</code> reloads arrays/reports/metadata, not a live study object. Restyling reports launches no propagation. Reanalyzing saved rows requires a correctly reconstructed scientific/layout context rather than merely loading an NPY matrix.</p>
+<h2 id="minimal-reproducibility-record">Minimal reproducibility record</h2>
+<p>For each result worth keeping, retain the repository commit and installed wheel/source identity; input hashes and provenance; body/state units and frames; G and reference radii; nominal gravity order and solve-for basis/body selection; epochs/cadence/gaps; derivative provider and integration step; noise/prior definitions; solver/scales/rank settings; and complete output manifests/status.</p>
+<p>Standard <a href="results.html#export-a-complete-run">exports</a> capture much of this automatically. Add external input sources and scientific rationale through provenance. Distinguish fresh propagation, captured archive replay, reanalysis of retained transport and pure restyling.</p>
+<h2 id="verify-what-actually-completed">Verify what actually completed</h2>
+<p>Do not infer completion from a directory existing or a process having started. A complete manifest, matching checksums and explicit command status are needed. Keep incomplete artifacts separate. Never overwrite frozen reference inputs or baselines when a new implementation gives a different answer.</p>
+<p>The <a href="https://github.com/ashcav1/BASCO/blob/c00d5ff1d19c84c7e28a88507ad1f354f67f86c1/docs/PROJECT_STATE.md">current project state</a>, <a href="https://github.com/ashcav1/BASCO/blob/c00d5ff1d19c84c7e28a88507ad1f354f67f86c1/docs/REQUIREMENTS.md">requirements</a> and <a href="https://github.com/ashcav1/BASCO/blob/c00d5ff1d19c84c7e28a88507ad1f354f67f86c1/docs/validation/PHASE2.md">validation records</a> distinguish implemented capabilities from future plans. Full binary-data fitting, custom-observable AD, all-chain FD, sequential filtering and broad portability remain open; this manual does not promote them to finished features.</p><nav class="page-pager" aria-label="Adjacent pages"><a href="capabilities.html"><span>← Previous</span>Capabilities and limits</a><a href="api.html"><span>Next →</span>API reference</a></nav><footer class="site-footer"><span>BASCO · Binary Asteroid Simulation, Covariance, and Observability</span><span><a href="coverage.html">Source & coverage</a> · <a href="capabilities.html">Capabilities & limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#environment-and-build-problems">Environment and build problems</a><a class="toc-h2" href="#physical-input-errors">Physical input errors</a><a class="toc-h2" href="#grid-and-schedule-errors">Grid and schedule errors</a><a class="toc-h2" href="#transport-reuse-rejected">Transport reuse rejected</a><a class="toc-h2" href="#missing-or-surprising-uncertainty">Missing or surprising uncertainty</a><a class="toc-h2" href="#prior-problems">Prior problems</a><a class="toc-h2" href="#plotting-and-export-problems">Plotting and export problems</a><a class="toc-h2" href="#minimal-reproducibility-record">Minimal reproducibility record</a><a class="toc-h2" href="#verify-what-actually-completed">Verify what actually completed</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">Printable handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/troubleshooting.md" target="_blank" rel="noopener">Implementation / source ↗</a></div></aside></div>
+<dialog class="search-dialog" id="search-dialog" aria-label="Search the BASCO manual"><form class="search-field" method="dialog"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search tasks, functions, variables…" aria-label="Search the manual" autocomplete="off"><button type="button" data-search-close>Esc</button></form><div id="search-results" class="search-results" role="region" aria-label="Search results" aria-live="polite"></div><div class="search-hint">↑ ↓ to choose &nbsp; Enter to open &nbsp; Esc to close &nbsp; · &nbsp; Search works offline</div></dialog></body></html>
