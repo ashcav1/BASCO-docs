@@ -1,16 +1,17 @@
 {
-  "source_revision": "c00d5ff1d19c84c7e28a88507ad1f354f67f86c1",
-  "source_hash": "f2ffa9ec0970e1b31b257fb8cd50e2a8dd3fcbb5ce766f19a067c2d0cc2e26b8",
+  "source_revision": "ded38a300df96bfade6be28cd58077db0385b6bd",
+  "source_hash": "9cbe6674e884518dca6bd336764b1cd60931a035eb2f4d59a5ac90dd9481d1d7",
   "guide_chapters": 18,
-  "html_pages": 111,
-  "api_symbols": 1075,
-  "module_pages": 87,
-  "search_entries": 1701,
+  "html_pages": 112,
+  "api_symbols": 1085,
+  "module_pages": 88,
+  "search_entries": 1730,
   "copied_figures": [
     "docs/assets/hera/gallery/figures/gravity_gain.png",
     "docs/assets/hera/gallery/figures/masses.png",
-    "docs/assets/readme/gravity_order_ratio.png",
-    "docs/assets/readme/kaula_didymos.png"
+    "docs/assets/hera/paper_figures/figure3.png",
+    "docs/assets/hera/paper_figures/figure5.png",
+    "docs/assets/readme/gravity_order_ratio.png"
   ],
   "imports_basco": false,
   "scientific_runs": 0,

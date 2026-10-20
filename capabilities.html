@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Capabilities and limits · BASCO</title><meta name="description" content="A current, evidence-linked map of what BASCO supports, what needs an adapter, and what remains planned."><meta name="theme-color" content="#192439"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/katex/katex.min.css"><script>try{const t=JSON.parse(localStorage.getItem('basco:manual:theme'));if(t)document.documentElement.dataset.theme=t;}catch{}</script><script src="assets/search-index.js" defer></script><script src="assets/katex/katex.min.js" defer></script><script src="assets/site.js" defer></script></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Capabilities and limits · BASCO</title><meta name="description" content="Implemented capabilities, validation references and remaining work."><meta name="theme-color" content="#192439"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/katex/katex.min.css"><script>try{const t=JSON.parse(localStorage.getItem('basco:manual:theme'));if(t)document.documentElement.dataset.theme=t;}catch{}</script><script src="assets/search-index.js" defer></script><script src="assets/katex/katex.min.js" defer></script><script src="assets/site.js" defer></script></head>
 <body data-page-title="Capabilities and limits"><a class="skip-link" href="#main-content">Skip to content</a>
-<aside class="sidebar" aria-label="Documentation navigation"><a class="brand" href="index.html"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="#9a8ebd" transform="rotate(-29 24 24)"/><ellipse cx="19" cy="26" rx="10" ry="13" fill="#a696cf" transform="rotate(-29 19 26)"/><ellipse cx="38" cy="16" rx="5" ry="4" fill="#e5aa72"/></svg><span><b>BASCO</b><small>The user manual</small></span></a><button class="nav-search" data-search-open><span>⌕ &nbsp; Search the manual</span><kbd>⌘ K</kbd></button><nav><details class="nav-group" data-group="Start here" open><summary>Start here</summary><a href="index.html">Overview</a><a href="quickstart.html">Your first covariance study</a><a href="concepts.html">What BASCO computes</a><a href="workflow.html">Compose a study</a></details><details class="nav-group" data-group="Build the model" open><summary>Build the model</summary><a href="bodies-and-states.html">Bodies, moments &amp; state</a><a href="parameters.html">Gravity order and estimated parameters</a><a href="observations.html">Observations, barycenter and schedules</a><a href="statistics.html">Noise, priors and numerical support</a></details><details class="nav-group" data-group="Run &amp; interpret" open><summary>Run &amp; interpret</summary><a href="hera.html">Hera paper reproduction</a><a href="results.html">Results, plots and exported files</a><a href="reuse-and-trades.html">Reuse &amp; degree trades</a><a href="shapes-and-kaula.html">Shapes &amp; Kaula priors</a><a href="multi-arc.html">Multi-arc &amp; estimation</a></details><details class="nav-group" data-group="Verify &amp; extend" open><summary>Verify &amp; extend</summary><a href="derivatives.html">AD, native &amp; FD</a><a href="extending.html">Extend one component at a time</a><a href="examples.html">Example gallery</a><a href="capabilities.html" aria-current="page">Capabilities and limits</a><a href="troubleshooting.html">Troubleshooting and reproducibility</a></details><details class="nav-group" data-group="Reference" open><summary>Reference</summary><a href="api.html">API reference</a><a href="modules.html">Module map</a><a href="glossary.html">Glossary and notation</a><a href="coverage.html">Coverage &amp; provenance</a><a href="handbook.html">Printable handbook</a></details></nav><div class="side-footer"><span class="version-dot"></span>0.1.0 · source c00d5ff<a href="basco-handbook.pdf">↓ Download the handbook</a></div></aside>
-<div class="mobile-backdrop"></div><header class="topbar"><button class="icon-button menu-button" data-menu aria-label="Open navigation" aria-expanded="false">☰</button><div class="breadcrumbs"><a href="index.html">Manual</a><span>/</span><span>Reference</span><span>/</span><span>Capabilities and limits</span></div><div class="top-actions"><button class="icon-button" data-back aria-label="Go back" title="Go back">←</button><button class="icon-button" data-forward aria-label="Go forward" title="Go forward">→</button><button class="icon-button" data-theme-toggle aria-label="Use dark theme" title="Toggle theme">◐</button><button class="icon-button" data-search-open aria-label="Search" title="Search (Ctrl/⌘ K)">⌕</button><a class="header-source" href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/capabilities.md" target="_blank" rel="noopener">View source ↗</a></div><div class="reading-progress"></div></header>
-<div class="page-layout"><main class="article" id="main-content" tabindex="-1"><div class="resume" aria-label="Saved reading position"></div><div class="eyebrow">Reference</div><h1>Capabilities and limits</h1><p class="page-description">A current, evidence-linked map of what BASCO supports, what needs an adapter, and what remains planned.</p><div class="page-meta"><span class="pill">BASCO 0.1.0</span><span>Hou AD default · native available</span><span>Source c00d5ff</span></div><p>BASCO's maintained focus is <strong>formal local covariance for binary-asteroid masses and gravity</strong>, using the Hou/GUBAS full two-body dynamics. This map describes the completed Phase 2 checkpoint. A class name or a designed interface alone does not establish a validated mission-data pipeline.</p>
-<p><strong>Supported</strong> means implemented with recorded checks in the stated domain. <strong>Partial</strong> means useful implemented pieces exist but a wider workflow or validation remains open. <strong>Legacy</strong> means retained compatibility/reference functionality. <strong>Planned</strong> means it is not a delivered feature today.</p>
+<aside class="sidebar" aria-label="Documentation navigation"><a class="brand" href="index.html"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="#9a8ebd" transform="rotate(-29 24 24)"/><ellipse cx="19" cy="26" rx="10" ry="13" fill="#a696cf" transform="rotate(-29 19 26)"/><ellipse cx="38" cy="16" rx="5" ry="4" fill="#e5aa72"/></svg><b>BASCO</b></a><button class="nav-search" data-search-open><span>Search documentation</span><kbd>⌘ K</kbd></button><nav><details class="nav-group" data-group="Getting started" open><summary>Getting started</summary><a href="index.html">Overview</a><a href="quickstart.html">Installation and first example</a><a href="workflow.html">Study setup</a></details><details class="nav-group" data-group="Models and parameters" open><summary>Models and parameters</summary><a href="bodies-and-states.html">Bodies and states</a><a href="parameters.html">Gravity and estimated parameters</a><a href="shapes-and-kaula.html">Shapes and Kaula priors</a></details><details class="nav-group" data-group="Covariance analysis" open><summary>Covariance analysis</summary><a href="observations.html">Measurements and schedules</a><a href="statistics.html">Noise, priors and solvers</a><a href="multi-arc.html">Multi-arc covariance and estimation</a><a href="results.html">Results and exports</a><a href="reuse-and-trades.html">Model comparisons</a></details><details class="nav-group" data-group="Examples" open><summary>Examples</summary><a href="hera.html">Hera paper reproduction</a><a href="examples.html">Example scripts</a></details><details class="nav-group" data-group="Reference" open><summary>Reference</summary><a href="api.html">API reference</a><a href="modules.html">Modules</a><a href="concepts.html">Equations and conventions</a><a href="glossary.html">Glossary and notation</a><a href="handbook.html">PDF handbook</a></details><details class="nav-group" data-group="Validation and development" open><summary>Validation and development</summary><a href="derivatives.html">Derivative validation</a><a href="coverage.html">Documentation and validation records</a><a href="extending.html">Extension interfaces</a><a href="capabilities.html" aria-current="page">Capabilities and limits</a><a href="troubleshooting.html">Troubleshooting</a></details></nav><div class="side-footer"><a href="basco-handbook.pdf">Download PDF</a><a href="coverage.html">Version and source information</a></div></aside>
+<div class="mobile-backdrop"></div><header class="topbar"><button class="icon-button menu-button" data-menu aria-label="Open navigation" aria-expanded="false">☰</button><div class="breadcrumbs"><a href="index.html">Manual</a><span>/</span><span>Validation and development</span><span>/</span><span>Capabilities and limits</span></div><div class="top-actions"><button class="icon-button" data-back aria-label="Go back" title="Go back">←</button><button class="icon-button" data-forward aria-label="Go forward" title="Go forward">→</button><button class="icon-button" data-theme-toggle aria-label="Use dark theme" title="Toggle theme">◐</button><button class="icon-button" data-search-open aria-label="Search" title="Search (Ctrl/⌘ K)">⌕</button><a class="header-source" href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/capabilities.md" target="_blank" rel="noopener">View source ↗</a></div><div class="reading-progress"></div></header>
+<div class="page-layout"><main class="article" id="main-content" tabindex="-1"><div class="resume" aria-label="Saved reading position"></div><h1>Capabilities and limits</h1><p>BASCO computes <strong>formal local covariance for binary-asteroid masses and gravity</strong>, using the Hou/GUBAS full two-body dynamics. The tables below distinguish implemented and validated capabilities from partial interfaces and planned work.</p>
+<p><strong>Supported</strong> means implemented with recorded checks in the stated domain. <strong>Partial</strong> means some components are implemented, while the complete workflow or its validation remains open. <strong>Legacy</strong> means retained compatibility/reference functionality. <strong>Planned</strong> means unimplemented work.</p>
 <h2 id="bodies-gravity-and-integration">Bodies, gravity and integration</h2>
 <div class="table-scroll"><table>
 <thead>
@@ -43,7 +43,7 @@
 <tr>
 <td>Hou mutual orders 2, 4, 6</td>
 <td>Supported, primary path</td>
-<td>Order is independent of nominal input degree and selected solve-fors; <a href="api-basco-models.html#basco-models-HouGravity">HouGravity</a></td>
+<td>Order is independent of nominal input degree and selected estimated parameters; <a href="api-basco-models.html#basco-models-HouGravity">HouGravity</a></td>
 </tr>
 <tr>
 <td>Fixed-step RK4 augmented transport</td>
@@ -66,7 +66,7 @@
 <td>Old imports remain; construction warns; implementation under <code>basco.ad.legacy</code></td>
 </tr>
 <tr>
-<td>Independent degree-5/6 solve-fors</td>
+<td>Independent degree-5/6 estimated parameters</td>
 <td>Planned</td>
 <td>Degree-6 <strong>nominal gravity</strong> works; this does not expose independent uncertain degree-5/6 coordinates</td>
 </tr>
@@ -82,7 +82,7 @@
 </tr>
 </tbody>
 </table></div>
-<p>See <a href="bodies-and-states.html">bodies and states</a>, <a href="derivatives.html">derivatives</a> and <a href="https://github.com/ashcav1/BASCO/blob/c00d5ff1d19c84c7e28a88507ad1f354f67f86c1/docs/validation/GRAVITY_MODELS.md">gravity compatibility evidence</a>.</p>
+<p>See <a href="bodies-and-states.html">bodies and states</a>, <a href="derivatives.html">derivatives</a> and <a href="https://github.com/ashcav1/BASCO/blob/ded38a300df96bfade6be28cd58077db0385b6bd/docs/validation/GRAVITY_MODELS.md">gravity compatibility evidence</a>.</p>
 <h2 id="parameters-and-physical-reports">Parameters and physical reports</h2>
 <div class="table-scroll"><table>
 <thead>
@@ -136,15 +136,15 @@
 <tr>
 <td>Custom derived report</td>
 <td>Supported</td>
-<td>User value/Jacobian with declared labels/units and null-aware transformation</td>
+<td>User value/Jacobian with declared labels/units and nullspace-aware transformation</td>
 </tr>
 <tr>
-<td>Conditioning a compatible solve-for subset</td>
+<td>Conditioning a compatible estimated parameter subset</td>
 <td>Supported</td>
-<td>Reuses rows while treating omitted solve-fors as fixed, not marginalized uncertainty</td>
+<td>Reuses rows while treating omitted estimated parameters as fixed, not marginalized uncertainty</td>
 </tr>
 <tr>
-<td>Mesh-vertex/density/mascon solve-fors</td>
+<td>Mesh-vertex/density/mascon estimated parameters</td>
 <td>Planned</td>
 <td>Nominal preprocessing or a reference value model does not imply estimable geometry</td>
 </tr>
@@ -233,7 +233,7 @@
 </tr>
 </tbody>
 </table></div>
-<p>See <a href="observations.html">observations</a> and <a href="https://github.com/ashcav1/BASCO/blob/c00d5ff1d19c84c7e28a88507ad1f354f67f86c1/docs/validation/MULTI_ARC_SCHEDULES.md">schedule/multi-arc evidence</a>.</p>
+<p>See <a href="observations.html">observations</a> and <a href="https://github.com/ashcav1/BASCO/blob/ded38a300df96bfade6be28cd58077db0385b6bd/docs/validation/MULTI_ARC_SCHEDULES.md">schedule/multi-arc evidence</a>.</p>
 <h2 id="statistics-and-covariance">Statistics and covariance</h2>
 <div class="table-scroll"><table>
 <thead>
@@ -330,7 +330,7 @@
 <tr>
 <td>Linearized residual correction</td>
 <td>Supported</td>
-<td>Weighted local least-squares correction and null-aware covariance; <code>MultiArcStudy.estimate</code></td>
+<td>Weighted local least-squares correction and nullspace-aware covariance; <code>MultiArcStudy.estimate</code></td>
 </tr>
 <tr>
 <td>Callback-based nonlinear batch/MAP driver</td>
@@ -364,7 +364,7 @@
 </tr>
 </tbody>
 </table></div>
-<p>The implemented generic nonlinear driver is useful infrastructure, not a claim that BASCO currently fits Hera mission data. <a href="multi-arc.html">Multi-arc documentation</a> explains the independent-arc assumption and RK4/SO(3) restart sensitivity on chaotic trajectories.</p>
+<p>The generic nonlinear driver is implemented; a complete Hera observation-data fitting application is not. <a href="multi-arc.html">Multi-arc documentation</a> explains the independent-arc assumption and RK4/SO(3) restart sensitivity on chaotic trajectories.</p>
 <h2 id="results-plots-and-reproducibility">Results, plots and reproducibility</h2>
 <div class="table-scroll"><table>
 <thead>
@@ -398,7 +398,7 @@
 <tr>
 <td>User plot definitions</td>
 <td>Supported</td>
-<td>Replaceable figure builder consumes the canonical dataset; <a href="api-basco-plot_style.html#basco-plot_style-PlotDefinition">PlotDefinition</a></td>
+<td>Replaceable figure builder consumes the shared result dataset; <a href="api-basco-plot_style.html#basco-plot_style-PlotDefinition">PlotDefinition</a></td>
 </tr>
 <tr>
 <td>Hera Table 2</td>
@@ -459,9 +459,9 @@
 <td>Native RHS, parameter map, attitude retraction, high-degree/report/barycentric checks and AD/legacy checks</td>
 </tr>
 <tr>
-<td>Complete all-chain covariance FD</td>
+<td>Complete end-to-end covariance FD</td>
 <td>Partial</td>
-<td>Whole transport/covariance/prior companion coverage remains incomplete</td>
+<td>Complete transport, covariance-propagation and prior coverage remains incomplete</td>
 </tr>
 <tr>
 <td>Bitwise refactor snapshots</td>
@@ -485,7 +485,7 @@
 </tr>
 </tbody>
 </table></div>
-<p>The <a href="https://github.com/ashcav1/BASCO/blob/c00d5ff1d19c84c7e28a88507ad1f354f67f86c1/docs/validation/PHASE2.md">Phase 2 record</a> contains exact installed-source/runtime identities, ordinary suite outcomes and opt-in validation results. Ordinary covariance execution does not launch finite-difference probes. <a href="derivatives.html">Derivative methods</a> shows how to request checks deliberately.</p>
+<p>The <a href="https://github.com/ashcav1/BASCO/blob/ded38a300df96bfade6be28cd58077db0385b6bd/docs/validation/PHASE2.md">Phase 2 record</a> contains exact installed-source/runtime identities, ordinary suite outcomes and opt-in validation results. Ordinary covariance execution does not launch finite-difference probes. <a href="derivatives.html">Derivative methods</a> shows how to request checks deliberately.</p>
 <h2 id="where-future-work-is-tracked">Where future work is tracked</h2>
-<p>The authoritative scope is <a href="https://github.com/ashcav1/BASCO/blob/c00d5ff1d19c84c7e28a88507ad1f354f67f86c1/docs/REQUIREMENTS.md">requirements</a>. <a href="https://github.com/ashcav1/BASCO/blob/c00d5ff1d19c84c7e28a88507ad1f354f67f86c1/docs/IMPLEMENTATION_STATUS.md">Implementation status</a> distinguishes complete increments from remaining work; <a href="https://github.com/ashcav1/BASCO/blob/c00d5ff1d19c84c7e28a88507ad1f354f67f86c1/docs/DECISIONS.md">decisions</a> record selected scientific/API policy. Phase 2 is complete; later modularity phases and wider real estimation/filtering scope are separate work.</p><nav class="page-pager" aria-label="Adjacent pages"><a href="examples.html"><span>← Previous</span>Example gallery</a><a href="troubleshooting.html"><span>Next →</span>Troubleshooting and reproducibility</a></nav><footer class="site-footer"><span>BASCO · Binary Asteroid Simulation, Covariance, and Observability</span><span><a href="coverage.html">Source & coverage</a> · <a href="capabilities.html">Capabilities & limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#bodies-gravity-and-integration">Bodies, gravity and integration</a><a class="toc-h2" href="#parameters-and-physical-reports">Parameters and physical reports</a><a class="toc-h2" href="#measurements-and-schedules">Measurements and schedules</a><a class="toc-h2" href="#statistics-and-covariance">Statistics and covariance</a><a class="toc-h2" href="#independent-arcs-and-actual-estimation">Independent arcs and actual estimation</a><a class="toc-h2" href="#results-plots-and-reproducibility">Results, plots and reproducibility</a><a class="toc-h2" href="#derivative-and-platform-evidence">Derivative and platform evidence</a><a class="toc-h2" href="#where-future-work-is-tracked">Where future work is tracked</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">Printable handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/capabilities.md" target="_blank" rel="noopener">Implementation / source ↗</a></div></aside></div>
+<p>The authoritative scope is <a href="https://github.com/ashcav1/BASCO/blob/ded38a300df96bfade6be28cd58077db0385b6bd/docs/REQUIREMENTS.md">requirements</a>. <a href="https://github.com/ashcav1/BASCO/blob/ded38a300df96bfade6be28cd58077db0385b6bd/docs/IMPLEMENTATION_STATUS.md">Implementation status</a> distinguishes complete increments from remaining work; <a href="https://github.com/ashcav1/BASCO/blob/ded38a300df96bfade6be28cd58077db0385b6bd/docs/DECISIONS.md">decisions</a> record selected scientific/API policy. Phase 2 is complete; later modularity phases and wider real estimation/filtering scope are separate work.</p><nav class="page-pager" aria-label="Adjacent pages"><a href="extending.html"><span>← Previous</span>Extension interfaces</a><a href="troubleshooting.html"><span>Next →</span>Troubleshooting</a></nav><footer class="site-footer"><span>BASCO 0.1.0 · <a href="https://github.com/ashcav1/BASCO/blob/ded38a300df96bfade6be28cd58077db0385b6bd/src/basco/__init__.py">Source ded38a3</a></span><span><a href="coverage.html">Validation records</a> · <a href="capabilities.html">Capabilities and limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#bodies-gravity-and-integration">Bodies, gravity and integration</a><a class="toc-h2" href="#parameters-and-physical-reports">Parameters and physical reports</a><a class="toc-h2" href="#measurements-and-schedules">Measurements and schedules</a><a class="toc-h2" href="#statistics-and-covariance">Statistics and covariance</a><a class="toc-h2" href="#independent-arcs-and-actual-estimation">Independent arcs and actual estimation</a><a class="toc-h2" href="#results-plots-and-reproducibility">Results, plots and reproducibility</a><a class="toc-h2" href="#derivative-and-platform-evidence">Derivative and platform evidence</a><a class="toc-h2" href="#where-future-work-is-tracked">Where future work is tracked</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">PDF handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/capabilities.md" target="_blank" rel="noopener">View source ↗</a></div></aside></div>
 <dialog class="search-dialog" id="search-dialog" aria-label="Search the BASCO manual"><form class="search-field" method="dialog"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search tasks, functions, variables…" aria-label="Search the manual" autocomplete="off"><button type="button" data-search-close>Esc</button></form><div id="search-results" class="search-results" role="region" aria-label="Search results" aria-live="polite"></div><div class="search-hint">↑ ↓ to choose &nbsp; Enter to open &nbsp; Esc to close &nbsp; · &nbsp; Search works offline</div></dialog></body></html>
