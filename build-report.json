@@ -1,11 +1,11 @@
 {
-  "source_revision": "12fa0902f61b94cbc01252f355b7a8f124de75e0",
-  "source_hash": "0e47462ba2ff5e208a55e49c3dcec1f6f09e78c3098028bb8f60d158b5c09028",
+  "source_revision": "451d6147735134b5164f7c1d46c62b704fb4ff61",
+  "source_hash": "23a87bb9a2f24ba7455d127c20053a002cba1a9ad6adbd58122c0b8b2e1062b3",
   "guide_chapters": 20,
-  "html_pages": 119,
-  "api_symbols": 1145,
-  "module_pages": 93,
-  "search_entries": 1824,
+  "html_pages": 127,
+  "api_symbols": 1213,
+  "module_pages": 101,
+  "search_entries": 1939,
   "copied_figures": [
     "docs/assets/hera/consider-histories/hera_consider_gravity.png",
     "docs/assets/hera/consider-histories/hera_mass_history.png",
@@ -14,7 +14,11 @@
     "docs/assets/hera/gallery/figures/masses.png",
     "docs/assets/hera/paper_figures/figure3.png",
     "docs/assets/hera/paper_figures/figure5.png",
-    "docs/assets/readme/gravity_order_ratio.png"
+    "docs/assets/readme/gravity_order_ratio.png",
+    "docs/assets/spacecraft/rf3bp/spacecraft_position_sigma.png",
+    "docs/assets/spacecraft/rf3bp/spacecraft_step_refinement.png",
+    "docs/assets/spacecraft/rf3bp/spacecraft_trajectory.png",
+    "docs/assets/spacecraft/rf3bp/spacecraft_velocity_sigma.png"
   ],
   "imports_basco": false,
   "scientific_runs": 0,
