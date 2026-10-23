@@ -82,7 +82,7 @@
 </tr>
 </tbody>
 </table></div>
-<p>See <a href="bodies-and-states.html">bodies and states</a>, <a href="derivatives.html">derivatives</a> and <a href="https://github.com/ashcav1/BASCO/blob/451d6147735134b5164f7c1d46c62b704fb4ff61/docs/validation/GRAVITY_MODELS.md">gravity compatibility evidence</a>.</p>
+<p>See <a href="bodies-and-states.html">bodies and states</a>, <a href="derivatives.html">derivatives</a> and <a href="https://github.com/ashcav1/BASCO/blob/14d5e602c7fb045c03d547c55b42b2960425017f/docs/validation/GRAVITY_MODELS.md">gravity compatibility evidence</a>.</p>
 <h2 id="parameters-and-physical-reports">Parameters and physical reports</h2>
 <div class="table-scroll"><table>
 <thead>
@@ -233,7 +233,7 @@
 </tr>
 </tbody>
 </table></div>
-<p>See <a href="observations.html">observations</a> and <a href="https://github.com/ashcav1/BASCO/blob/451d6147735134b5164f7c1d46c62b704fb4ff61/docs/validation/MULTI_ARC_SCHEDULES.md">schedule/multi-arc evidence</a>.</p>
+<p>See <a href="observations.html">observations</a> and <a href="https://github.com/ashcav1/BASCO/blob/14d5e602c7fb045c03d547c55b42b2960425017f/docs/validation/MULTI_ARC_SCHEDULES.md">schedule/multi-arc evidence</a>.</p>
 <h2 id="statistics-and-covariance">Statistics and covariance</h2>
 <div class="table-scroll"><table>
 <thead>
@@ -308,6 +308,11 @@
 <td>Source-factor output maps</td>
 <td>Supported</td>
 <td>Retained QR/SVD factors avoid dense covariance cancellation; <code>derived_stable()</code> and history helpers</td>
+</tr>
+<tr>
+<td>Original latent-factor transport</td>
+<td>Implemented and validated</td>
+<td><code>map_factor</code> on covariance/consider/source results; spacecraft transports mapped initialization/raw factors before squaring. Original full-source null policy and latent-column basis remain; <a href="landing-covariance.html#numerical-covariance-transport">explanation</a></td>
 </tr>
 <tr>
 <td>Formal covariance bias/truncation-error prediction</td>
@@ -438,12 +443,22 @@
 <tr>
 <td>Massless spacecraft trajectory covariance</td>
 <td>Supported selected RF3BP scope</td>
-<td>Full rotating Hou binary; inertial six-state initial uncertainty, correlated source factors, AD/native and degree-6 validation; <a href="landing-covariance.html">guide and plots</a></td>
+<td>Full rotating Hou binary; six-state covariance, correlated source factors, AD/native and degree-6 declared-source validation; <a href="landing-covariance.html">guide and plots</a></td>
+</tr>
+<tr>
+<td>Body-fixed release and retained binary handoff</td>
+<td>Implemented and validated</td>
+<td>Either body, explicit COM offset/body-relative velocity, on-grid nominal state and original-source sensitivities without projection; <a href="landing-covariance.html#hera-informed-release">release guide</a></td>
+</tr>
+<tr>
+<td>Reload original spacecraft covariance source</td>
+<td>Implemented and validated</td>
+<td>Completed run with original factor, consider cancellation/null support and compatible binary transport; <a href="api-basco-spacecraft_io.html">load_covariance_source</a></td>
 </tr>
 <tr>
 <td>CubeSat landing footprint</td>
 <td>Planned</td>
-<td>Body-fixed release uncertainty, later-epoch Hera handoff, near-surface field and contact-event sensitivity remain; <a href="https://github.com/ashcav1/BASCO/blob/451d6147735134b5164f7c1d46c62b704fb4ff61/docs/design/RF3BP_NEXT_INCREMENT.md">next increment</a></td>
+<td>Near-surface field validity, first-contact location/time derivatives and local surface covariance remain; body-fixed release and on-grid handoff are implemented; <a href="landing-covariance.html#current-limits-and-next-steps">guide</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -505,7 +520,7 @@
 </tr>
 </tbody>
 </table></div>
-<p>The <a href="https://github.com/ashcav1/BASCO/blob/451d6147735134b5164f7c1d46c62b704fb4ff61/docs/validation/PHASE2.md">Phase 2 record</a> contains exact installed-source/runtime identities, ordinary suite outcomes and opt-in validation results. Ordinary covariance execution does not launch finite-difference probes. <a href="derivatives.html">Derivative methods</a> shows how to request checks deliberately.</p>
+<p>The <a href="https://github.com/ashcav1/BASCO/blob/14d5e602c7fb045c03d547c55b42b2960425017f/docs/validation/PHASE2.md">Phase 2 record</a> contains exact installed-source/runtime identities, ordinary suite outcomes and opt-in validation results. Ordinary covariance execution does not launch finite-difference probes. <a href="derivatives.html">Derivative methods</a> shows how to request checks deliberately.</p>
 <h2 id="where-future-work-is-tracked">Where future work is tracked</h2>
-<p>The authoritative scope is <a href="https://github.com/ashcav1/BASCO/blob/451d6147735134b5164f7c1d46c62b704fb4ff61/docs/REQUIREMENTS.md">requirements</a>. <a href="https://github.com/ashcav1/BASCO/blob/451d6147735134b5164f7c1d46c62b704fb4ff61/docs/IMPLEMENTATION_STATUS.md">Implementation status</a> distinguishes complete increments from remaining work; <a href="https://github.com/ashcav1/BASCO/blob/451d6147735134b5164f7c1d46c62b704fb4ff61/docs/DECISIONS.md">decisions</a> record selected scientific/API policy. Phase 2 is complete; later modularity phases and wider real estimation/filtering scope are separate work.</p><nav class="page-pager" aria-label="Adjacent pages"><a href="extending.html"><span>← Previous</span>Extension interfaces</a><a href="troubleshooting.html"><span>Next →</span>Troubleshooting</a></nav><footer class="site-footer"><span>BASCO 0.1.0 · <a href="https://github.com/ashcav1/BASCO/blob/451d6147735134b5164f7c1d46c62b704fb4ff61/src/basco/__init__.py">Source 451d614</a></span><span><a href="coverage.html">Validation records</a> · <a href="capabilities.html">Capabilities and limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#bodies-gravity-and-integration">Bodies, gravity and integration</a><a class="toc-h2" href="#parameters-and-physical-reports">Parameters and physical reports</a><a class="toc-h2" href="#measurements-and-schedules">Measurements and schedules</a><a class="toc-h2" href="#statistics-and-covariance">Statistics and covariance</a><a class="toc-h2" href="#independent-arcs-and-actual-estimation">Independent arcs and actual estimation</a><a class="toc-h2" href="#results-plots-and-reproducibility">Results, plots and reproducibility</a><a class="toc-h2" href="#derivative-and-platform-evidence">Derivative and platform evidence</a><a class="toc-h2" href="#where-future-work-is-tracked">Where future work is tracked</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">PDF handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/capabilities.md" target="_blank" rel="noopener">View source ↗</a></div></aside></div>
+<p>The authoritative scope is <a href="https://github.com/ashcav1/BASCO/blob/14d5e602c7fb045c03d547c55b42b2960425017f/docs/REQUIREMENTS.md">requirements</a>. <a href="https://github.com/ashcav1/BASCO/blob/14d5e602c7fb045c03d547c55b42b2960425017f/docs/IMPLEMENTATION_STATUS.md">Implementation status</a> distinguishes complete increments from remaining work; <a href="https://github.com/ashcav1/BASCO/blob/14d5e602c7fb045c03d547c55b42b2960425017f/docs/DECISIONS.md">decisions</a> record selected scientific/API policy. Phase 2 is complete; later modularity phases and wider real estimation/filtering scope are separate work.</p><nav class="page-pager" aria-label="Adjacent pages"><a href="extending.html"><span>← Previous</span>Extension interfaces</a><a href="troubleshooting.html"><span>Next →</span>Troubleshooting</a></nav><footer class="site-footer"><span>BASCO 0.1.0 · <a href="https://github.com/ashcav1/BASCO/blob/14d5e602c7fb045c03d547c55b42b2960425017f/src/basco/__init__.py">Source 14d5e60</a></span><span><a href="coverage.html">Validation records</a> · <a href="capabilities.html">Capabilities and limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#bodies-gravity-and-integration">Bodies, gravity and integration</a><a class="toc-h2" href="#parameters-and-physical-reports">Parameters and physical reports</a><a class="toc-h2" href="#measurements-and-schedules">Measurements and schedules</a><a class="toc-h2" href="#statistics-and-covariance">Statistics and covariance</a><a class="toc-h2" href="#independent-arcs-and-actual-estimation">Independent arcs and actual estimation</a><a class="toc-h2" href="#results-plots-and-reproducibility">Results, plots and reproducibility</a><a class="toc-h2" href="#derivative-and-platform-evidence">Derivative and platform evidence</a><a class="toc-h2" href="#where-future-work-is-tracked">Where future work is tracked</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">PDF handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/capabilities.md" target="_blank" rel="noopener">View source ↗</a></div></aside></div>
 <dialog class="search-dialog" id="search-dialog" aria-label="Search the BASCO manual"><form class="search-field" method="dialog"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search tasks, functions, variables…" aria-label="Search the manual" autocomplete="off"><button type="button" data-search-close>Esc</button></form><div id="search-results" class="search-results" role="region" aria-label="Search results" aria-live="polite"></div><div class="search-hint">↑ ↓ to choose &nbsp; Enter to open &nbsp; Esc to close &nbsp; · &nbsp; Search works offline</div></dialog></body></html>
