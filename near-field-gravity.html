@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Near-field gravity covariance · BASCO</title><meta name="description" content="Local cylindrical gravity, uncertainty transfer from Hou parameters and direct correlated coefficient inputs."><meta name="theme-color" content="#192439"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/katex/katex.min.css"><script>try{const t=JSON.parse(localStorage.getItem('basco:manual:theme'));if(t)document.documentElement.dataset.theme=t;}catch{}</script><script src="assets/search-index.js" defer></script><script src="assets/katex/katex.min.js" defer></script><script src="assets/site.js" defer></script></head>
+<body data-page-title="Near-field gravity covariance"><a class="skip-link" href="#main-content">Skip to content</a>
+<aside class="sidebar" aria-label="Documentation navigation"><a class="brand" href="index.html"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="#9a8ebd" transform="rotate(-29 24 24)"/><ellipse cx="19" cy="26" rx="10" ry="13" fill="#a696cf" transform="rotate(-29 19 26)"/><ellipse cx="38" cy="16" rx="5" ry="4" fill="#e5aa72"/></svg><b>BASCO</b></a><button class="nav-search" data-search-open><span>Search documentation</span><kbd>⌘ K</kbd></button><nav><details class="nav-group" data-group="Getting started" open><summary>Getting started</summary><a href="index.html">Overview</a><a href="quickstart.html">Installation and first example</a><a href="workflow.html">Study setup</a></details><details class="nav-group" data-group="Models and parameters" open><summary>Models and parameters</summary><a href="bodies-and-states.html">Bodies and states</a><a href="parameters.html">Gravity and estimated parameters</a><a href="shapes-and-kaula.html">Shapes and Kaula priors</a></details><details class="nav-group" data-group="Covariance analysis" open><summary>Covariance analysis</summary><a href="observations.html">Measurements and schedules</a><a href="statistics.html">Noise, priors and solvers</a><a href="consider-and-histories.html">Consider parameters and covariance histories</a><a href="near-field-gravity.html" aria-current="page">Near-field gravity covariance</a><a href="multi-arc.html">Multi-arc covariance and estimation</a><a href="results.html">Results and exports</a><a href="reuse-and-trades.html">Model comparisons</a></details><details class="nav-group" data-group="Examples" open><summary>Examples</summary><a href="hera.html">Hera paper reproduction</a><a href="examples.html">Example scripts</a><a href="landing-covariance.html">Spacecraft and landing covariance</a></details><details class="nav-group" data-group="Reference" open><summary>Reference</summary><a href="api.html">API reference</a><a href="modules.html">Modules</a><a href="concepts.html">Equations and conventions</a><a href="glossary.html">Glossary and notation</a><a href="handbook.html">PDF handbook</a></details><details class="nav-group" data-group="Validation and development" open><summary>Validation and development</summary><a href="derivatives.html">Derivative validation</a><a href="coverage.html">Documentation and validation records</a><a href="extending.html">Extension interfaces</a><a href="capabilities.html">Capabilities and limits</a><a href="troubleshooting.html">Troubleshooting</a></details></nav><div class="side-footer"><a href="basco-handbook.pdf">Download PDF</a><a href="coverage.html">Version and source information</a></div></aside>
+<div class="mobile-backdrop"></div><header class="topbar"><button class="icon-button menu-button" data-menu aria-label="Open navigation" aria-expanded="false">☰</button><div class="breadcrumbs"><a href="index.html">Manual</a><span>/</span><span>Covariance analysis</span><span>/</span><span>Near-field gravity covariance</span></div><div class="top-actions"><button class="icon-button" data-back aria-label="Go back" title="Go back">←</button><button class="icon-button" data-forward aria-label="Go forward" title="Go forward">→</button><button class="icon-button" data-theme-toggle aria-label="Use dark theme" title="Toggle theme">◐</button><button class="icon-button" data-search-open aria-label="Search" title="Search (Ctrl/⌘ K)">⌕</button><a class="header-source" href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/near-field-gravity.md" target="_blank" rel="noopener">View source ↗</a></div><div class="reading-progress"></div></header>
+<div class="page-layout"><main class="article" id="main-content" tabindex="-1"><div class="resume" aria-label="Saved reading position"></div><h1>Near-field gravity covariance</h1><p>BASCO provides a local cylindrical gravity model and transfers uncertainty into its coefficients from an existing Hou model. A second entry point accepts local coefficients and a supplied joint spacecraft, mass and coefficient distribution. Both use the original covariance factors and preserve cross-correlations and unsupported directions. Neither entry point adds measurements or performs a new estimation.</p>
+<p>This increment evaluates local fields and their uncertainty. <strong>The cylindrical field is not yet connected to <code>RestrictedDynamics</code>.</strong> It does not propagate a spacecraft to the surface, detect first contact or produce a landing area. The existing <a href="landing-covariance.html">spacecraft covariance</a> continues to use exterior Hou fields.</p>
+<h2 id="choose-an-input">Choose an input</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Input available</th>
+<th>Workflow</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hou nominal model and an existing covariance/consider result or declared source factor</td>
+<td><a href="#map-an-existing-hou-model">Map an existing Hou model</a></td>
+<td>Local nominal coefficients, their source Jacobian and a delegate-preserving uncertainty map</td>
+</tr>
+<tr>
+<td>Local nominal coefficients and a supplied joint distribution</td>
+<td><a href="#start-with-local-coefficients">Start with local coefficients</a></td>
+<td>The same coefficient uncertainty interface, without an exterior model, Hera archive or conversion</td>
+</tr>
+</tbody>
+</table></div>
+<p>The complete <a href="https://github.com/ashcav1/BASCO/blob/2f1c855b65031b2430afaca4f55e489a2fa237f1/examples/near_field_covariance.py">near_field_covariance.py</a> runs both workflows with declared demonstration distributions. It uses the synthetic S0 binary for the mapped case. <strong>It is not a Hera posterior or a validated landing example.</strong></p>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>examples/near_field_covariance.py
+python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--native<span class="w"> </span>examples/near_field_covariance.py<span class="w"> </span>--backend<span class="w"> </span>native
+</code></pre></div>
+
+<p>The first command selects AD. The second selects the native environment and explicitly requests analytic field derivatives inside the runner. These examples print coefficient/acceleration reports and numerical fit rank; they do not integrate trajectories.</p>
+<h2 id="local-field-and-domain">Local field and domain</h2>
+<p><a href="api-basco-near_field-geometry.html#basco-near_field-geometry-CylindricalPatch">CylindricalPatch</a> specifies a body-frame cylinder: a base centre, radius, height and optional proper rotation. Its local domain is <code>rho &lt;= radius</code>, <code>0 &lt;= z &lt;= height</code>. The rotation maps cylinder components into body components. Positions and lengths use metres; compatible Astropy quantities are accepted.</p>
+<p>The patch is a <strong>declared mass-free region</strong>. It does not inspect a shape model or certify that a cylinder clears the asteroid. A physical application must establish that the field domain contains no material, up to an appropriate exterior surface limit. Patch pose is fixed in this increment; patch/shape uncertainty is not included.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">basco.near_field</span><span class="w"> </span><span class="kn">import</span> <span class="n">CylindricalBasis</span><span class="p">,</span> <span class="n">CylindricalField</span><span class="p">,</span> <span class="n">CylindricalPatch</span>
+
+<span class="n">patch</span> <span class="o">=</span> <span class="n">CylindricalPatch</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">750</span><span class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">basis</span> <span class="o">=</span> <span class="n">CylindricalBasis</span><span class="p">(</span>
+    <span class="n">patch</span><span class="p">,</span> <span class="n">azimuthal_degree</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">radial_order</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">radial_scale</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># coefficients must be supplied in basis.layout order, in m²/s².</span>
+<span class="n">field</span> <span class="o">=</span> <span class="n">CylindricalField</span><span class="p">(</span><span class="n">basis</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">)</span>  <span class="c1"># Lazy AD by default.</span>
+<span class="n">evaluation</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">evaluate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">850</span><span class="p">])</span>
+</code></pre></div>
+
+<p>This is a composition fragment; the mapped and direct workflows below supply <code>coefficients</code>. <code>backend="native"</code> selects the independent analytic implementation. AD requires the optional JAX dependency and raises an explicit dependency error when unavailable; it never silently substitutes another method.</p>
+<p>The explicit degree, radial order and scale above are study choices used by the example. They are not universal defaults or an accuracy guarantee. A small allowed basis can still fit a particular field poorly. Check both values and source sensitivities at independent holdout points when choosing these settings.</p>
+<p>The implemented finite family follows the decaying branch of <a href="https://doi.org/10.1007/s10569-026-10281-7">Fereoli and McMahon (2026), Equation 36</a>. In dimensionless patch coordinates <code>(X,Y,Z)</code>, with <code>t=X²+Y²</code>, its regular Cartesian normalization is</p>
+<pre class="math-source">\phi_{mn}=e^{-k_{mn}Z}\,Q_m(X,Y)\,
+{}_0F_1\!\left(m+1;-k_{mn}^2t/4\right),\qquad
+U=\sum_j b_j\phi_j,\qquad a=-\nabla U.</pre>
+<p><code>Q_m</code> is the real or imaginary part of <code>(X+iY)^m</code>. Each coefficient <code>b_j</code> has units m²/s². This is a normalized Fourier–Bessel basis, so raw coefficients from another implementation require conversion. BASCO uses negative gravitational potential and acceleration <code>-grad(U)</code>; the cited paper uses the opposite potential sign convention.</p>
+<p>The family is harmonic in a vacuum and regular on the cylinder axis. It is one selected axial branch, not the paper's full three-boundary cylinder solution or a unique global asteroid model. Coefficients are free field parameters; no constant-density constraint is introduced.</p>
+<p>Modes are ordered by increasing azimuthal degree, radial index, then cosine/sine. The identically zero sine mode at <code>m=0</code> is excluded. Current numerical limits are azimuthal degree 0–12 and radial order 1–12, with a full-patch Bessel argument bound of 4. Automatic <code>radial_scale</code> satisfies that bound; unsupported explicit choices raise an error. Coefficient scales improve numerical conditioning and are <strong>not priors or sigmas</strong>. <a href="api-basco-near_field-cylindrical.html#basco-near_field-cylindrical-CylindricalBasis">Exact API</a> records the normalization, order, units and numerical envelope.</p>
+<h2 id="map-an-existing-hou-model">Map an existing Hou model</h2>
+<p><a href="api-basco-near_field-hou.html#basco-near_field-hou-HouFieldSource">HouFieldSource</a> samples one body's own exterior acceleration and its derivatives in the existing named physical parameter coordinates. It retains both masses' columns and all selected degree-2/3/4 directions. Mass changes include the response of fixed nominal degree-5/6 moments. Points are expressed relative to that body's COM in its own body frame and must lie <strong>outside its enclosing sphere</strong>.</p>
+<p>The fragment below assumes matching <code>parameters</code> and a completed covariance/consider <code>result</code>, plus the basis above. <code>last_information_epoch</code> is the actual source information cutoff, not a new observation epoch. The complete runner also demonstrates a newly declared source factor.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">basco.near_field</span><span class="w"> </span><span class="kn">import</span> <span class="n">HouFieldSource</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">basco.spacecraft</span><span class="w"> </span><span class="kn">import</span> <span class="n">SourceUncertainty</span>
+
+<span class="n">source</span> <span class="o">=</span> <span class="n">SourceUncertainty</span><span class="o">.</span><span class="n">from_result</span><span class="p">(</span>
+    <span class="n">result</span><span class="p">,</span> <span class="n">reference_epoch_s</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">information_cutoff_s</span><span class="o">=</span><span class="n">last_information_epoch</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">780</span><span class="p">,</span> <span class="mi">840</span><span class="p">,</span> <span class="mi">920</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)])</span>
+<span class="n">mapping</span> <span class="o">=</span> <span class="n">HouFieldSource</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">map_to</span><span class="p">(</span>
+    <span class="n">basis</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span>
+    <span class="n">completion</span><span class="o">=</span><span class="s2">&quot;Conditional continuation of the truncated order-6 Hou field; &quot;</span>
+               <span class="s2">&quot;unmodeled interior structure is not supplied&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">uncertainty</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+<span class="n">field</span> <span class="o">=</span> <span class="n">CylindricalField</span><span class="p">(</span><span class="n">basis</span><span class="p">,</span> <span class="n">mapping</span><span class="o">.</span><span class="n">coefficients</span><span class="p">)</span>
+<span class="n">coefficient_report</span> <span class="o">=</span> <span class="n">uncertainty</span><span class="o">.</span><span class="n">coefficients_report</span><span class="p">()</span>
+<span class="n">field_report</span> <span class="o">=</span> <span class="n">uncertainty</span><span class="o">.</span><span class="n">field_report</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">850</span><span class="p">]])</span>
+</code></pre></div>
+
+<p>Use <code>backend="native"</code> on both <code>HouFieldSource</code> and <code>CylindricalField</code> for the analytic route. The same mapping/source/report contracts apply to both methods. Binding matches physical labels and units, including when the mapping coordinates are only a subset of the complete source. Known nominal values and model context are checked before a result is reused.</p>
+<p><a href="api-basco-near_field-mapping.html#basco-near_field-mapping-RepresentationMap-fit">RepresentationMap.fit</a> is the lower-level deterministic mapper. Given a coefficient-to-sample matrix <code>D</code>, source samples <code>y(q)</code> and their derivative <code>Y_q</code>, it computes local coefficients and a physical transfer <code>T = db/dq</code> using a scaled SVD. Numerical sample scales do not define observation weights. The returned operator can also refit explicitly perturbed source values for validation.</p>
+<h3 id="what-the-completion-assumption-means">What the completion assumption means</h3>
+<p>A finite exterior model does not uniquely specify the real field near an irregular surface. <code>completion</code> records the continuation being assumed; it is required. Fitting an order-6 Hou field establishes agreement with that finite model at checked points. It does not restore missing interior information, establish near-surface physical accuracy or remove the exterior expansion's convergence limitation.</p>
+<p>Collocation values are repeated evaluations of the <strong>same uncertain source</strong>, not independent observations. The fit transfers its uncertainty; it does not reduce it. Residuals and holdout errors describe approximation quality and are never converted into coefficient covariance. Duplicating collocation rows supplies no new information.</p>
+<h3 id="preserve-source-factors-and-support">Preserve source factors and support</h3>
+<p>For source errors <code>delta q</code>, the local relation is</p>
+<pre class="math-source">\delta b=T\,\delta q+L\eta,\qquad
+M_b=\left[\operatorname{map\_factor}(T),\ L\right].</pre>
+<p><code>L</code> is an optional explicitly independent coefficient-error factor. Original estimation, consider, state and nuisance correlations remain in the source's original latent columns. The map delegates <code>map_factor</code> and <code>derived_stable</code>; it does not reconstruct a factor from rounded covariance. Consider cancellation therefore occurs before the large external factor is applied.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Direction or diagnostic</th>
+<th>Treatment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Supported original source combination</td>
+<td>Finite covariance from the original factor</td>
+</tr>
+<tr>
+<td>Original unobservable/numerically unresolved combination</td>
+<td>Original unavailable status retained, even if its saved finite factor row happens to vanish</td>
+</tr>
+<tr>
+<td>Numerically undetermined target combination</td>
+<td>Fit rejects by default; an explicitly allowed rank-deficient fit retains unresolved modes</td>
+</tr>
+<tr>
+<td>Supplied finite singular distribution</td>
+<td>Valid declared distribution, including exact zero-variance directions; not automatically an unknown prior</td>
+</tr>
+<tr>
+<td>Additional genuinely unknown local mode</td>
+<td>Declare <code>unresolved_scaled</code>; affected reports remain unavailable rather than receiving zero variance</td>
+</tr>
+<tr>
+<td>Additional finite independent local errors</td>
+<td>Declare <code>additional_factor</code>; this does not erase unresolved fit directions</td>
+</tr>
+<tr>
+<td>Additional errors correlated with original state/mass/gravity</td>
+<td>Supply a complete joint source through the direct interface</td>
+</tr>
+</tbody>
+</table></div>
+<p>The fit's numerical representation rank is different from the source's data/posterior rank. A deterministic map can change coefficient count and finite covariance rank without changing the original information. Reports record these distinctions and the completion assumption.</p>
+<h2 id="start-with-local-coefficients">Start with local coefficients</h2>
+<p><a href="api-basco-near_field-uncertainty.html#basco-near_field-uncertainty-CoefficientUncertainty-direct">CoefficientUncertainty.direct</a> accepts local coefficients and a named original joint source. No exterior coefficient table, archive, previous trajectory or sphere crossing is required. Shared factor columns carry state–mass–coefficient correlations.</p>
+<p>This standalone input declares six spacecraft initial errors, one mass and local coefficients. Its nominal field and distribution are demonstration inputs, not an interior reconstruction:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">basco</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">basco.near_field</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoefficientUncertainty</span><span class="p">,</span> <span class="n">CylindricalBasis</span><span class="p">,</span> <span class="n">CylindricalPatch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">basco.spacecraft</span><span class="w"> </span><span class="kn">import</span> <span class="n">SourceUncertainty</span>
+
+<span class="n">basis</span> <span class="o">=</span> <span class="n">CylindricalBasis</span><span class="p">(</span><span class="n">CylindricalPatch</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">coefficients</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">basis</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">coefficients</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.02</span>
+<span class="n">state_labels</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;spacecraft.initial.</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">&quot;</span>
+                     <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;v&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="s2">&quot;xyz&quot;</span><span class="p">)</span>
+<span class="n">layout</span> <span class="o">=</span> <span class="n">bc</span><span class="o">.</span><span class="n">CoordinateLayout</span><span class="p">(</span>
+    <span class="n">state_labels</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;mass&quot;</span><span class="p">,)</span> <span class="o">+</span> <span class="n">basis</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
+    <span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;m / s&quot;</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;kg&quot;</span><span class="p">,)</span> <span class="o">+</span> <span class="n">basis</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">units</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[[</span><span class="mf">1.</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">2.5e9</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">basis</span><span class="o">.</span><span class="n">size</span><span class="p">)],</span> <span class="n">n_state</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[[</span><span class="mf">0.2</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mf">1e-4</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">5e6</span><span class="p">,</span> <span class="p">[</span><span class="mf">1e-4</span><span class="p">]</span> <span class="o">*</span> <span class="n">basis</span><span class="o">.</span><span class="n">size</span><span class="p">])</span>
+<span class="n">factor</span><span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">8e-5</span>  <span class="c1"># Coefficient0 shares the spacecraft-z latent error.</span>
+<span class="n">factor</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e6</span>   <span class="c1"># Mass shares that error too.</span>
+<span class="n">source</span> <span class="o">=</span> <span class="n">SourceUncertainty</span><span class="o">.</span><span class="n">from_factor</span><span class="p">(</span>
+    <span class="n">layout</span><span class="p">,</span> <span class="n">factor</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;Declared correlated near-field input&quot;</span><span class="p">,</span>
+    <span class="n">reference_epoch_s</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">information_cutoff_s</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">uncertainty</span> <span class="o">=</span> <span class="n">CoefficientUncertainty</span><span class="o">.</span><span class="n">direct</span><span class="p">(</span>
+    <span class="n">basis</span><span class="o">.</span><span class="n">layout</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span>
+    <span class="n">conventions</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;target_basis_identity&quot;</span><span class="p">:</span> <span class="n">basis</span><span class="o">.</span><span class="n">identity</span><span class="p">},</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>The factor contains physical errors in the declared units; do not multiply it by coordinate scales again. Its covariance is <code>factor @ factor.T</code>. <code>from_covariance</code> is also available for a newly supplied PSD matrix. For existing BASCO results, use <code>from_result</code> so their original support policy and consider map survive.</p>
+<p>The local coefficients already describe the selected intrinsic field; an additional mass label does not independently add another monopole acceleration. Shared physical roles and compatibility with the retained binary moments must be established when a direct field is connected to binary/spacecraft propagation. This preparation interface does not yet enforce that dynamical compatibility.</p>
+<h2 id="field-uncertainty-at-an-uncertain-position">Field uncertainty at an uncertain position</h2>
+<p><code>field_report</code> evaluates intrinsic field uncertainty at <strong>fixed body-frame points</strong>. It holds the query position, body attitude and patch pose fixed. Coefficient sigmas depend on the chosen basis; potential and acceleration covariance at matched physical points provide useful representation comparisons.</p>
+<p>For an uncertain query position, add its acceleration derivative to the coefficient pathway <strong>before squaring</strong>. This fragment continues the direct example:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">basco.near_field</span><span class="w"> </span><span class="kn">import</span> <span class="n">CylindricalField</span>
+
+<span class="n">field</span> <span class="o">=</span> <span class="n">CylindricalField</span><span class="p">(</span><span class="n">basis</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">)</span>
+<span class="n">evaluated</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">evaluate</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">125</span><span class="p">])</span>
+<span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">labels</span><span class="p">)))</span>
+<span class="n">J</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">evaluated</span><span class="o">.</span><span class="n">position_jacobian</span>
+<span class="n">encountered</span> <span class="o">=</span> <span class="n">uncertainty</span><span class="o">.</span><span class="n">joint_report</span><span class="p">(</span>
+    <span class="p">(</span><span class="s2">&quot;a.x&quot;</span><span class="p">,</span> <span class="s2">&quot;a.y&quot;</span><span class="p">,</span> <span class="s2">&quot;a.z&quot;</span><span class="p">),</span> <span class="n">evaluated</span><span class="o">.</span><span class="n">acceleration</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;m / s2&quot;</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span>
+    <span class="n">coefficient_jacobian</span><span class="o">=</span><span class="n">evaluated</span><span class="o">.</span><span class="n">coefficient_jacobian</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Here <code>J</code> contains only the direct query-position pathway; <code>joint_report</code> adds the coefficient pathway once. For a general coupled output with direct source derivative <code>J_q</code> and coefficient derivative <code>H</code>, its original-source derivative is <code>J_q + H T</code>. The source map retains all cross terms. Adding a position-only covariance to a coefficient-only covariance would discard them when the inputs correlate.</p>
+<p>Without <code>coefficient_jacobian</code>, <code>joint_report</code> instead concatenates supplied source-only outputs with all coefficients. Use this mode for mass–coefficient or state–coefficient covariance blocks. Explicit independent added coefficient modes contribute only to rows that depend on them; propagation that couples them into spacecraft state must first include them in its full source.</p>
+<h2 id="validation-and-example-figures">Validation and example figures</h2>
+<p>The <a href="https://github.com/ashcav1/BASCO/blob/2f1c855b65031b2430afaca4f55e489a2fa237f1/docs/validation/NEAR_FIELD_MAPPING.md">acceptance record</a> distinguishes native/AD checks, opt-in FD, real Hou parameter-map checks and the deterministic demonstration figures. It is the authority for executed commands, tolerances and measured errors. Derivative checks do not establish the accuracy of a physical asteroid field.</p>
+<p>The accepted mapped example uses 45 coefficients and 61 independent holdout points along a fixed body-frame line. Maximum relative acceleration error is <strong>0.00621%</strong>; maximum active source-sensitivity column error is <strong>0.01735%</strong>. These are conditional approximation checks against the finite Hou field at valid exterior points. They do not establish surface accuracy or bound omitted physical heterogeneity. A separate heterogeneous three-point-source fixture checks a mass-free cylinder inside a global enclosing sphere without evaluating an exterior series there.</p>
+<p><img alt="Local acceleration approximation and uncertainty diagnostics for the declared S0 Hou mapping." src="assets/repository/docs/assets/near-field/near_field_mapping.png" /></p>
+<p>This comparison diagnoses the selected finite cylindrical approximation against its finite Hou source. It is not an independent validation of the real near-surface field. Source-derived uncertainty, numerical approximation error and unmodeled physical uncertainty are different quantities.</p>
+<p><img alt="Encountered acceleration sigmas using complete joint covariance versus omitting state–gravity cross terms." src="assets/repository/docs/assets/near-field/near_field_correlations.png" /></p>
+<p>The direct example's complete encountered-acceleration sigmas are <strong>(1.209390, 1.220812, 3.620431) µm/s²</strong>. Omitting the position–gravity cross terms while keeping the marginal covariances gives <strong>(1.204340, 1.211905, 2.920845) µm/s²</strong>. The difference is a property of this declared correlated input, not a general direction or size of covariance error. Shared latent columns preserve the cross terms. Redundant output coordinates can yield singular covariance without adding information; unsupported combinations remain unavailable.</p>
+<p>Independent kernel fixtures check Bessel values, exact axis limits, harmonic trace, tilted frames and coefficient/spatial derivatives. Mapping fixtures check scaling/order invariance, no information from repeated samples, direct joint cross terms, rank/null status, original consider cancellation and context mismatches. FD is opt-in and includes reevaluating/refitting the complete physical Hou map, including high-degree mass response. See <a href="derivatives.html">derivative validation</a> for the general validation interface.</p>
+<h2 id="components-and-next-integration-step">Components and next integration step</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="api-basco-near_field-geometry.html#basco-near_field-geometry-CylindricalPatch">CylindricalPatch</a></td>
+<td>Declared geometry, frame, units and domain checks</td>
+</tr>
+<tr>
+<td><a href="api-basco-near_field-cylindrical.html#basco-near_field-cylindrical-CylindricalBasis">CylindricalBasis</a></td>
+<td>Named normalized modes and linear potential/acceleration/spatial operators</td>
+</tr>
+<tr>
+<td><a href="api-basco-near_field-cylindrical.html#basco-near_field-cylindrical-CylindricalField">CylindricalField</a></td>
+<td>Nominal field with selected AD or native derivatives</td>
+</tr>
+<tr>
+<td><a href="api-basco-near_field-hou.html#basco-near_field-hou-HouFieldSource">HouFieldSource</a></td>
+<td>Exterior samples and the existing physical-parameter chain rule</td>
+</tr>
+<tr>
+<td><a href="api-basco-near_field-mapping.html#basco-near_field-mapping-RepresentationMap">RepresentationMap</a></td>
+<td>Deterministic scaled-SVD change of representation and its source Jacobian</td>
+</tr>
+<tr>
+<td><a href="api-basco-near_field-uncertainty.html#basco-near_field-uncertainty-CoefficientUncertainty">CoefficientUncertainty</a></td>
+<td>Direct or mapped coefficient uncertainty, full-source factors, support and joint field reports</td>
+</tr>
+</tbody>
+</table></div>
+<p>Run <code>python3 -B tools/dev.py ad_validate</code> when you want the complete available finite-difference diagnostic collection, including the near-field kernel and physical Hou refits. <code>validate</code> selects the same opt-in collection in the native environment. Ordinary covariance calls do not run these probes.</p>
+<p>The next bounded implementation connects a declared local field and full named source to the existing RF3BP variational propagation. It must declare shared mass/moment roles, retain the companion's field and uncertain pose, and check the local domain at every integration stage. Smooth first-contact time/location derivatives and a surface covariance map follow. A model switch, mesh contact and a landing-area study each require their own acceptance; none is supplied by the field mapping alone.</p>
+<p>The <a href="https://github.com/ashcav1/BASCO/blob/2f1c855b65031b2430afaca4f55e489a2fa237f1/docs/design/NEAR_SURFACE_GRAVITY.md">near-surface implementation plan</a> and <a href="https://github.com/ashcav1/BASCO/blob/2f1c855b65031b2430afaca4f55e489a2fa237f1/docs/design/NEAR_SURFACE_COVARIANCE.md">joint covariance contract</a> record these boundaries. Return to <a href="landing-covariance.html#current-limits-and-next-steps">spacecraft covariance</a>, <a href="examples.html">example scripts</a> or <a href="capabilities.html">capabilities and limits</a>.</p><nav class="page-pager" aria-label="Adjacent pages"><a href="consider-and-histories.html"><span>← Previous</span>Consider parameters and covariance histories</a><a href="multi-arc.html"><span>Next →</span>Multi-arc covariance and estimation</a></nav><footer class="site-footer"><span>BASCO 0.1.0 · <a href="https://github.com/ashcav1/BASCO/blob/2f1c855b65031b2430afaca4f55e489a2fa237f1/src/basco/__init__.py">Source 2f1c855</a></span><span><a href="coverage.html">Validation records</a> · <a href="capabilities.html">Capabilities and limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#choose-an-input">Choose an input</a><a class="toc-h2" href="#local-field-and-domain">Local field and domain</a><a class="toc-h2" href="#map-an-existing-hou-model">Map an existing Hou model</a><a class="toc-h3" href="#what-the-completion-assumption-means">What the completion assumption means</a><a class="toc-h3" href="#preserve-source-factors-and-support">Preserve source factors and support</a><a class="toc-h2" href="#start-with-local-coefficients">Start with local coefficients</a><a class="toc-h2" href="#field-uncertainty-at-an-uncertain-position">Field uncertainty at an uncertain position</a><a class="toc-h2" href="#validation-and-example-figures">Validation and example figures</a><a class="toc-h2" href="#components-and-next-integration-step">Components and next integration step</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">PDF handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/near-field-gravity.md" target="_blank" rel="noopener">View source ↗</a></div></aside></div>
+<dialog class="search-dialog" id="search-dialog" aria-label="Search the BASCO manual"><form class="search-field" method="dialog"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search tasks, functions, variables…" aria-label="Search the manual" autocomplete="off"><button type="button" data-search-close>Esc</button></form><div id="search-results" class="search-results" role="region" aria-label="Search results" aria-live="polite"></div><div class="search-hint">↑ ↓ to choose &nbsp; Enter to open &nbsp; Esc to close &nbsp; · &nbsp; Search works offline</div></dialog></body></html>
