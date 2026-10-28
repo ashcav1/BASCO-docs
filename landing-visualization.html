@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>3D approach and landing covariance · BASCO</title><meta name="description" content="Shape and gravity domains, propagated position ellipsoids, event-corrected contact uncertainty and finite-horizon trajectory probes."><meta name="theme-color" content="#192439"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/katex/katex.min.css"><script>try{const t=JSON.parse(localStorage.getItem('basco:manual:theme'));if(t)document.documentElement.dataset.theme=t;}catch{}</script><script src="assets/search-index.js" defer></script><script src="assets/katex/katex.min.js" defer></script><script src="assets/site.js" defer></script></head>
+<body data-page-title="3D approach and landing covariance"><a class="skip-link" href="#main-content">Skip to content</a>
+<aside class="sidebar" aria-label="Documentation navigation"><a class="brand" href="index.html"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="#9a8ebd" transform="rotate(-29 24 24)"/><ellipse cx="19" cy="26" rx="10" ry="13" fill="#a696cf" transform="rotate(-29 19 26)"/><ellipse cx="38" cy="16" rx="5" ry="4" fill="#e5aa72"/></svg><b>BASCO</b></a><button class="nav-search" data-search-open><span>Search documentation</span><kbd>⌘ K</kbd></button><nav><details class="nav-group" data-group="Getting started" open><summary>Getting started</summary><a href="index.html">Overview</a><a href="quickstart.html">Installation and first example</a><a href="workflow.html">Study setup</a></details><details class="nav-group" data-group="Models and parameters" open><summary>Models and parameters</summary><a href="bodies-and-states.html">Bodies and states</a><a href="parameters.html">Gravity and estimated parameters</a><a href="shapes-and-kaula.html">Shapes and Kaula priors</a></details><details class="nav-group" data-group="Covariance analysis" open><summary>Covariance analysis</summary><a href="observations.html">Measurements and schedules</a><a href="statistics.html">Noise, priors and solvers</a><a href="consider-and-histories.html">Consider parameters and covariance histories</a><a href="near-field-gravity.html">Near-field gravity covariance</a><a href="multi-arc.html">Multi-arc covariance and estimation</a><a href="results.html">Results and exports</a><a href="reuse-and-trades.html">Model comparisons</a></details><details class="nav-group" data-group="Examples" open><summary>Examples</summary><a href="hera.html">Hera paper reproduction</a><a href="examples.html">Example scripts</a><a href="landing-covariance.html">Spacecraft and landing covariance</a><a href="landing-visualization.html" aria-current="page">3D approach and landing covariance</a></details><details class="nav-group" data-group="Reference" open><summary>Reference</summary><a href="api.html">API reference</a><a href="modules.html">Modules</a><a href="concepts.html">Equations and conventions</a><a href="glossary.html">Glossary and notation</a><a href="handbook.html">PDF handbook</a></details><details class="nav-group" data-group="Validation and development" open><summary>Validation and development</summary><a href="derivatives.html">Derivative validation</a><a href="coverage.html">Documentation and validation records</a><a href="extending.html">Extension interfaces</a><a href="capabilities.html">Capabilities and limits</a><a href="troubleshooting.html">Troubleshooting</a></details></nav><div class="side-footer"><a href="basco-handbook.pdf">Download PDF</a><a href="coverage.html">Version and source information</a></div></aside>
+<div class="mobile-backdrop"></div><header class="topbar"><button class="icon-button menu-button" data-menu aria-label="Open navigation" aria-expanded="false">☰</button><div class="breadcrumbs"><a href="index.html">Manual</a><span>/</span><span>Covariance analysis</span><span>/</span><span>3D approach and landing covariance</span></div><div class="top-actions"><button class="icon-button" data-back aria-label="Go back" title="Go back">←</button><button class="icon-button" data-forward aria-label="Go forward" title="Go forward">→</button><button class="icon-button" data-theme-toggle aria-label="Use dark theme" title="Toggle theme">◐</button><button class="icon-button" data-search-open aria-label="Search" title="Search (Ctrl/⌘ K)">⌕</button><a class="header-source" href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/landing-visualization.md" target="_blank" rel="noopener">View source ↗</a></div><div class="reading-progress"></div></header>
+<div class="page-layout"><main class="article" id="main-content" tabindex="-1"><div class="resume" aria-label="Saved reading position"></div><h1>3D approach and landing covariance</h1><p>This workflow follows a massless spacecraft toward a selected member of a rotating binary. It displays the target shape, the local gravity domain, the enclosing sphere, the evolving position covariance and the uncertainty at first contact. Separate nonlinear source perturbations show which displayed trajectories contact the surface, remain in flight through the forecast horizon or leave the supported field domain.</p>
+<p>The <a href="https://github.com/ashcav1/BASCO/blob/a7283f1fd2dc6be1d009e3e52d0897aa02060f16/examples/landing_covariance.py">Didymos and Dimorphos runner</a> uses the same components for either target. The binary retains Hou translation and rotation; a selected local cylindrical field supplies the target-to-spacecraft force, and the companion retains its exterior field. Source covariance is transported directly. No observation values, estimator or filter are constructed.</p>
+<p>Interactive views: <a href="assets/repository/docs/assets/landing/didymos/interactive.html">Didymos</a> · <a href="assets/repository/docs/assets/landing/dimorphos/interactive.html">Dimorphos</a> · <a href="assets/repository/docs/assets/landing/didymos/interactive-wide.html">Wide Didymos</a> · <a href="assets/repository/docs/assets/landing/dimorphos/interactive-wide.html">Wide Dimorphos</a>. Red indicates no contact during the recorded 300 s forecast; it is not an escape probability.</p>
+<p>Run the complete case from a BASCO checkout using a new output directory:</p>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/landing_covariance.py<span class="w"> </span>--target<span class="w"> </span>didymos<span class="w"> </span>--probes<span class="w"> </span><span class="m">4</span><span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/landing-didymos&quot;</span><span class="w"> </span>--figures<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/landing-didymos-figures&quot;</span><span class="w"> </span>--animation
+python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/landing_covariance.py<span class="w"> </span>--target<span class="w"> </span>dimorphos<span class="w"> </span>--wide<span class="w"> </span>--probes<span class="w"> </span><span class="m">12</span><span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/landing-dimorphos-wide&quot;</span><span class="w"> </span>--figures<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/landing-dimorphos-wide-figures&quot;</span><span class="w"> </span>--animation
+</code></pre></div>
+
+<p>Choose <code>--backend native</code> for hand-derived field/binary partials; AD remains the default. Numeric output and rendering have separate functions, so compatible saved transports/scenes can be reused. Use a fresh output path instead of overwriting a completed artifact.</p>
+<p>The examples use declared uncertainty assumptions and calibrated local nominal fields. They are not landing results inferred from the Hera paper's covariance. <a href="https://github.com/ashcav1/BASCO/blob/a7283f1fd2dc6be1d009e3e52d0897aa02060f16/docs/validation/LANDING_VISUALIZATION.md">Scientific acceptance</a> records the executed inputs, domain and field checks, derivative tests, integration refinement and limits.</p>
+<h2 id="declared-example-and-numerical-results">Declared example and numerical results</h2>
+<p>The short-arc binary starts from a declared 1,200 m separation and supplied spins. It uses the two aligned shapes' degree-6 nominal moments. This is a demonstration initial state, not a mission-design solution. The spacecraft releases along the selected face normal from 30 m at 0.3 m/s for Didymos and from 10 m at 0.1 m/s for Dimorphos.</p>
+<p>The small scenario declares 0.03 m component release-position sigmas and 0.0003 m/s component release-velocity sigmas. Both mass sigmas are 0.1%. Free local coefficients add a declared acceleration RMS equal to 5% of nominal acceleration <strong>at release</strong>, in addition to shared mass and release/coefficient pathways. This percentage is not a uniform fractional error at every field point. The complete factor and remaining binary-state/moment assumptions are recorded in the numeric export.</p>
+<p>The saved AD runs with a 1 s maximum RK4 step give:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Didymos</th>
+<th>Dimorphos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shape enclosing radius (m)</td>
+<td>439.358</td>
+<td>91.831</td>
+</tr>
+<tr>
+<td>Local cylinder radius / height (m)</td>
+<td>8 / 50</td>
+<td>2 / 20</td>
+</tr>
+<tr>
+<td>Nominal first contact after release (s)</td>
+<td>96.51001669</td>
+<td>97.69847849</td>
+</tr>
+<tr>
+<td>Contact-time standard deviation (s)</td>
+<td>0.134603</td>
+<td>0.401684</td>
+</tr>
+<tr>
+<td>95% tangent semimajor axis (m)</td>
+<td>0.151351</td>
+<td>0.105081</td>
+</tr>
+<tr>
+<td>95% tangent semiminor axis (m)</td>
+<td>0.151329</td>
+<td>0.105050</td>
+</tr>
+<tr>
+<td>Local 95% tangent-plane area (m²)</td>
+<td>0.071954</td>
+<td>0.034679</td>
+</tr>
+<tr>
+<td>Selected wide probes with no contact by 300 s</td>
+<td>9 of 12</td>
+<td>9 of 12</td>
+</tr>
+<tr>
+<td>Selected wide probes with contact</td>
+<td>3 of 12</td>
+<td>3 of 12</td>
+</tr>
+</tbody>
+</table></div>
+<p>The last two rows are counts of selected unweighted source directions, not measured or estimated probabilities. The narrow tangent contours remain on a resolved smooth mesh face. The wide display omits that Gaussian contact contour and shows the separate geometric outcomes. The <a href="https://github.com/ashcav1/BASCO/blob/a7283f1fd2dc6be1d009e3e52d0897aa02060f16/docs/validation/LANDING_VISUALIZATION.md">acceptance record</a> owns exact source factors, event residuals, derivative agreement, backend comparison and step-refinement limits.</p>
+<p>The nominal local calibration uses 54 coefficients, 672 deterministic fitting points and 48 independent volume holdout points for each target. Maximum relative held-out acceleration errors are 0.00162% for Didymos and 0.00507% for Dimorphos. A separate 10-point actual surface-boundary acceleration audit gives maximum errors of 0.00163% and 0.00512%. Independent polyhedral spatial-gradient comparisons at strictly exterior points give 0.2365% and 0.1923%, with stable reference finite differences. These numerical approximation checks are separate from the declared uncertain-gravity scenario and from unknown physical density structure.</p>
+<h2 id="what-each-view-means">What each view means</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Display</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Asteroid mesh</td>
+<td>The supplied, aligned target surface, in body-frame metres</td>
+</tr>
+<tr>
+<td>Enclosing sphere</td>
+<td>The sphere outside which the exterior expansion has its general convergence guarantee; finite values inside it do not establish accuracy</td>
+</tr>
+<tr>
+<td>Cylinder</td>
+<td>The declared local field domain, with a geometric vacuum check and separate field-approximation checks</td>
+</tr>
+<tr>
+<td>Nominal path</td>
+<td>The coupled binary/spacecraft solution in target-body coordinates</td>
+</tr>
+<tr>
+<td>Position ellipsoid</td>
+<td>A fixed-time marginal position region from the propagated joint covariance</td>
+</tr>
+<tr>
+<td>Surface contour</td>
+<td>A local first-contact region corrected for uncertain event time and checked against the selected surface chart</td>
+</tr>
+<tr>
+<td>Blue probe endpoints</td>
+<td>Geometric contacts found by independently propagating selected source perturbations to their own events</td>
+</tr>
+<tr>
+<td>Red paths or off-surface mesh</td>
+<td>Probes with no detected contact during the declared forecast horizon; the red mesh is their geometric endpoint envelope</td>
+</tr>
+<tr>
+<td>Amber paths</td>
+<td>Probes whose field domain ends before contact or the requested horizon; their later outcome is unavailable</td>
+</tr>
+</tbody>
+</table></div>
+<p>Domain checks apply to the nominal trajectory and each independently propagated probe. A plotted ellipsoid is linearized output geometry; its vertices are not extra force evaluations or a complete nonlinear domain-validity certificate. Overlap with the surface or domain boundary highlights the need for event/outcome treatment, rather than permission to extend the force model.</p>
+<p>A red branch is not an escape certificate. The unweighted probes do not estimate an impact probability, a miss probability or the probability content of the red mesh. The stored result distinguishes <code>contact</code>, <code>no_contact</code>, <code>domain_exit</code>, <code>edge</code>, <code>grazing</code> and numerical or initial-state failures. The renderer consumes those outcomes; it does not classify them from a picture.</p>
+<h2 id="didymos">Didymos</h2>
+<p>The primary example uses the archived Didymos radar-derived mesh, whose file header records a 761 m equivalent diameter, aligned to its centre of mass and principal axes. The local cylinder starts at a verified supporting face: every mesh vertex lies behind that face's plane. This establishes a mass-free cylinder above the plane. The face, orientation and interior clearance are selected from geometry, without a body-specific face index.</p>
+<p><img alt="Didymos shape, enclosing sphere, local cylindrical field domain and spacecraft position uncertainty." src="assets/repository/docs/assets/landing/didymos/overview.png" /></p>
+<p><img alt="Didymos approach in target-body coordinates with propagated position regions." src="assets/repository/docs/assets/landing/didymos/approach.png" /></p>
+<p><img alt="Didymos first-contact surface region and independently located probe contacts." src="assets/repository/docs/assets/landing/didymos/surface.png" /></p>
+<div class="flight-media">
+<video controls preload="metadata" playsinline poster="assets/repository/docs/assets/landing/didymos/approach.png" aria-label="Didymos approach and position covariance animation">
+<source src="assets/repository/docs/assets/landing/didymos/flight.mp4" type="video/mp4">
+Your browser does not support embedded video. <a href="assets/repository/docs/assets/landing/didymos/flight.mp4">Download the Didymos animation</a>.
+</video>
+</div>
+
+<p><a href="assets/repository/docs/assets/landing/didymos/interactive.html">Open the interactive Didymos view</a> · <a href="assets/repository/docs/assets/landing/didymos/flight.mp4">Download animation</a></p>
+<h2 id="dimorphos">Dimorphos</h2>
+<p>The secondary case uses the archived PDS SBN v004 Dimorphos mesh, decimated to approximately 6,000 faces. It changes the target, shape, field calibration, release and uncertainty assumptions. The plotting code and contact/statistical interfaces stay the same. Both asteroid poses and the spacecraft evolve in the coupled equations, with the two masses retained as uncertain fixed parameters.</p>
+<p><img alt="Dimorphos shape, enclosing sphere, local cylindrical field domain and spacecraft position uncertainty." src="assets/repository/docs/assets/landing/dimorphos/overview.png" /></p>
+<p><img alt="Dimorphos approach in target-body coordinates with propagated position regions." src="assets/repository/docs/assets/landing/dimorphos/approach.png" /></p>
+<p><img alt="Dimorphos first-contact surface region and independently located probe contacts." src="assets/repository/docs/assets/landing/dimorphos/surface.png" /></p>
+<div class="flight-media">
+<video controls preload="metadata" playsinline poster="assets/repository/docs/assets/landing/dimorphos/approach.png" aria-label="Dimorphos approach and position covariance animation">
+<source src="assets/repository/docs/assets/landing/dimorphos/flight.mp4" type="video/mp4">
+Your browser does not support embedded video. <a href="assets/repository/docs/assets/landing/dimorphos/flight.mp4">Download the Dimorphos animation</a>.
+</video>
+</div>
+
+<p><a href="assets/repository/docs/assets/landing/dimorphos/interactive.html">Open the interactive Dimorphos view</a> · <a href="assets/repository/docs/assets/landing/dimorphos/flight.mp4">Download animation</a></p>
+<h2 id="wide-uncertainty-and-no-contact-probes">Wide uncertainty and no-contact probes</h2>
+<p>The wide cases increase a declared source uncertainty while keeping the nominal model fixed. Selected source-factor perturbations are propagated independently through the same binary and local field. They retain their own contact times and field-domain outcomes. The maximum requested forecast is 300 seconds.</p>
+<p><img alt="Didymos wide-uncertainty probes, surface hits and finite-horizon no-contact paths or envelope." src="assets/repository/docs/assets/landing/didymos/wide-probes.png" /></p>
+<p><a href="assets/repository/docs/assets/landing/didymos/interactive-wide.html">Explore the wide Didymos case</a> · <a href="assets/repository/docs/assets/landing/didymos/wide-flight.mp4">Download wide-case animation</a></p>
+<div class="flight-media">
+<video controls preload="metadata" playsinline poster="assets/repository/docs/assets/landing/didymos/wide-probes.png" aria-label="Didymos wide uncertainty and finite-horizon no-contact animation">
+<source src="assets/repository/docs/assets/landing/didymos/wide-flight.mp4" type="video/mp4">
+<a href="assets/repository/docs/assets/landing/didymos/wide-flight.mp4">Download the wide Didymos animation</a>.
+</video>
+</div>
+
+<p><img alt="Dimorphos wide-uncertainty probes, surface hits and finite-horizon no-contact paths or envelope." src="assets/repository/docs/assets/landing/dimorphos/wide-probes.png" /></p>
+<p><a href="assets/repository/docs/assets/landing/dimorphos/interactive-wide.html">Explore the wide Dimorphos case</a> · <a href="assets/repository/docs/assets/landing/dimorphos/wide-flight.mp4">Download wide-case animation</a></p>
+<div class="flight-media">
+<video controls preload="metadata" playsinline poster="assets/repository/docs/assets/landing/dimorphos/wide-probes.png" aria-label="Dimorphos wide uncertainty and finite-horizon no-contact animation">
+<source src="assets/repository/docs/assets/landing/dimorphos/wide-flight.mp4" type="video/mp4">
+<a href="assets/repository/docs/assets/landing/dimorphos/wide-flight.mp4">Download the wide Dimorphos animation</a>.
+</video>
+</div>
+
+<p>Red paths have no detected contact during their stated horizon. A red off-surface mesh is drawn only when their final endpoints support a nondegenerate three-dimensional hull; otherwise the available points and paths remain visible. That hull is a geometric envelope of displayed probes, with no probability weight or coverage claim. Amber paths stopped at the model domain, so their eventual surface outcome is unknown.</p>
+<p>The selected perturbations are unweighted two-unit directions in a declared latent source subspace. They do not cover the full Gaussian source distribution. Wide source errors can leave the regime of accurate first-order event covariance or a single-face chart. The wide cases therefore separate the propagated fixed-time position marginal from independently traced contacts and do not promote the small-error tangent ellipse to a universal landing footprint.</p>
+<h2 id="interactive-controls-and-animation">Interactive controls and animation</h2>
+<p>The standalone viewers work offline and have no external JavaScript dependency. Drag to rotate, right-drag to pan and use the wheel to zoom. Choose overview, approach or surface framing; the local views crop displayed geometry to a declared view box without changing the shape, contact point or physics. Toggle the mesh, sphere, cylinder, covariance, probes and contact region separately. The time slider and playback controls use physical elapsed time. The status panel shows the displayed epoch and available uncertainty/outcomes.</p>
+<p>After nominal contact the viewer can retain the contact point as a static reference while later probes continue on their own clocks. Its <code>contact-ended</code> status removes the nominal free-flight ellipsoid and component sigmas; no post-contact covariance is propagated. The red endpoint envelope is shown at its declared final forecast time.</p>
+<p>The Back button returns to the calling page when browser history is available. Browser back/forward also preserves the manual's saved reading position. The MP4 is a presentation of the same numerical scene; a camera animation does not rerun dynamics or covariance. The handbook uses the static figures above, with links to the interactive and video versions.</p>
+<h2 id="position-probability-regions">Position probability regions</h2>
+<p>The displayed ellipsoids describe <strong>three-dimensional position</strong>, rather than a six-dimensional position/velocity ellipsoid drawn in physical space. At fixed time, let <code>P_r</code> be the target-body position covariance. For a full-rank Gaussian marginal, the probability region at level <code>p</code> is</p>
+<pre class="math-source">(r-\bar r)^T P_r^{-1}(r-\bar r)\leq\chi^2_{3}(p).</pre>
+<p>The principal semiaxes are <code>sqrt(chi2.ppf(p, 3) * eigenvalue(P_r))</code>. The plots use an explicitly stored probability, normally 0.95. This differs from plotting each axis at one standard deviation. The <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2.html">SciPy chi-square reference</a> describes the percentile function used by the implementation.</p>
+<p>A declared finite singular distribution can have a lower-dimensional supported region. Its rank is recorded and the probability scaling uses that finite rank. An unobservable or unresolved output is a different case: its nominal path can be shown, but the renderer omits the unavailable ellipsoid. Missing information is not replaced by a small or zero uncertainty.</p>
+<p>Body-frame uncertainty must include the body's own uncertain position and attitude. Rotating an inertial spacecraft covariance alone would omit those pathways and their cross-correlations. The approach adapter forms the complete body-frame output Jacobian and transports its original latent factor before squaring.</p>
+<p>These are free-flight, fixed-time linearized regions up to the nominal event. Realizations that touch earlier do not continue as a modeled landed or rebounding spacecraft. The separate first-contact result handles uncertain event time; the selected nonlinear probes test their own trajectories and event outcomes. Wide uncertainties, face changes and misses require that distinction.</p>
+<h2 id="contact-time-and-surface-uncertainty">Contact time and surface uncertainty</h2>
+<p>Let <code>J_r</code> map the original source errors into the target-body position at the nominal event time, <code>v_r</code> be its body-relative velocity and <code>n</code> the outward unit surface normal. For a smooth inward crossing,</p>
+<pre class="math-source">J_t=-\frac{n^T J_r}{n^T v_r},\qquad
+J_{\mathrm{contact}}=J_r+v_rJ_t.</pre>
+<p>The same operations act on the transported source factor. This preserves initial-state, mass, gravity, release and consider correlations without reconstructing a dense source covariance. Normal speed near zero makes the event derivative ill-conditioned; grazing results remain explicit rather than receiving a clipped denominator.</p>
+<p>The contact covariance is projected onto a fixed nominal two-axis tangent chart. A two-dimensional probability contour uses <code>chi2.ppf(p, 2)</code>, not the three-dimensional position scaling. With tangent covariance <code>P_T</code>, its planar area is</p>
+<pre class="math-source">A_p=\pi\chi^2_2(p)\sqrt{\det P_T}.</pre>
+<p>That area is a local first-order tangent-plane quantity. It is not automatically a geodesic area or a contour crossing arbitrary mesh faces. The surface view distinguishes an accepted surface contour from an unprojected tangent contour. A contour leaving the accepted face, a mesh edge or vertex, grazing, unavailable source support or a field-domain exit requires an explicit unavailable/limited result. Discrete hit points can still be displayed without promoting them to a smooth Gaussian footprint.</p>
+<p>The contact driver uses the shared augmented RK4 step for state, STM and force-parameter sensitivities. It advances inward with a gap/rate limiter and resolves the boundary from the valid side using declared distance and estimated-time tolerances. Field-domain checks remain active. It does not silently continue the force into material to create a root. Its chronological, step-resolved event policy is recorded; step refinement is required and an arbitrary unsampled oscillatory path is not certified to have no earlier root.</p>
+<h2 id="nominal-field-uncertain-gravity-and-geometry">Nominal field, uncertain gravity and geometry</h2>
+<p>The two example mean fields are calibrated to a BASCO-owned polyhedral reference in a selected local domain. The uniform density of that <strong>nominal calibration reference</strong> does not constrain the uncertain local coefficients to a uniform-density family. Free coefficient errors and their declared correlations with masses and release errors remain in the joint input factor.</p>
+<p>Shape geometry, its nominal COM/principal-axis alignment and the patch pose are fixed input geometry in these examples. Uncertain shape, COM-to-shape offsets or patch alignment require additional explicit source mappings; body motion and its pose uncertainty are already included in the approach map.</p>
+<p>A supporting face certifies geometry, not field accuracy. The example checks the local field against held-out reference values across the cylinder, including points close to its lower boundary, plus a separate acceleration check on the actual surface boundary. The spatial-gradient finite differences remain strictly in vacuum; they do not differentiate across material. Finite fitting/holdout grids do not certify the approximation at every unsampled point. Derivative and native/AD tests are separate checks. Those comparisons validate the stated nominal approximation and represented uncertainty pathways. They do not reconstruct missing interior structure or prove that the reference density is the real asteroid density.</p>
+<p>The demonstrated source explicitly shares mass response with the local field and adds free local particle-field modes. It does not infer one unique common interior from independently selected binary moments and local coefficients. A physically shared interior parameterization requires its own Jacobians into both sets of force coordinates; a completed common-source representation map can provide such a declared relationship instead of independent uncertainty budgets.</p>
+<p>The source factor represents a declared analysis scenario. An actual Hera covariance can feed the <a href="near-field-gravity.html#map-an-existing-hou-model">existing representation mapper</a> when its completion and extra-mode assumptions are supplied. An exterior-to-local map does not uniquely determine arbitrary surface heterogeneity. The present landing examples use the direct local route and do not include an automatic sphere-boundary model switch.</p>
+<h2 id="reuse-the-components">Reuse the components</h2>
+<p>The application script separates model/shape and source setup from propagation, numeric export and rendering. It exposes the target as a study choice. To create a new case, supply your own aligned mesh, physical binary model, local field, complete source distribution and initial/release conditions; keep the same approach and scene components.</p>
+<p>The following is a composition fragment. <code>model</code>, <code>parameters</code>, <code>field</code>, <code>source</code>, <code>coefficient_uncertainty</code>, <code>initial</code> and <code>mesh</code> have already been constructed with compatible units, frames and source identities:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">basco</span><span class="w"> </span><span class="kn">import</span> <span class="n">RK4</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">basco.spacecraft</span><span class="w"> </span><span class="kn">import</span> <span class="n">RestrictedDynamics</span><span class="p">,</span> <span class="n">TriangleSurface</span><span class="p">,</span> <span class="n">propagate_approach</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">basco.flight_plotting</span><span class="w"> </span><span class="kn">import</span> <span class="n">FlightScene</span><span class="p">,</span> <span class="n">flight_figure</span><span class="p">,</span> <span class="n">write_flight_html</span>
+
+<span class="n">surface</span> <span class="o">=</span> <span class="n">TriangleSurface</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="n">dynamics</span> <span class="o">=</span> <span class="n">RestrictedDynamics</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">local_fields</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">field</span><span class="p">})</span>
+<span class="n">trajectory</span> <span class="o">=</span> <span class="n">propagate_approach</span><span class="p">(</span>
+    <span class="n">dynamics</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span>
+    <span class="n">local_uncertainties</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">coefficient_uncertainty</span><span class="p">},</span>
+    <span class="n">target</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">surface</span><span class="o">=</span><span class="n">surface</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">cadence</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">integrator</span><span class="o">=</span><span class="n">RK4</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">scene</span> <span class="o">=</span> <span class="n">FlightScene</span><span class="p">(</span>
+    <span class="n">mesh</span><span class="p">,</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">positions_m</span><span class="p">,</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">covariance_m2</span><span class="p">,</span>
+    <span class="n">patch</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">basis</span><span class="o">.</span><span class="n">patch</span><span class="p">,</span>
+    <span class="n">enclosing_radius_m</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">primary</span><span class="o">.</span><span class="n">distribution</span><span class="o">.</span><span class="n">bounding_radius</span><span class="p">,</span>
+    <span class="n">statuses</span><span class="o">=</span><span class="n">trajectory</span><span class="o">.</span><span class="n">position_history</span><span class="o">.</span><span class="n">status</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My target approach&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">figure</span> <span class="o">=</span> <span class="n">flight_figure</span><span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="s2">&quot;landing&quot;</span><span class="p">)</span>
+<span class="n">write_flight_html</span><span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="s2">&quot;interactive.html&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The complete runner also attaches event-corrected contact geometry and source probes to the scene. <code>FlightScene</code> contains numerical visualization data, not a dynamics evaluator or original covariance factor. <code>export_flight_scene</code> and <code>read_flight_scene</code> preserve that scene for redrawing. <code>animate_flight</code> writes MP4 or GIF; MP4 uses the explicitly available FFmpeg encoder. Plot generation is optional and does not repeat propagation.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="api-basco-spacecraft-dynamics.html#basco-spacecraft-dynamics-RestrictedDynamics">RestrictedDynamics</a></td>
+<td>Coupled binary and massless spacecraft force/derivative evaluation, with explicitly selected per-body local fields</td>
+</tr>
+<tr>
+<td><a href="api-basco-spacecraft-approach.html#basco-spacecraft-approach-propagate_approach">propagate_approach</a></td>
+<td>Original-source variational transport, body-frame history and first-contact output</td>
+</tr>
+<tr>
+<td><a href="api-basco-spacecraft-approach.html#basco-spacecraft-approach-probe_approach">probe_approach</a></td>
+<td>A selected source perturbation with its own value-only trajectory and event</td>
+</tr>
+<tr>
+<td><a href="api-basco-spacecraft-surfaces.html#basco-spacecraft-surfaces-PlaneSurface">PlaneSurface</a>, <a href="api-basco-spacecraft-surfaces.html#basco-spacecraft-surfaces-SphereSurface">SphereSurface</a>, <a href="api-basco-spacecraft-surfaces.html#basco-spacecraft-surfaces-TriangleSurface">TriangleSurface</a></td>
+<td>Fixed geometry, distance/normal, first intersection and differentiability policy</td>
+</tr>
+<tr>
+<td><a href="api-basco-spacecraft-contact.html#basco-spacecraft-contact-contact_covariance">contact_covariance</a></td>
+<td>Event-time correction, original-factor covariance and tangent report</td>
+</tr>
+<tr>
+<td><a href="api-basco-flight_plotting.html#basco-flight_plotting-FlightScene">FlightScene</a></td>
+<td>Renderer-independent mesh, path, covariance, domains, contacts and explicit probe outcomes</td>
+</tr>
+<tr>
+<td><a href="api-basco-flight_plotting.html#basco-flight_plotting-flight_figure">flight_figure</a></td>
+<td>Static overview, approach or surface view through the shared scientific theme</td>
+</tr>
+<tr>
+<td><a href="api-basco-flight_plotting.html#basco-flight_plotting-animate_flight">animate_flight</a></td>
+<td>Time-dependent MP4/GIF presentation of one saved scene</td>
+</tr>
+<tr>
+<td><a href="api-basco-flight_plotting.html#basco-flight_plotting-write_flight_html">write_flight_html</a></td>
+<td>Self-contained interactive browser view</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <a href="https://github.com/ashcav1/BASCO/blob/a7283f1fd2dc6be1d009e3e52d0897aa02060f16/docs/validation/LANDING_VISUALIZATION.md">acceptance record</a> owns the quantitative results and tested limits. Return to <a href="landing-covariance.html">spacecraft covariance</a>, <a href="near-field-gravity.html">near-field source mapping</a> or <a href="examples.html">example scripts</a>.</p><nav class="page-pager" aria-label="Adjacent pages"><a href="landing-covariance.html"><span>← Previous</span>Spacecraft and landing covariance</a><a href="api.html"><span>Next →</span>API reference</a></nav><footer class="site-footer"><span>BASCO 0.1.0 · <a href="https://github.com/ashcav1/BASCO/blob/a7283f1fd2dc6be1d009e3e52d0897aa02060f16/src/basco/__init__.py">Source a7283f1</a></span><span><a href="coverage.html">Validation records</a> · <a href="capabilities.html">Capabilities and limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#declared-example-and-numerical-results">Declared example and numerical results</a><a class="toc-h2" href="#what-each-view-means">What each view means</a><a class="toc-h2" href="#didymos">Didymos</a><a class="toc-h2" href="#dimorphos">Dimorphos</a><a class="toc-h2" href="#wide-uncertainty-and-no-contact-probes">Wide uncertainty and no-contact probes</a><a class="toc-h2" href="#interactive-controls-and-animation">Interactive controls and animation</a><a class="toc-h2" href="#position-probability-regions">Position probability regions</a><a class="toc-h2" href="#contact-time-and-surface-uncertainty">Contact time and surface uncertainty</a><a class="toc-h2" href="#nominal-field-uncertain-gravity-and-geometry">Nominal field, uncertain gravity and geometry</a><a class="toc-h2" href="#reuse-the-components">Reuse the components</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">PDF handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/landing-visualization.md" target="_blank" rel="noopener">View source ↗</a></div></aside></div>
+<dialog class="search-dialog" id="search-dialog" aria-label="Search the BASCO manual"><form class="search-field" method="dialog"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search tasks, functions, variables…" aria-label="Search the manual" autocomplete="off"><button type="button" data-search-close>Esc</button></form><div id="search-results" class="search-results" role="region" aria-label="Search results" aria-live="polite"></div><div class="search-hint">↑ ↓ to choose &nbsp; Enter to open &nbsp; Esc to close &nbsp; · &nbsp; Search works offline</div></dialog></body></html>
