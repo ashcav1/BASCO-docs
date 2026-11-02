@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Long approaches and flybys · BASCO</title><meta name="description" content="Kilometre-scale binary encounters, evolving inertial spacecraft covariance and declared mass/gravity uncertainty comparisons."><meta name="theme-color" content="#192439"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/katex/katex.min.css"><script>try{const t=JSON.parse(localStorage.getItem('basco:manual:theme'));if(t)document.documentElement.dataset.theme=t;}catch{}</script><script src="assets/search-index.js" defer></script><script src="assets/katex/katex.min.js" defer></script><script src="assets/site.js" defer></script></head>
+<body data-page-title="Long approaches and flybys"><a class="skip-link" href="#main-content">Skip to content</a>
+<aside class="sidebar" aria-label="Documentation navigation"><a class="brand" href="index.html"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="#9a8ebd" transform="rotate(-29 24 24)"/><ellipse cx="19" cy="26" rx="10" ry="13" fill="#a696cf" transform="rotate(-29 19 26)"/><ellipse cx="38" cy="16" rx="5" ry="4" fill="#e5aa72"/></svg><b>BASCO</b></a><button class="nav-search" data-search-open><span>Search documentation</span><kbd>⌘ K</kbd></button><nav><details class="nav-group" data-group="Getting started" open><summary>Getting started</summary><a href="index.html">Overview</a><a href="quickstart.html">Installation and first example</a><a href="workflow.html">Study setup</a></details><details class="nav-group" data-group="Models and parameters" open><summary>Models and parameters</summary><a href="bodies-and-states.html">Bodies and states</a><a href="parameters.html">Gravity and estimated parameters</a><a href="shapes-and-kaula.html">Shapes and Kaula priors</a></details><details class="nav-group" data-group="Covariance analysis" open><summary>Covariance analysis</summary><a href="observations.html">Measurements and schedules</a><a href="statistics.html">Noise, priors and solvers</a><a href="consider-and-histories.html">Consider parameters and covariance histories</a><a href="near-field-gravity.html">Near-field gravity covariance</a><a href="multi-arc.html">Multi-arc covariance and estimation</a><a href="results.html">Results and exports</a><a href="reuse-and-trades.html">Model comparisons</a></details><details class="nav-group" data-group="Examples" open><summary>Examples</summary><a href="hera.html">Hera paper reproduction</a><a href="examples.html">Example scripts</a><a href="landing-covariance.html">Spacecraft and landing covariance</a><a href="landing-visualization.html">3D approach and landing covariance</a><a href="long-trajectories.html" aria-current="page">Long approaches and flybys</a></details><details class="nav-group" data-group="Reference" open><summary>Reference</summary><a href="api.html">API reference</a><a href="modules.html">Modules</a><a href="concepts.html">Equations and conventions</a><a href="glossary.html">Glossary and notation</a><a href="handbook.html">PDF handbook</a></details><details class="nav-group" data-group="Validation and development" open><summary>Validation and development</summary><a href="derivatives.html">Derivative validation</a><a href="coverage.html">Documentation and validation records</a><a href="extending.html">Extension interfaces</a><a href="capabilities.html">Capabilities and limits</a><a href="troubleshooting.html">Troubleshooting</a></details></nav><div class="side-footer"><a href="basco-handbook.pdf">Download PDF</a><a href="coverage.html">Version and source information</a></div></aside>
+<div class="mobile-backdrop"></div><header class="topbar"><button class="icon-button menu-button" data-menu aria-label="Open navigation" aria-expanded="false">☰</button><div class="breadcrumbs"><a href="index.html">Manual</a><span>/</span><span>Covariance analysis</span><span>/</span><span>Long approaches and flybys</span></div><div class="top-actions"><button class="icon-button" data-back aria-label="Go back" title="Go back">←</button><button class="icon-button" data-forward aria-label="Go forward" title="Go forward">→</button><button class="icon-button" data-theme-toggle aria-label="Use dark theme" title="Toggle theme">◐</button><button class="icon-button" data-search-open aria-label="Search" title="Search (Ctrl/⌘ K)">⌕</button><a class="header-source" href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/long-trajectories.md" target="_blank" rel="noopener">View source ↗</a></div><div class="reading-progress"></div></header>
+<div class="page-layout"><main class="article" id="main-content" tabindex="-1"><div class="resume" aria-label="Saved reading position"></div><h1>Long approaches and flybys</h1><p>These examples follow a massless spacecraft for several hours around both members of the Didymos binary. They show curved inertial trajectories, both moving asteroid meshes and position uncertainty that changes in size and direction. The same restricted full three-body dynamics, original-source covariance maps and saved-scene renderers used in the <a href="landing-visualization.html">short surface approaches</a> perform the calculation.</p>
+<p>Choose a case and a view:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Case</th>
+<th>Trajectory and moving bodies</th>
+<th>Position uncertainty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Binary flyby</td>
+<td><a href="assets/repository/docs/assets/landing/mission-scale/binary_flyby/trajectory.html">Interactive trajectory</a></td>
+<td><a href="assets/repository/docs/assets/landing/mission-scale/binary_flyby/uncertainty.html">Interactive uncertainty</a></td>
+</tr>
+<tr>
+<td>Secondary encounter</td>
+<td><a href="assets/repository/docs/assets/landing/mission-scale/secondary_encounter/trajectory.html">Interactive trajectory</a></td>
+<td><a href="assets/repository/docs/assets/landing/mission-scale/secondary_encounter/uncertainty.html">Interactive uncertainty</a></td>
+</tr>
+<tr>
+<td>Inward approach to the exterior-model boundary</td>
+<td><a href="assets/repository/docs/assets/landing/mission-scale/inward_approach/trajectory.html">Interactive trajectory</a></td>
+<td><a href="assets/repository/docs/assets/landing/mission-scale/inward_approach/uncertainty.html">Interactive uncertainty</a></td>
+</tr>
+</tbody>
+</table></div>
+<p>The cases start approximately 2–4 km from the binary barycentre. They are <strong>conditional gravity-only covariance examples</strong>, with no simulated measurements, estimation or filter update. Their initial states are declared demonstration inputs. Solar radiation pressure, solar tides and maneuvers are omitted. Published Milani and Juventas operations motivate the distance and time scales; these examples do not reproduce their flight trajectories or a solar terminator orbit.</p>
+<p>The 3D regions are linear covariance ellipsoids. Selected red paths reach the forecast horizon without contact; they are unweighted direction probes, not a miss probability. The closer secondary encounter shows appreciable finite-amplitude nonlinearity, quantified under <a href="#linearization-checks">linearization checks</a>.</p>
+<p><a href="https://github.com/ashcav1/BASCO/blob/c5b2f1a73541e8aba4ff5e6406dd75f1dbd39e84/examples/mission_scale_trajectories.py">User runner</a> · <a href="https://github.com/ashcav1/BASCO/blob/c5b2f1a73541e8aba4ff5e6406dd75f1dbd39e84/tools/evidence/mission_scale_trajectories.py">Evidence and saved-data rendering</a> · <a href="https://github.com/ashcav1/BASCO/blob/c5b2f1a73541e8aba4ff5e6406dd75f1dbd39e84/docs/design/MISSION_SCALE_TRAJECTORIES.md">Scope and primary references</a> · <a href="https://github.com/ashcav1/BASCO/blob/c5b2f1a73541e8aba4ff5e6406dd75f1dbd39e84/docs/validation/MISSION_SCALE_TRAJECTORIES.md">Scientific acceptance</a></p>
+<h2 id="cases-and-results">Cases and results</h2>
+<p>The binary uses order-6 extended-body Hou gravity and coupled translation/rotation. The spacecraft uses both exterior Hou fields, with their enclosing-sphere checks active. Uncertain source coordinates include the binary initial state, both masses, moments through degree 4 and the spacecraft's inertial initial state. Mutual gravity order, uncertain parameter degree, initial trajectory and source factor are separate configuration choices.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Binary flyby</th>
+<th>Secondary encounter</th>
+<th>Inward approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial barycentric distance</td>
+<td>3,753.66 m</td>
+<td>2,209.07 m</td>
+<td>2,000 m</td>
+</tr>
+<tr>
+<td>Requested duration</td>
+<td>6 h</td>
+<td>6 h</td>
+<td>4 h</td>
+</tr>
+<tr>
+<td>Reported outcome</td>
+<td>No contact within 6 h</td>
+<td>No contact within 6 h</td>
+<td>Exterior field domain ends</td>
+</tr>
+<tr>
+<td>Final supported epoch</td>
+<td>21,600 s</td>
+<td>21,600 s</td>
+<td>7,366.85 s</td>
+</tr>
+<tr>
+<td>Minimum sampled Didymos-centre distance</td>
+<td>1,166.30 m</td>
+<td>1,151.84 m</td>
+<td>439.36 m, enclosing boundary</td>
+</tr>
+<tr>
+<td>Minimum sampled Dimorphos-centre distance</td>
+<td>2,246.19 m</td>
+<td>200.23 m</td>
+<td>1,254.85 m</td>
+</tr>
+<tr>
+<td>Inertial velocity-direction change</td>
+<td>30.33°</td>
+<td>96.38°</td>
+<td>1.02°</td>
+</tr>
+<tr>
+<td>Initial principal position standard deviations</td>
+<td>5, 5, 5 m</td>
+<td>5, 5, 5 m</td>
+<td>5, 5, 5 m</td>
+</tr>
+<tr>
+<td>Final principal position standard deviations</td>
+<td>8.30, 20.81, 45.66 m</td>
+<td>10.18, 27.36, 79.71 m</td>
+<td>7.35, 7.38, 16.47 m</td>
+</tr>
+</tbody>
+</table></div>
+<p>Minimum distances in this table are sampled at saved trajectory epochs, not continuously optimized periapsis values. Velocity-direction change compares the initial and final <strong>inertial</strong> velocity vectors. Rotation of a body-fixed display is not counted as physical trajectory bending. <code>no_contact</code> applies only to a trajectory reaching its requested horizon under the supported model.</p>
+<h3 id="binary-flyby">Binary flyby</h3>
+<p><img alt="Six-hour binary flyby in the barycentric inertial frame, with both asteroid meshes, their enclosing spheres and propagated spacecraft position regions." src="assets/repository/docs/assets/landing/mission-scale/binary_flyby/trajectory.png" /></p>
+<div class="flight-media">
+<video controls preload="metadata" playsinline poster="assets/repository/docs/assets/landing/mission-scale/binary_flyby/trajectory.png" aria-label="Binary flyby trajectory animation">
+<source src="assets/repository/docs/assets/landing/mission-scale/binary_flyby/trajectory.mp4" type="video/mp4">
+<a href="assets/repository/docs/assets/landing/mission-scale/binary_flyby/trajectory.mp4">Download the binary flyby trajectory animation</a>.
+</video>
+</div>
+
+<p><a href="assets/repository/docs/assets/landing/mission-scale/binary_flyby/trajectory.html">Explore the full trajectory</a></p>
+<p><img alt="Binary flyby position uncertainty in a nominal-spacecraft-following display. The ellipsoid retains its physical metre scale and inertial orientation." src="assets/repository/docs/assets/landing/mission-scale/binary_flyby/uncertainty.png" /></p>
+<div class="flight-media">
+<video controls preload="metadata" playsinline poster="assets/repository/docs/assets/landing/mission-scale/binary_flyby/uncertainty.png" aria-label="Binary flyby position uncertainty animation">
+<source src="assets/repository/docs/assets/landing/mission-scale/binary_flyby/uncertainty.mp4" type="video/mp4">
+<a href="assets/repository/docs/assets/landing/mission-scale/binary_flyby/uncertainty.mp4">Download the binary flyby uncertainty animation</a>.
+</video>
+</div>
+
+<p><a href="assets/repository/docs/assets/landing/mission-scale/binary_flyby/uncertainty.html">Explore the uncertainty evolution</a></p>
+<h3 id="secondary-encounter">Secondary encounter</h3>
+<p>The closer secondary passage changes both the spacecraft's inertial velocity and the accumulated sensitivity to its initial state and the binary gravity parameters. Both moving bodies use the same stored binary history as the nominal trajectory.</p>
+<p><img alt="Six-hour secondary encounter in barycentric inertial coordinates, including both bodies and the curved spacecraft trajectory." src="assets/repository/docs/assets/landing/mission-scale/secondary_encounter/trajectory.png" /></p>
+<div class="flight-media">
+<video controls preload="metadata" playsinline poster="assets/repository/docs/assets/landing/mission-scale/secondary_encounter/trajectory.png" aria-label="Secondary encounter trajectory animation">
+<source src="assets/repository/docs/assets/landing/mission-scale/secondary_encounter/trajectory.mp4" type="video/mp4">
+<a href="assets/repository/docs/assets/landing/mission-scale/secondary_encounter/trajectory.mp4">Download the secondary encounter trajectory animation</a>.
+</video>
+</div>
+
+<p><a href="assets/repository/docs/assets/landing/mission-scale/secondary_encounter/trajectory.html">Explore the full trajectory</a></p>
+<p><img alt="Secondary encounter position uncertainty, translated to the nominal spacecraft without changing covariance scale or orientation." src="assets/repository/docs/assets/landing/mission-scale/secondary_encounter/uncertainty.png" /></p>
+<div class="flight-media">
+<video controls preload="metadata" playsinline poster="assets/repository/docs/assets/landing/mission-scale/secondary_encounter/uncertainty.png" aria-label="Secondary encounter position uncertainty animation">
+<source src="assets/repository/docs/assets/landing/mission-scale/secondary_encounter/uncertainty.mp4" type="video/mp4">
+<a href="assets/repository/docs/assets/landing/mission-scale/secondary_encounter/uncertainty.mp4">Download the secondary encounter uncertainty animation</a>.
+</video>
+</div>
+
+<p><a href="assets/repository/docs/assets/landing/mission-scale/secondary_encounter/uncertainty.html">Explore the uncertainty evolution</a></p>
+<h3 id="inward-approach-and-the-field-boundary">Inward approach and the field boundary</h3>
+<p>The third case starts 2 km from the barycentre and travels inward. The exterior field reaches the Didymos enclosing-sphere boundary at approximately 7,366.85 s, before the requested four-hour horizon. Propagation stops with <code>domain_exit</code>. The Didymos enclosing radius is approximately 439.358 m; this is a model-domain boundary, not the asteroid surface.</p>
+<p>The last ellipsoid is the fixed-time covariance at the supported arc endpoint, not uncertainty in the model-boundary event. This result supplies no surface contact, landing footprint or complete-horizon miss. The accepted short surface examples use separately checked local fields. A transition from this long exterior approach to a local field requires compatible nominal forces, complete source maps and a validated transition policy; none is inferred from a plotted sphere crossing.</p>
+<p><img alt="Inward approach stopping at the exterior Hou domain boundary, with the unsupported continuation omitted." src="assets/repository/docs/assets/landing/mission-scale/inward_approach/trajectory.png" /></p>
+<div class="flight-media">
+<video controls preload="metadata" playsinline poster="assets/repository/docs/assets/landing/mission-scale/inward_approach/trajectory.png" aria-label="Inward approach trajectory animation">
+<source src="assets/repository/docs/assets/landing/mission-scale/inward_approach/trajectory.mp4" type="video/mp4">
+<a href="assets/repository/docs/assets/landing/mission-scale/inward_approach/trajectory.mp4">Download the inward approach trajectory animation</a>.
+</video>
+</div>
+
+<p><a href="assets/repository/docs/assets/landing/mission-scale/inward_approach/trajectory.html">Explore the supported trajectory</a></p>
+<p><img alt="Inward approach position uncertainty up to the last supported exterior epoch." src="assets/repository/docs/assets/landing/mission-scale/inward_approach/uncertainty.png" /></p>
+<div class="flight-media">
+<video controls preload="metadata" playsinline poster="assets/repository/docs/assets/landing/mission-scale/inward_approach/uncertainty.png" aria-label="Inward approach position uncertainty animation">
+<source src="assets/repository/docs/assets/landing/mission-scale/inward_approach/uncertainty.mp4" type="video/mp4">
+<a href="assets/repository/docs/assets/landing/mission-scale/inward_approach/uncertainty.mp4">Download the inward approach uncertainty animation</a>.
+</video>
+</div>
+
+<p><a href="assets/repository/docs/assets/landing/mission-scale/inward_approach/uncertainty.html">Explore the supported uncertainty history</a></p>
+<h2 id="position-uncertainty-and-the-display-frame">Position uncertainty and the display frame</h2>
+<p>The trajectory view uses the binary barycentric inertial frame. The uncertainty view subtracts the <strong>deterministic nominal spacecraft position</strong> from every displayed point at each epoch. This changes the display origin without introducing an uncertain reference body or rotating the frame. If the displayed coordinate is</p>
+<pre class="math-source">r_{\mathrm{display}}(t)=r(t)-\bar r_{\mathrm{SC}}(t),
+\qquad P_{\mathrm{display}}(t)=P_r(t),</pre>
+<p>the nominal spacecraft remains at the origin while its position distribution can expand and rotate. Both asteroid centres are translated by the same nominal curve. They are nominal contextual meshes, not independent uncertain realizations. Every ellipsoid axis remains in physical metres; no uncertainty magnification is applied. The covariance panel reports component standard deviations, and the 3D region uses the stored marginal probability, normally 95%, with chi-square scaling for its supported dimension.</p>
+<p>Use the time slider or Play to follow physical elapsed time. The initial uncertainty camera is chosen to show the whole history's uncertainty extent. Overview restores system context, and the Moving bodies and paths control toggles the epoch-aligned asteroid overlays. Camera controls and layer visibility change presentation only. Back returns to this manual when browser history is available.</p>
+<p>Use <code>trajectory.inertial_history(quantity="position")</code> for this report; <code>quantity="velocity"</code> and <code>quantity="state"</code> select inertial velocity and the complete six-state covariance, including position/velocity cross terms. The body-frame marginal remains available separately as <code>trajectory.position_history</code>. No user-side STM or sensitivity algebra is required.</p>
+<p>The propagated fixed-time covariance has the form <code>P_r(t) = L_r(t) L_r(t)^T</code>, where <code>L_r(t)</code> maps the complete original latent source into inertial spacecraft position. State-transition and force-parameter sensitivities retain mass, gravity, binary-state and spacecraft cross terms. Growing or rotating ellipsoids therefore do not require new observations.</p>
+<p>A future first-contact covariance is a different output. With the same fixed information and a complete state/parameter handoff, predicting the <strong>same future event</strong> from an intermediate epoch should preserve its event-corrected covariance. The position marginal can change throughout that interval. A contact ellipse should not shrink merely because the playback clock approaches landing. <a href="landing-visualization.html#contact-time-and-surface-uncertainty">Contact-time and surface covariance</a> explains the event correction. An observation-prefix history changes the information and is covered separately in <a href="consider-and-histories.html">covariance histories</a>.</p>
+<h2 id="compare-mass-and-gravity-assumptions">Compare mass and gravity assumptions</h2>
+<p>One nominal transport is reused for three declared source factors: fixed masses/gravity, the baseline mass/gravity uncertainties, and three times those errors. The row scaling acts on the full original factor, including its shared spacecraft columns. It preserves the initial spacecraft marginal and scales the associated cross covariance consistently. It does not create or remove observations, refit a solution or add independent variance budgets to correlated effects.</p>
+<p><img alt="Binary flyby largest principal position standard deviation for fixed, baseline and tripled mass/gravity source errors." src="assets/repository/docs/assets/landing/mission-scale/binary_flyby/gravity-comparison.png" /></p>
+<p><img alt="Secondary encounter largest principal position standard deviation for the same three source assumptions." src="assets/repository/docs/assets/landing/mission-scale/secondary_encounter/gravity-comparison.png" /></p>
+<p><img alt="Inward approach uncertainty comparison, truncated at the supported exterior-model endpoint." src="assets/repository/docs/assets/landing/mission-scale/inward_approach/gravity-comparison.png" /></p>
+<p>Changing nominal mass, gravity order or trajectory requires a new compatible transport. Changing only an uncertainty factor can use <a href="api-basco-spacecraft-approach.html#basco-spacecraft-approach-remap_approach">remap_approach</a>. The user runner's <code>make_source(..., gravity_scale=...)</code> and <code>run_problem(..., reuse=...)</code> illustrate that separation.</p>
+<h2 id="linearization-checks">Linearization checks</h2>
+<p>The ellipsoids show first-order covariance under the declared source distribution. They are not independently verified nonlinear probability regions. Each six-hour case also propagates six selected, unweighted trajectories: positive and negative twice-factor directions for the spacecraft velocity-x column, velocity-y column and a shared primary-mass column. The last column also changes spacecraft velocity through the declared correlation. These are complete latent directions, not independent changes to one parameter.</p>
+<p>At the fixed final epoch, the check compares the predicted half-displacement <code>l = J_r dq</code> with the symmetric response <code>s = (r_plus - r_minus)/2</code>. It reports <code>norm(s-l) / max(norm(s), norm(l))</code> and the nonlinear midpoint displacement from the nominal trajectory.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Secondary-encounter source direction</th>
+<th>Symmetric response discrepancy</th>
+<th>Midpoint displacement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spacecraft velocity x</td>
+<td>1.45%</td>
+<td>5.79 m</td>
+</tr>
+<tr>
+<td>Spacecraft velocity y</td>
+<td>3.03%</td>
+<td>13.34 m</td>
+</tr>
+<tr>
+<td>Shared primary mass</td>
+<td>9.05%</td>
+<td>14.50 m</td>
+</tr>
+</tbody>
+</table></div>
+<p>The binary-flyby maximum over the same three direction pairs is 0.0114% discrepancy and 0.551 m midpoint displacement. The closer secondary encounter is more nonlinear at the selected amplitudes. A tighter source distribution or an explicit nonlinear uncertainty study is needed before interpreting its linear region as quantitative coverage. These finite-amplitude checks are separate from opt-in small-step FD derivative checks and supply neither a miss probability nor Gaussian coverage verification. All selected flyby and encounter probes reach the six-hour horizon without contact under the supported model.</p>
+<p>Both Hou derivative backends and a 10 s / 5 s integration-step refinement are compared in the <a href="https://github.com/ashcav1/BASCO/blob/c5b2f1a73541e8aba4ff5e6406dd75f1dbd39e84/docs/validation/MISSION_SCALE_TRAJECTORIES.md">scientific acceptance record</a>. Backend and integration agreement establish numerical consistency; they do not remove the finite-amplitude linearization limits above.</p>
+<h2 id="run-or-modify-a-case">Run or modify a case</h2>
+<p>Run the installed library from the repository root with an unused output directory:</p>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/mission_scale_trajectories.py<span class="w"> </span>--scenario<span class="w"> </span>binary_flyby<span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/binary-flyby&quot;</span>
+python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/mission_scale_trajectories.py<span class="w"> </span>--scenario<span class="w"> </span>secondary_encounter<span class="w"> </span>--backend<span class="w"> </span>native<span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/secondary-native&quot;</span>
+</code></pre></div>
+
+<p>The user runner saves the scientific trajectory, reusable numerical scene, interactive HTML and summary. Its <code>CoastScenario</code> holds the initial barycentric SI position/velocity, target, duration, integration step and output cadence. <code>make_problem</code>, <code>run_problem</code>, <code>inertial_history</code>, <code>make_scene</code> and <code>make_uncertainty_scene</code> each have one role and can be edited or reused separately. The scenario's expected outcome is an evidence assertion, not a propagation instruction.</p>
+<p>The core propagation can be composed with an existing model, resolved parameters, original source and target mesh:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">basco</span><span class="w"> </span><span class="kn">import</span> <span class="n">RK4</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">basco.spacecraft</span><span class="w"> </span><span class="kn">import</span> <span class="n">RestrictedDynamics</span><span class="p">,</span> <span class="n">SpacecraftState</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">basco.spacecraft.approach</span><span class="w"> </span><span class="kn">import</span> <span class="n">propagate_approach</span>
+
+<span class="c1"># model, parameters, source and surface are configured separately.</span>
+<span class="n">dynamics</span> <span class="o">=</span> <span class="n">RestrictedDynamics</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;ad&quot;</span><span class="p">)</span>
+<span class="n">initial</span> <span class="o">=</span> <span class="n">SpacecraftState</span><span class="p">([</span><span class="o">-</span><span class="mi">3000</span><span class="p">,</span> <span class="o">-</span><span class="mi">2200</span><span class="p">,</span> <span class="mi">500</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">])</span>
+<span class="n">trajectory</span> <span class="o">=</span> <span class="n">propagate_approach</span><span class="p">(</span>
+    <span class="n">dynamics</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span>
+    <span class="n">local_uncertainties</span><span class="o">=</span><span class="p">{},</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">surface</span><span class="o">=</span><span class="n">surface</span><span class="p">,</span>
+    <span class="n">duration</span><span class="o">=</span><span class="mi">21600</span><span class="p">,</span> <span class="n">cadence</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="n">RK4</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">position</span> <span class="o">=</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">inertial_history</span><span class="p">()</span>
+<span class="n">six_state</span> <span class="o">=</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">inertial_history</span><span class="p">(</span><span class="n">quantity</span><span class="o">=</span><span class="s2">&quot;state&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>An empty <code>local_uncertainties</code> map selects no local uncertainty maps; it does not disable the exterior field guards. The dynamics configuration owns force-model selection. For both backends, source layout, units, epochs and field identities must match. The complete runnable example supplies the source and surface rather than assuming them from global state.</p>
+<p>The evidence script separates numeric runs from presentation and adds the source-factor comparisons and optional independent probes:</p>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>tools/evidence/mission_scale_trajectories.py<span class="w"> </span>--case<span class="w"> </span>all<span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/long-coasts&quot;</span><span class="w"> </span>--figures<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/long-coast-figures&quot;</span><span class="w"> </span>--animation
+<span class="c1"># Render the same completed numerical data without another propagation.</span>
+python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>tools/evidence/mission_scale_trajectories.py<span class="w"> </span>--case<span class="w"> </span>all<span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/long-coasts&quot;</span><span class="w"> </span>--figures<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/long-coast-rerender&quot;</span><span class="w"> </span>--animation<span class="w"> </span>--presentation-only
+</code></pre></div>
+
+<p>Scientific exports retain original source factors, native/physical histories and provenance separately from the public visualization payload. Saved scenes hold only derived display data. They can be loaded by <a href="api-basco-flight_plotting.html#basco-flight_plotting-read_flight_scene">read_flight_scene</a> and sent to <a href="api-basco-flight_plotting.html#basco-flight_plotting-flight_figure">flight_figure</a>, <a href="api-basco-flight_plotting.html#basco-flight_plotting-animate_flight">animate_flight</a> or <a href="api-basco-flight_plotting.html#basco-flight_plotting-write_flight_html">write_flight_html</a> without constructing a force evaluator. The website mirrors figures, videos and self-contained viewers; it does not publish the original factors or numerical run archive.</p>
+<h2 id="scope-and-next-steps">Scope and next steps</h2>
+<p>The accepted domain of a gravity representation is part of the model. A larger cylindrical fit must independently pass its field and gradient checks across the full proposed vacuum volume and its relevant surface boundary. Increasing the cylinder height or basis count does not establish accuracy. The available <a href="api-basco-near_field-residual.html#basco-near_field-residual-MonopoleResidualField">MonopoleResidualField</a> composes an exact mass term with a separately uncertain local residual, but kernel validation alone does not establish a long-approach landing field. Its mass and residual pathways must share the complete original source map.</p>
+<p>A long coast followed by a landing still needs a validated common trajectory/field continuation, its complete covariance map and supported first contact. Solar radiation pressure, solar gravity, maneuvers and appropriate source uncertainties are further physical components for mission-specific studies. These remain explicit scope decisions; the current cases demonstrate gravitational curvature and covariance transport with the implemented model.</p>
+<p>The mission-scale motivation and primary links are recorded in the <a href="https://github.com/ashcav1/BASCO/blob/c5b2f1a73541e8aba4ff5e6406dd75f1dbd39e84/docs/design/MISSION_SCALE_TRAJECTORIES.md">design note</a>. <a href="https://www.esa.int/Space_Safety/Hera/Shoebox-sized_Milani_CubeSat_joining_Hera_asteroid_mission">ESA's Milani description</a> describes connected hyperbolic arcs on kilometre scales; <a href="https://www.esa.int/Space_Safety/Hera/Radar_journey_to_centre_of_Hera_s_asteroid_with_Juventas_CubeSat">ESA's Juventas description</a> explains operations influenced by solar radiation pressure. These ESA pages were checked on 2026-10-28. Their mission trajectories require physics and operational inputs beyond this gravity-only demonstration.</p><nav class="page-pager" aria-label="Adjacent pages"><a href="landing-visualization.html"><span>← Previous</span>3D approach and landing covariance</a><a href="api.html"><span>Next →</span>API reference</a></nav><footer class="site-footer"><span>BASCO 0.1.0 · <a href="https://github.com/ashcav1/BASCO/blob/c5b2f1a73541e8aba4ff5e6406dd75f1dbd39e84/src/basco/__init__.py">Source c5b2f1a</a></span><span><a href="coverage.html">Validation records</a> · <a href="capabilities.html">Capabilities and limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#cases-and-results">Cases and results</a><a class="toc-h3" href="#binary-flyby">Binary flyby</a><a class="toc-h3" href="#secondary-encounter">Secondary encounter</a><a class="toc-h3" href="#inward-approach-and-the-field-boundary">Inward approach and the field boundary</a><a class="toc-h2" href="#position-uncertainty-and-the-display-frame">Position uncertainty and the display frame</a><a class="toc-h2" href="#compare-mass-and-gravity-assumptions">Compare mass and gravity assumptions</a><a class="toc-h2" href="#linearization-checks">Linearization checks</a><a class="toc-h2" href="#run-or-modify-a-case">Run or modify a case</a><a class="toc-h2" href="#scope-and-next-steps">Scope and next steps</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">PDF handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/long-trajectories.md" target="_blank" rel="noopener">View source ↗</a></div></aside></div>
+<dialog class="search-dialog" id="search-dialog" aria-label="Search the BASCO manual"><form class="search-field" method="dialog"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search tasks, functions, variables…" aria-label="Search the manual" autocomplete="off"><button type="button" data-search-close>Esc</button></form><div id="search-results" class="search-results" role="region" aria-label="Search results" aria-live="polite"></div><div class="search-hint">↑ ↓ to choose &nbsp; Enter to open &nbsp; Esc to close &nbsp; · &nbsp; Search works offline</div></dialog></body></html>
