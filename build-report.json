@@ -1,11 +1,11 @@
 {
-  "source_revision": "b218e88ee6bd1d65c8281849152257487c86a16f",
-  "source_hash": "6835c2e6b6972eec3fe2a410d0a28a8fb7249d8fb29200ff52adcdbbf2600fc6",
-  "guide_chapters": 24,
-  "html_pages": 147,
-  "api_symbols": 1482,
-  "module_pages": 117,
-  "search_entries": 2434,
+  "source_revision": "f26106bfd721871ed163c9e7db151ef7695b78af",
+  "source_hash": "93b17dae2e8970a4c72d62ee4d0e1eb11a1600030aa3aa97c2bb0729c566ce66",
+  "guide_chapters": 26,
+  "html_pages": 153,
+  "api_symbols": 1503,
+  "module_pages": 121,
+  "search_entries": 2702,
   "copied_figures": [
     "docs/assets/hera/consider-histories/hera_consider_gravity.png",
     "docs/assets/hera/consider-histories/hera_mass_history.png",
@@ -48,7 +48,12 @@
     "docs/assets/spacecraft/rf3bp/spacecraft_position_sigma.png",
     "docs/assets/spacecraft/rf3bp/spacecraft_step_refinement.png",
     "docs/assets/spacecraft/rf3bp/spacecraft_trajectory.png",
-    "docs/assets/spacecraft/rf3bp/spacecraft_velocity_sigma.png"
+    "docs/assets/spacecraft/rf3bp/spacecraft_velocity_sigma.png",
+    "docs/assets/tumbling/ac0/angles.png",
+    "docs/assets/tumbling/ac2/angles.png",
+    "docs/assets/tumbling/ac3/angles.png",
+    "docs/assets/tumbling/ac3/body_axes.png",
+    "docs/assets/tumbling/ac3/spin.png"
   ],
   "copied_landing_media": [
     "docs/assets/landing/closeups/didymos/surface-ellipsoid.mp4",
@@ -81,7 +86,10 @@
     "docs/assets/landing/mission-scale/secondary_encounter/trajectory.html",
     "docs/assets/landing/mission-scale/secondary_encounter/trajectory.mp4",
     "docs/assets/landing/mission-scale/secondary_encounter/uncertainty.html",
-    "docs/assets/landing/mission-scale/secondary_encounter/uncertainty.mp4"
+    "docs/assets/landing/mission-scale/secondary_encounter/uncertainty.mp4",
+    "docs/assets/tumbling/ac0/interactive.html",
+    "docs/assets/tumbling/ac2/interactive.html",
+    "docs/assets/tumbling/ac3/interactive.html"
   ],
   "imports_basco": false,
   "scientific_runs": 0,

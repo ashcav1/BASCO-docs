@@ -1,16 +1,16 @@
 {
   "source": {
-    "revision": "b218e88ee6bd1d65c8281849152257487c86a16f",
-    "source_sha256": "6835c2e6b6972eec3fe2a410d0a28a8fb7249d8fb29200ff52adcdbbf2600fc6",
+    "revision": "f26106bfd721871ed163c9e7db151ef7695b78af",
+    "source_sha256": "93b17dae2e8970a4c72d62ee4d0e1eb11a1600030aa3aa97c2bb0729c566ce66",
     "method": "Python AST; no BASCO import, native extension load, JAX import or numerical execution"
   },
   "coverage": {
-    "module_count": 117,
-    "symbol_count": 1482,
-    "definition_count": 1333,
-    "definition_nodes_covered": 1333,
-    "module_assignment_count": 149,
-    "class_field_count": 928,
+    "module_count": 121,
+    "symbol_count": 1503,
+    "definition_count": 1353,
+    "definition_nodes_covered": 1353,
+    "module_assignment_count": 150,
+    "class_field_count": 950,
     "export_count": 205,
     "top_level_export_count": 97,
     "unresolved_exports": [],
@@ -19,18 +19,18 @@
       "basco.ad._jax.jnp"
     ],
     "by_kind": {
-      "class": 185,
-      "constant": 132,
-      "function": 471,
-      "method": 511,
-      "property": 166,
+      "class": 189,
+      "constant": 133,
+      "function": 481,
+      "method": 514,
+      "property": 169,
       "variable": 17
     },
     "by_tier": {
       "advanced": 193,
-      "internal": 391,
+      "internal": 401,
       "legacy": 411,
-      "public": 487
+      "public": 498
     },
     "missing_definitions": []
   }
