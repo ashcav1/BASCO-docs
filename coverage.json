@@ -1,6 +1,6 @@
 {
   "source": {
-    "revision": "f26106bfd721871ed163c9e7db151ef7695b78af",
+    "revision": "72cf10a60593ed55d1c34350385f2c0429b75197",
     "source_sha256": "93b17dae2e8970a4c72d62ee4d0e1eb11a1600030aa3aa97c2bb0729c566ce66",
     "method": "Python AST; no BASCO import, native extension load, JAX import or numerical execution"
   },

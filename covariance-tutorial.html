@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Create a covariance run · BASCO</title><meta name="description" content="Step-by-step independent covariance run: create a Python runner, set bodies and tumbling/orbit inputs, run Hou covariance, export figures and tables, and read saved arrays."><meta name="theme-color" content="#192439"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/katex/katex.min.css"><script>try{const t=JSON.parse(localStorage.getItem('basco:manual:theme'));if(t)document.documentElement.dataset.theme=t;}catch{}</script><script src="assets/search-index.js" defer></script><script src="assets/search.js" defer></script><script src="assets/katex/katex.min.js" defer></script><script src="assets/site.js" defer></script></head>
+<body data-page-title="Create a covariance run"><a class="skip-link" href="#main-content">Skip to content</a>
+<aside class="sidebar" aria-label="Documentation navigation"><a class="brand" href="index.html"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="#9a8ebd" transform="rotate(-29 24 24)"/><ellipse cx="19" cy="26" rx="10" ry="13" fill="#a696cf" transform="rotate(-29 19 26)"/><ellipse cx="38" cy="16" rx="5" ry="4" fill="#e5aa72"/></svg><b>BASCO</b></a><button class="nav-search" data-search-open><span>Search documentation</span><kbd>⌘ K</kbd></button><nav><details class="nav-group" data-group="Getting started" open><summary>Getting started</summary><a href="index.html">Overview</a><a href="quickstart.html">Installation and first example</a><a href="covariance-tutorial.html" aria-current="page">Create a covariance run</a><a href="hera-start.html">Run and customize Hera covariance</a><a href="workflow.html">Study setup</a></details><details class="nav-group" data-group="Models and parameters" open><summary>Models and parameters</summary><a href="bodies-and-states.html">Bodies and states</a><a href="parameters.html">Gravity and estimated parameters</a><a href="shapes-and-kaula.html">Shapes and Kaula priors</a></details><details class="nav-group" data-group="Covariance analysis" open><summary>Covariance analysis</summary><a href="observations.html">Measurements and schedules</a><a href="statistics.html">Noise, priors and solvers</a><a href="consider-and-histories.html">Consider parameters and covariance histories</a><a href="near-field-gravity.html">Near-field gravity covariance</a><a href="multi-arc.html">Multi-arc covariance and estimation</a><a href="results.html">Results and exports</a><a href="reuse-and-trades.html">Model comparisons</a></details><details class="nav-group" data-group="Examples" open><summary>Examples</summary><a href="hera.html">Hera paper reproduction</a><a href="tumbling-playground.html">Dimorphos tumbling playground</a><a href="examples.html">Example scripts</a><a href="landing-covariance.html">Spacecraft and landing covariance</a><a href="landing-visualization.html">3D approach and landing covariance</a><a href="long-trajectories.html">Long approaches and flybys</a><a href="surface-closeups.html">Surface close-ups</a></details><details class="nav-group" data-group="Reference" open><summary>Reference</summary><a href="api.html">API reference</a><a href="modules.html">Modules</a><a href="concepts.html">Equations and conventions</a><a href="glossary.html">Glossary and notation</a><a href="handbook.html">PDF handbook</a></details><details class="nav-group" data-group="Validation and development" open><summary>Validation and development</summary><a href="derivatives.html">Derivative validation</a><a href="coverage.html">Documentation and validation records</a><a href="extending.html">Extension interfaces</a><a href="capabilities.html">Capabilities and limits</a><a href="troubleshooting.html">Troubleshooting</a></details></nav><div class="side-footer"><a href="basco-handbook.pdf">Download PDF</a><a href="coverage.html">Version and source information</a></div></aside>
+<div class="mobile-backdrop"></div><header class="topbar"><button class="icon-button menu-button" data-menu aria-label="Open navigation" aria-expanded="false">☰</button><div class="breadcrumbs"><a href="index.html">Manual</a><span>/</span><span>Getting started</span><span>/</span><span>Create a covariance run</span></div><div class="top-actions"><button class="icon-button" data-back aria-label="Go back" title="Go back">←</button><button class="icon-button" data-forward aria-label="Go forward" title="Go forward">→</button><button class="icon-button" data-theme-toggle aria-label="Use dark theme" title="Toggle theme">◐</button><button class="icon-button" data-search-open aria-label="Search" title="Search (Ctrl/⌘ K)">⌕</button><a class="header-source" href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/covariance-tutorial.md" target="_blank" rel="noopener">View source ↗</a></div><div class="reading-progress"></div></header>
+<div class="page-layout"><main class="article" id="main-content" tabindex="-1"><div class="resume" aria-label="Saved reading position"></div><h1>Create a covariance run</h1><p>This tutorial takes you from a new Python runner to saved figures, tables and numerical arrays. The worked example uses custom Didymos/Dimorphos inputs and the Hera observation assumptions. Each run is independent; it requires no previous results.</p>
+<p>The same sequence applies to another binary system: define the bodies and initial state, choose the estimated quantities and observation assumptions, compute covariance, then export. <a href="#another-system">Step 9</a> identifies the components to replace for another system.</p>
+<h2 id="create-your-runner">1. Create your runner</h2>
+<p>Open a terminal in the BASCO repository folder, the one containing <code>examples</code>, <code>tools</code>, <code>reference</code> and <code>src</code>. If you have not prepared BASCO yet, complete <a href="quickstart.html#prepare-the-repository-environment">installation</a> first. An existing working installation needs no rebuild for changes to your own runner.</p>
+<p>Duplicate <a href="https://github.com/ashcav1/BASCO/blob/72cf10a60593ed55d1c34350385f2c0429b75197/examples/hera_custom.py">examples/hera_custom.py</a> as <code>examples/my_hera_study.py</code>. In Finder, duplicate and rename the file. The equivalent terminal command is:</p>
+<div class="codehilite"><pre><span></span><code>cp<span class="w"> </span>-n<span class="w"> </span>examples/hera_custom.py<span class="w"> </span>examples/my_hera_study.py
+</code></pre></div>
+
+<p><code>-n</code> preserves an existing file with that name. Your working file has this structure:</p>
+<div class="codehilite"><pre><span></span><code>examples/my_hera_study.py
+  imports and file paths
+  editable physical and covariance settings
+  make_model()          bodies, initial state and Hou gravity
+  make_custom_study()   estimated parameters and observation assumptions
+  main()               run, print and export
+  bottom call to main()
+</code></pre></div>
+
+<p>The copied file already contains its imports and helper functions. Apply the edits below to that copy. Leave the installed library and <code>reference/hera-20261016</code> unchanged. This template's default spin/orientation settings define a modified study, rather than an exact archived AC2 reproduction.</p>
+<h2 id="set-bodies-and-tumbling">2. Set bodies and Dimorphos tumbling</h2>
+<p>At the top of your copy, edit these existing settings. The orientation/spin numbers below are example inputs, not a fit to a measured tumbling state:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">PRIMARY_MASS_KG</span> <span class="o">=</span> <span class="n">hera</span><span class="o">.</span><span class="n">MASS_A_KG</span>
+<span class="n">SECONDARY_MASS_KG</span> <span class="o">=</span> <span class="n">hera</span><span class="o">.</span><span class="n">MASS_B_KG</span>
+<span class="n">SECONDARY_SEMI_AXES_M</span> <span class="o">=</span> <span class="p">(</span><span class="mf">96.0</span><span class="p">,</span> <span class="mf">74.0</span><span class="p">,</span> <span class="mf">59.0</span><span class="p">)</span>
+
+<span class="n">SECONDARY_TO_PRIMARY_EULER_XYZ_DEG</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">)</span>
+<span class="n">SECONDARY_SPIN_PERIOD_H</span> <span class="o">=</span> <span class="mf">12.0</span>
+<span class="n">SECONDARY_SPIN_TILT_DEG</span> <span class="o">=</span> <span class="mf">30.0</span>
+</code></pre></div>
+
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What you supply</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PRIMARY_MASS_KG</code>, <code>SECONDARY_MASS_KG</code></td>
+<td>Nominal masses in kg. The template scales all primary mass moments consistently and recomputes secondary density.</td>
+</tr>
+<tr>
+<td><code>SECONDARY_SEMI_AXES_M</code></td>
+<td>Dimorphos's three semi-axes in metres, not full diameters.</td>
+</tr>
+<tr>
+<td><code>SECONDARY_TO_PRIMARY_EULER_XYZ_DEG</code></td>
+<td>Initial orientation from Dimorphos axes to Didymos axes: extrinsic x, then y, then z rotations, in degrees.</td>
+</tr>
+<tr>
+<td><code>SECONDARY_SPIN_PERIOD_H</code></td>
+<td>Initial angular-speed magnitude expressed as a rotation period in hours.</td>
+</tr>
+<tr>
+<td><code>SECONDARY_SPIN_TILT_DEG</code></td>
+<td>Initial angular-velocity direction from Dimorphos +z, in its body x-z plane.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Tumbling develops from the initial orientation, spin and inertia. A spin tilt is an initial condition, not an imposed constant oscillation amplitude. For a full three-component body spin, replace the <code>spin_B</code> construction inside <code>make_model()</code> with your vector in rad/s; the existing <code>B_to_A @ spin_B</code> converts it to the primary axes required by <code>BinaryState</code>.</p>
+<p>To inspect the resulting motion before computing covariance, use the separate <a href="tumbling-playground.html">tumbling playground</a>. That playground's Euler angles are relative to the orbital Hill frame; this template's angles are relative to Didymos axes. Transfer the physical attitude/state with the stated frame conversion rather than copying angle numbers between conventions.</p>
+<h2 id="set-the-initial-orbit">3. Set the initial orbit</h2>
+<p>For a known state, replace these two existing settings:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">POSITION_M</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">VELOCITY_M_S</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+
+<p>Supply three-component vectors: secondary minus primary position in metres, and inertial relative velocity in m/s, both resolved in Didymos axes. <code>None</code> retains the template's archived AC2 orbit. This is the direct route for an orbit solution at a known epoch.</p>
+<p>If you instead have semi-major axis and eccentricity, add the following block <strong>after</strong> the existing <code>G_M3_KG_S2 = bc.G_SI</code> line. It overrides the earlier <code>None</code> entries:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Example osculating orbit at periapsis in Didymos&#39;s x-y plane.</span>
+<span class="n">ORBIT_A_M</span> <span class="o">=</span> <span class="mf">1200.0</span>
+<span class="n">ORBIT_E</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">G_M3_KG_S2</span> <span class="o">*</span> <span class="p">(</span><span class="n">PRIMARY_MASS_KG</span> <span class="o">+</span> <span class="n">SECONDARY_MASS_KG</span><span class="p">)</span>
+
+<span class="c1"># To derive a starting semi-major axis from an orbital period, uncomment:</span>
+<span class="c1"># ORBIT_PERIOD_H = 11.4</span>
+<span class="c1"># ORBIT_A_M = (mu * (ORBIT_PERIOD_H * 3600.0 / (2*np.pi))**2)**(1/3)</span>
+
+<span class="n">POSITION_M</span> <span class="o">=</span> <span class="p">(</span><span class="n">ORBIT_A_M</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">ORBIT_E</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">VELOCITY_M_S</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mu</span> <span class="o">/</span> <span class="n">ORBIT_A_M</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">ORBIT_E</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">ORBIT_E</span><span class="p">)),</span>
+    <span class="mf">0.0</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>These are two-body Keplerian starting conditions, with <code>0 &lt;= ORBIT_E &lt; 1</code>. The chosen plane and periapsis phase are explicit assumptions. A different orientation or phase requires the corresponding rotated position/velocity or a supplied Cartesian state. The actual period under coupled Hou gravity can differ; check the propagated orbit before interpreting a measured-period match. Spin period and orbital period describe different motions.</p>
+<h2 id="choose-covariance-settings">4. Choose the covariance settings</h2>
+<p>Edit the existing settings near the physical inputs:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">GRAVITY_DEGREE</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">ESTIMATE_DEGREES</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">PRIOR</span> <span class="o">=</span> <span class="s2">&quot;kaula&quot;</span>
+<span class="n">DURATION_S</span> <span class="o">=</span> <span class="n">hera</span><span class="o">.</span><span class="n">DURATION_S</span>
+<span class="n">DT_S</span> <span class="o">=</span> <span class="mf">75.0</span>
+</code></pre></div>
+
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GRAVITY_DEGREE</code></td>
+<td>Nominal Hou total mutual order: 2, 4 or 6.</td>
+</tr>
+<tr>
+<td><code>ESTIMATE_DEGREES</code></td>
+<td>Distinct uncertain moment degrees selected from 2, 3 and 4. Both masses and the physical initial state are also estimated.</td>
+</tr>
+<tr>
+<td><code>PRIOR</code></td>
+<td><code>"kaula"</code> retains the paper's shape-law/raw-moment priors; <code>None</code> removes them.</td>
+</tr>
+<tr>
+<td><code>DURATION_S</code></td>
+<td>Total observation/propagation duration in seconds. <code>hera.DURATION_S</code> is the paper's fixed duration, not automatically 16 of your new orbital periods.</td>
+</tr>
+<tr>
+<td><code>DT_S</code></td>
+<td>RK4 step in seconds; it must divide the 900 s observation cadence.</td>
+</tr>
+</tbody>
+</table></div>
+<p>For a duration based on a selected reference period, explicitly set, for example, <code>DURATION_S = 16 * ORBIT_PERIOD_H * 3600.0</code>. The paper preset supplies observations through the last 900 s grid epoch at or before the requested duration. Choose a cadence-aligned duration when you require an exact final epoch. For a quick execution check, temporarily use <code>DURATION_S = 3600.0</code>; short runs do not reproduce full-arc covariance or establish observability.</p>
+<p>The factory uses Hou AD by default. It includes relative position and Didymos barycentric position at 1 m standard deviation, both body attitudes at 1 degree standard deviation, a 900 s cadence, the free barycenter and the nuisance-projected solver. It computes measurement Jacobians and noise weights, not simulated measurement values. <a href="observations.html">Observation settings</a> and <a href="workflow.html">study setup</a> explain how to replace this recipe.</p>
+<p>Changing body shape does not refit the archived Kaula laws. Keeping <code>PRIOR = "kaula"</code> after a shape change deliberately retains those old laws. Supply <a href="shapes-and-kaula.html">new shape-informed priors</a> when that is part of your study.</p>
+<h2 id="run-and-export">5. Run covariance and export everything</h2>
+<p>Replace the existing <code>main()</code> function with this complete function. Keep the imports, helper functions and the final <code>if __name__ == "__main__": main()</code> call already in your file.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">study</span> <span class="o">=</span> <span class="n">make_custom_study</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">study</span><span class="o">.</span><span class="n">describe</span><span class="p">()[</span><span class="s2">&quot;unknown_labels&quot;</span><span class="p">])</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">study</span><span class="o">.</span><span class="n">linearize</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">rows</span><span class="o">.</span><span class="n">covariance</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+
+    <span class="n">reports</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;mass&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">mass_properties</span><span class="p">(),</span>
+        <span class="s2">&quot;degree2&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">degree2</span><span class="p">(),</span>
+        <span class="s2">&quot;harmonics&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">harmonics</span><span class="p">(</span><span class="n">max_degree</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="n">report</span> <span class="ow">in</span> <span class="n">reports</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">bc</span><span class="o">.</span><span class="n">export_study</span><span class="p">(</span>
+        <span class="n">rows</span><span class="p">,</span>
+        <span class="n">result</span><span class="p">,</span>
+        <span class="n">ROOT</span> <span class="o">/</span> <span class="s2">&quot;results&quot;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;my-tumbling-g06-e04&quot;</span><span class="p">,</span>
+        <span class="n">reports</span><span class="o">=</span><span class="n">reports</span><span class="p">,</span>
+        <span class="n">figures</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">theme</span><span class="o">=</span><span class="n">bc</span><span class="o">.</span><span class="n">PlotTheme</span><span class="p">(</span><span class="n">tex</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Results folder: </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Figures: </span><span class="si">{</span><span class="n">folder</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="s1">&#39;reports&#39;</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="s1">&#39;figures&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tables: </span><span class="si">{</span><span class="n">folder</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="s1">&#39;reports&#39;</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="s1">&#39;tables&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p><code>linearize()</code> performs the expensive dynamics/sensitivity propagation and constructs the design rows. <code>covariance()</code> solves the uncertainty problem. <code>export_study()</code> writes the completed data and renders figures; it does not perform another propagation. No previous-run path or comparison is required.</p>
+<p>Run from the BASCO repository folder:</p>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/my_hera_study.py
+</code></pre></div>
+
+<p>If the plotting environment has not yet been prepared, run this once before that command:</p>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>plot_environment
+</code></pre></div>
+
+<p><code>--plot</code> selects the installed environment with plotting and AD available. <code>tex=False</code> uses built-in mathematical text, so an external LaTeX installation is not required. The launcher works outside the checkout internally; the template's <code>ROOT</code> uses the script location, keeping outputs under BASCO's <code>results/</code>.</p>
+<h2 id="open-the-results">6. Open the figures and tables</h2>
+<p>The terminal prints the exact output folder. In Finder, open BASCO, then <code>results</code>, then the new folder beginning <code>my-tumbling-g06-e04__</code>. Each completed run receives its own UTC timestamp and analysis digest.</p>
+<div class="codehilite"><pre><span></span><code>results/
+  my-tumbling-g06-e04__UTC-TIMESTAMP__DIGEST/
+    README.md
+    configuration.json
+    run.json
+    manifest.json
+    reports/
+      report.md
+      report.json
+      tables/
+        all.csv
+        coordinates.csv
+        mass.csv
+        degree2.csv
+        harmonics.csv
+        ... .md and .tex versions
+      figures/
+        trajectory.png
+        gravity_uncertainty.png
+        information_spectrum.png
+        correlations.png
+        mass_precision.png
+        ... .svg and .pdf versions
+      manifest.json
+    arrays/
+      metadata.json
+      ... named .npy arrays
+    validation/
+      README.md
+</code></pre></div>
+
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>What you want</th>
+<th>Open this path inside that run folder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Overview with embedded figure links</td>
+<td><code>README.md</code> in your Markdown editor or repository viewer. For direct viewing, open the PNG files below.</td>
+</tr>
+<tr>
+<td>Gravity-field uncertainty bars</td>
+<td><code>reports/figures/gravity_uncertainty.png</code></td>
+</tr>
+<tr>
+<td>Mass and mass-ratio precision</td>
+<td><code>reports/figures/mass_precision.png</code></td>
+</tr>
+<tr>
+<td>Parameter correlations</td>
+<td><code>reports/figures/correlations.png</code></td>
+</tr>
+<tr>
+<td>Numerical information/rank spectrum</td>
+<td><code>reports/figures/information_spectrum.png</code></td>
+</tr>
+<tr>
+<td>Orbit, separation and spin magnitudes</td>
+<td><code>reports/figures/trajectory.png</code></td>
+</tr>
+<tr>
+<td>Gravity values and 1-sigma uncertainties</td>
+<td><code>reports/tables/harmonics.csv</code> in a spreadsheet application</td>
+</tr>
+<tr>
+<td>Masses, total mass and mass ratio</td>
+<td><code>reports/tables/mass.csv</code></td>
+</tr>
+<tr>
+<td>Degree-2 gravity and normalized polar inertia</td>
+<td><code>reports/tables/degree2.csv</code></td>
+</tr>
+<tr>
+<td>Every result table together</td>
+<td><code>reports/tables/all.csv</code></td>
+</tr>
+<tr>
+<td>Study description and selected components</td>
+<td><code>configuration.json</code></td>
+</tr>
+<tr>
+<td>Layout labels, units, ranks and diagnostic metadata</td>
+<td><code>run.json</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>For the saved nominal initial state, read <code>run.json</code> at <code>metadata.transport_identity.initial_state_native</code> with its native codec. Actual analysis noise is at <code>metadata.diagnostics.noise</code>. Keep your editable runner as the readable record of the settings you supplied; <code>configuration.json</code> is a study description rather than a copy of that script.</p>
+<p><code>relative_sigma</code> in CSV tables is a fraction; multiply by 100 for percent. A zero nominal coefficient has no defined relative error, even when its absolute sigma is meaningful. Read each row's <code>status</code>: fixed, supported and unresolved quantities have different meanings.</p>
+<p>The information spectrum is a numerical support diagnostic in declared scaled coordinates. <code>result.summary()</code> reports data and posterior rank separately; priors can support a posterior without making that direction observable from the observations. A tiny or unavailable sigma is not, by itself, evidence of observability. <a href="results.html">Results and exports</a> describes nullspaces, correlations and supported reports.</p>
+<p>The export's <code>validation/README.md</code> does not certify a run. Finite-difference validation is a separate <a href="derivatives.html#run-the-built-in-finite-difference-checks">opt-in operation</a>.</p>
+<h2 id="read-saved-data">7. Read saved numerical data in Python</h2>
+<p>Create a separate file <code>examples/read_my_run.py</code>. Paste the following script and replace the folder-name placeholder with the <strong>complete name printed by your run</strong>, including timestamp and digest:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">basco</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bc</span>
+
+<span class="n">ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">RUN</span> <span class="o">=</span> <span class="n">ROOT</span> <span class="o">/</span> <span class="s2">&quot;results&quot;</span> <span class="o">/</span> <span class="s2">&quot;PASTE-YOUR-COMPLETE-RUN-FOLDER-NAME&quot;</span>
+
+<span class="n">arrays</span><span class="p">,</span> <span class="n">presentation</span><span class="p">,</span> <span class="n">run</span> <span class="o">=</span> <span class="n">bc</span><span class="o">.</span><span class="n">read_run</span><span class="p">(</span><span class="n">RUN</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">presentation</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available arrays:&quot;</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">arrays</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Observation matrix shape:&quot;</span><span class="p">,</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">&quot;design_rows_SI&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">labels</span> <span class="o">=</span> <span class="n">run</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;layouts&quot;</span><span class="p">][</span><span class="s2">&quot;joint_coordinate&quot;</span><span class="p">][</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Joint coordinate order:&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+<span class="k">if</span> <span class="s2">&quot;joint_covariance&quot;</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">:</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">&quot;joint_covariance&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Joint covariance shape:&quot;</span><span class="p">,</span> <span class="n">P</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No finite full joint covariance; inspect reported null directions.&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Run it with:</p>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>examples/read_my_run.py
+</code></pre></div>
+
+<p>This verifies saved-file checksums and loads data. It does not propagate dynamics or solve covariance again. Use names from the saved metadata rather than guessing a mass or gravity column number.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Saved array</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>epochs_s</code></td>
+<td>Saved transport epochs in seconds.</td>
+</tr>
+<tr>
+<td><code>design_rows_SI</code></td>
+<td>Observation Jacobian; columns follow the joint coordinate labels.</td>
+</tr>
+<tr>
+<td><code>joint_covariance</code></td>
+<td>Full physical joint covariance, present only when the joint solution is supported.</td>
+</tr>
+<tr>
+<td><code>supported_subspace_covariance</code>, <code>nullspace_scaled</code></td>
+<td>Supported/null information; the first is not a finite covariance for arbitrary unresolved coordinates.</td>
+</tr>
+<tr>
+<td><code>state_transition</code>, <code>parameter_sensitivities</code></td>
+<td>Saved state/parameter transport arrays. Read their separate axes and units in <code>run.json</code>.</td>
+</tr>
+<tr>
+<td><code>native_states</code></td>
+<td>Original native30 states. Position/velocity use km and km/s in this internal codec; do not read them as SI metres.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="regenerate-figures">8. Regenerate figures without another run</h2>
+<p>To change figure size, grid or typography, append this to <code>read_my_run.py</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">FIGURES</span> <span class="o">=</span> <span class="n">RUN</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">RUN</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-restyled&quot;</span><span class="p">)</span>
+<span class="n">bc</span><span class="o">.</span><span class="n">write_presentation</span><span class="p">(</span>
+    <span class="n">presentation</span><span class="p">,</span>
+    <span class="n">FIGURES</span><span class="p">,</span>
+    <span class="n">figures</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">theme</span><span class="o">=</span><span class="n">bc</span><span class="o">.</span><span class="n">PlotTheme</span><span class="p">(</span><span class="n">tex</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mf">11.0</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Restyled figures:&quot;</span><span class="p">,</span> <span class="n">FIGURES</span> <span class="o">/</span> <span class="s2">&quot;figures&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Run the reader using the plotting environment:</p>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/read_my_run.py
+</code></pre></div>
+
+<p>The new presentation is a sibling of the original run, with its own <code>figures/</code>, <code>tables/</code> and report files. It requires a new destination name if one already exists. This preserves the original run and its checksums. No new dynamics or covariance calculation occurs.</p>
+<h2 id="another-system">9. Use another binary or observation model</h2>
+<p>Keep <code>main()</code> and the export/loading workflow. Replace the physical model and study composition through their existing components:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>What changes</th>
+<th>Where to edit</th>
+<th>Component reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Another primary shape or mass distribution</td>
+<td><code>primary</code> construction in <code>make_model()</code>; the supplied template otherwise retains Didymos's normalized shape</td>
+<td><a href="bodies-and-states.html">Bodies, moments and frames</a>, <a href="shapes-and-kaula.html">shape-model moments</a></td>
+</tr>
+<tr>
+<td>Another secondary shape or density model</td>
+<td><code>secondary</code> construction in <code>make_model()</code></td>
+<td><a href="api-basco-models.html#basco-models-Body">Body</a>, <a href="api-basco-models.html#basco-models-MomentDistribution">MomentDistribution</a></td>
+</tr>
+<tr>
+<td>Initial orbit and both bodies' rotations</td>
+<td><code>BinaryState</code> assembled in <code>make_model()</code></td>
+<td><a href="api-basco-models.html#basco-models-BinaryState">State fields</a></td>
+</tr>
+<tr>
+<td>Which masses/moments/coefficients are uncertain</td>
+<td>The parameter map used in <code>make_custom_study()</code></td>
+<td><a href="parameters.html">Parameter selection</a></td>
+</tr>
+<tr>
+<td>Observed quantities, noise and cadence</td>
+<td>Supply your own <code>ObservationPlan</code> to a <code>CovarianceStudy</code> instead of using the Hera recipe</td>
+<td><a href="workflow.html#describe-observations-separately">Study setup</a>, <a href="observations.html">observations</a></td>
+</tr>
+<tr>
+<td>Prior information</td>
+<td>Supply your own prior producers; do not assume the Hera shape laws apply to another body</td>
+<td><a href="statistics.html">Noise and priors</a></td>
+</tr>
+</tbody>
+</table></div>
+<p>The current <code>make_custom_study()</code> calls the installed <a href="api-basco-benchmarks-hera_study.html#basco-benchmarks-hera_study-make_study">Hera factory</a>. When you need a different experiment, construct <a href="api-basco-covariance.html#basco-covariance-CovarianceStudy">CovarianceStudy</a> directly with your model, parameters and plan as shown in <a href="workflow.html">study setup</a>. The <a href="quickstart.html#a-complete-script">complete generic example</a> shows that composition without Hera reference inputs. The solve, reporting and file-reading steps on this page remain the same.</p><nav class="page-pager" aria-label="Adjacent pages"><a href="quickstart.html"><span>← Previous</span>Installation and first example</a><a href="hera-start.html"><span>Next →</span>Run and customize Hera covariance</a></nav><footer class="site-footer"><span>BASCO 0.1.0 · <a href="https://github.com/ashcav1/BASCO/blob/72cf10a60593ed55d1c34350385f2c0429b75197/src/basco/__init__.py">Source 72cf10a</a></span><span><a href="coverage.html">Validation records</a> · <a href="capabilities.html">Capabilities and limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#create-your-runner">1. Create your runner</a><a class="toc-h2" href="#set-bodies-and-tumbling">2. Set bodies and Dimorphos tumbling</a><a class="toc-h2" href="#set-the-initial-orbit">3. Set the initial orbit</a><a class="toc-h2" href="#choose-covariance-settings">4. Choose the covariance settings</a><a class="toc-h2" href="#run-and-export">5. Run covariance and export everything</a><a class="toc-h2" href="#open-the-results">6. Open the figures and tables</a><a class="toc-h2" href="#read-saved-data">7. Read saved numerical data in Python</a><a class="toc-h2" href="#regenerate-figures">8. Regenerate figures without another run</a><a class="toc-h2" href="#another-system">9. Use another binary or observation model</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">PDF handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/covariance-tutorial.md" target="_blank" rel="noopener">View source ↗</a></div></aside></div>
+<dialog class="search-dialog" id="search-dialog" aria-label="Search the BASCO manual"><form class="search-field" method="dialog"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search tasks, functions, variables…" aria-label="Search the manual" autocomplete="off"><button type="button" data-search-close>Esc</button></form><div id="search-results" class="search-results" role="region" aria-label="Search results" aria-live="polite"></div><div class="search-hint">↑ ↓ to choose &nbsp; Enter to open &nbsp; Esc to close &nbsp; · &nbsp; Search works offline</div></dialog></body></html>
