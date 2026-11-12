@@ -1,11 +1,11 @@
 {
-  "source_revision": "bdb5dd78e1622b7066dd170d40b5bcb84661a7ca",
-  "source_hash": "17211de4dc71b5ce32c35f980d366fc624adf4f3a1c1d6f2f14bc6950a444195",
-  "guide_chapters": 28,
-  "html_pages": 165,
-  "api_symbols": 1620,
-  "module_pages": 131,
-  "search_entries": 2969,
+  "source_revision": "e58c50debf272e411989d8d481e47bb2fbbacc47",
+  "source_hash": "7f9e3d976d2577dc36fd75cd2b174bbab9897c93c09c3259dff082ccc3119dcc",
+  "guide_chapters": 29,
+  "html_pages": 194,
+  "api_symbols": 1907,
+  "module_pages": 159,
+  "search_entries": 3411,
   "copied_figures": [
     "docs/assets/hera/consider-histories/hera_consider_gravity.png",
     "docs/assets/hera/consider-histories/hera_mass_history.png",

@@ -1,269 +1,276 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Example scripts · BASCO</title><meta name="description" content="Runnable scripts with their required inputs and expected outputs."><meta name="theme-color" content="#192439"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/katex/katex.min.css"><script>try{const t=JSON.parse(localStorage.getItem('basco:manual:theme'));if(t)document.documentElement.dataset.theme=t;}catch{}</script><script src="assets/search-index.js" defer></script><script src="assets/search.js" defer></script><script src="assets/katex/katex.min.js" defer></script><script src="assets/site.js" defer></script></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Example scripts · BASCO</title><meta name="description" content="Every example script, what it shows and how long it takes; and the evidence scripts that take options."><meta name="theme-color" content="#192439"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/katex/katex.min.css"><script>try{const t=JSON.parse(localStorage.getItem('basco:manual:theme'));if(t)document.documentElement.dataset.theme=t;}catch{}</script><script src="assets/search-index.js" defer></script><script src="assets/search.js" defer></script><script src="assets/katex/katex.min.js" defer></script><script src="assets/site.js" defer></script></head>
 <body data-page-title="Example scripts"><a class="skip-link" href="#main-content">Skip to content</a>
-<aside class="sidebar" aria-label="Documentation navigation"><a class="brand" href="index.html"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="#9a8ebd" transform="rotate(-29 24 24)"/><ellipse cx="19" cy="26" rx="10" ry="13" fill="#a696cf" transform="rotate(-29 19 26)"/><ellipse cx="38" cy="16" rx="5" ry="4" fill="#e5aa72"/></svg><b>BASCO</b></a><button class="nav-search" data-search-open><span>Search documentation</span><kbd>⌘ K</kbd></button><nav><details class="nav-group" data-group="Getting started" open><summary>Getting started</summary><a href="index.html">Overview</a><a href="quickstart.html">Installation and first example</a><a href="covariance-tutorial.html">Create a covariance run</a><a href="hera-start.html">Run and customize Hera covariance</a><a href="workflow.html">Study setup</a></details><details class="nav-group" data-group="Models and parameters" open><summary>Models and parameters</summary><a href="bodies-and-states.html">Bodies and states</a><a href="parameters.html">Gravity and estimated parameters</a><a href="shapes-and-kaula.html">Shapes and Kaula priors</a></details><details class="nav-group" data-group="Covariance analysis" open><summary>Covariance analysis</summary><a href="observations.html">Measurements and schedules</a><a href="statistics.html">Noise, priors and solvers</a><a href="consider-and-histories.html">Consider parameters and covariance histories</a><a href="near-field-gravity.html">Near-field gravity covariance</a><a href="multi-arc.html">Multi-arc covariance and estimation</a><a href="results.html">Results and exports</a><a href="reuse-and-trades.html">Model comparisons</a></details><details class="nav-group" data-group="Examples" open><summary>Examples</summary><a href="hera.html">Hera paper reproduction</a><a href="tumbling-playground.html">Dimorphos tumbling playground</a><a href="ejecta-trajectories.html">Ejecta trajectories</a><a href="examples.html" aria-current="page">Example scripts</a><a href="landing-covariance.html">Spacecraft and landing covariance</a><a href="landing-visualization.html">3D approach and landing covariance</a><a href="long-trajectories.html">Long approaches and flybys</a><a href="surface-closeups.html">Surface close-ups</a></details><details class="nav-group" data-group="Reference" open><summary>Reference</summary><a href="api.html">API reference</a><a href="modules.html">Modules</a><a href="concepts.html">Equations and conventions</a><a href="glossary.html">Glossary and notation</a><a href="handbook.html">PDF handbook</a></details><details class="nav-group" data-group="Validation and development" open><summary>Validation and development</summary><a href="derivatives.html">Derivative validation</a><a href="coverage.html">Documentation and validation records</a><a href="extending.html">Extension interfaces</a><a href="capabilities.html">Capabilities and limits</a><a href="troubleshooting.html">Troubleshooting</a></details></nav><div class="side-footer"><a href="basco-handbook.pdf">Download PDF</a><a href="coverage.html">Version and source information</a></div></aside>
+<aside class="sidebar" aria-label="Documentation navigation"><a class="brand" href="index.html"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="#9a8ebd" transform="rotate(-29 24 24)"/><ellipse cx="19" cy="26" rx="10" ry="13" fill="#a696cf" transform="rotate(-29 19 26)"/><ellipse cx="38" cy="16" rx="5" ry="4" fill="#e5aa72"/></svg><b>BASCO</b></a><button class="nav-search" data-search-open><span>Search documentation</span><kbd>⌘ K</kbd></button><nav><details class="nav-group" data-group="Getting started" open><summary>Getting started</summary><a href="index.html">Overview</a><a href="quickstart.html">Installation and first scripts</a><a href="particle-simulation.html">How the particle simulation works</a><a href="covariance-tutorial.html">How the covariance analysis works</a><a href="hera-start.html">Run and customize the Hera analysis</a><a href="workflow.html">Analysis setup</a></details><details class="nav-group" data-group="Models and parameters" open><summary>Models and parameters</summary><a href="bodies-and-states.html">Bodies and states</a><a href="parameters.html">Gravity and estimated parameters</a><a href="shapes-and-kaula.html">Shapes and Kaula priors</a></details><details class="nav-group" data-group="Covariance analysis" open><summary>Covariance analysis</summary><a href="observations.html">Observations and schedules</a><a href="statistics.html">Noise, a priori information and solvers</a><a href="consider-and-histories.html">Consider parameters and covariance histories</a><a href="near-field-gravity.html">Local-field gravity covariance</a><a href="multi-arc.html">Multi-arc covariance and estimation</a><a href="results.html">Results and exports</a><a href="reuse-and-trades.html">Model comparisons</a></details><details class="nav-group" data-group="Examples" open><summary>Examples</summary><a href="hera.html">Hera paper reproduction</a><a href="tumbling-playground.html">Dimorphos tumbling playground</a><a href="ejecta-trajectories.html">Particle trajectories</a><a href="examples.html" aria-current="page">Example scripts</a><a href="landing-covariance.html">Particle and impact covariance</a><a href="landing-visualization.html">3D approach and impact covariance</a><a href="long-trajectories.html">Long approaches and flybys</a><a href="surface-closeups.html">Surface close-ups</a></details><details class="nav-group" data-group="Reference" open><summary>Reference</summary><a href="api.html">API reference</a><a href="modules.html">Modules</a><a href="concepts.html">Equations and conventions</a><a href="glossary.html">Glossary and notation</a><a href="handbook.html">PDF handbook</a></details><details class="nav-group" data-group="Validation and development" open><summary>Validation and development</summary><a href="derivatives.html">Derivative validation</a><a href="coverage.html">Documentation and validation records</a><a href="extending.html">Extension interfaces</a><a href="capabilities.html">Capabilities and limits</a><a href="troubleshooting.html">Troubleshooting</a></details></nav><div class="side-footer"><a href="basco-handbook.pdf">Download PDF</a><a href="coverage.html">Version and source information</a></div></aside>
 <div class="mobile-backdrop"></div><header class="topbar"><button class="icon-button menu-button" data-menu aria-label="Open navigation" aria-expanded="false">☰</button><div class="breadcrumbs"><a href="index.html">Manual</a><span>/</span><span>Examples</span><span>/</span><span>Example scripts</span></div><div class="top-actions"><button class="icon-button" data-back aria-label="Go back" title="Go back">←</button><button class="icon-button" data-forward aria-label="Go forward" title="Go forward">→</button><button class="icon-button" data-theme-toggle aria-label="Use dark theme" title="Toggle theme">◐</button><button class="icon-button" data-search-open aria-label="Search" title="Search (Ctrl/⌘ K)">⌕</button><a class="header-source" href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/examples.md" target="_blank" rel="noopener">View source ↗</a></div><div class="reading-progress"></div></header>
-<div class="page-layout"><main class="article" id="main-content" tabindex="-1"><div class="resume" aria-label="Saved reading position"></div><h1>Example scripts</h1><p>Every script below is an existing user example in <code>examples/</code>. They run against the installed library and compose the same modular components used for custom studies. This gallery documents their real behavior; opening these pages runs no scientific computation.</p>
-<h2 id="choose-your-first-example">Script index</h2>
+<div class="page-layout"><main class="article" id="main-content" tabindex="-1"><div class="resume" aria-label="Saved reading position"></div><h1>Example scripts</h1><p>The scripts in <code>examples/</code> are meant to be copied and edited. Each has its settings as plain
+variables at the top and then runs from top to bottom, in about a page. None takes
+command-line options: to change something, edit the variable.</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>tools/activate
+python<span class="w"> </span>examples/particles/1_launch_from_surface.py
+</code></pre></div>
+
+<p>Outputs go to <code>results/</code>, which Git ignores. An example that saves a covariance analysis
+writes into a new folder on every run.</p>
+<h2 id="choose-your-first-example">Particle simulation</h2>
 <div class="table-scroll"><table>
 <thead>
 <tr>
-<th>Goal</th>
-<th>Start here</th>
-<th>Fresh dynamics?</th>
-<th>Output</th>
+<th>Script</th>
+<th>What it shows</th>
+<th>Time</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Check installation cheaply</td>
-<td><a href="#s0-smoke-run">S0 smoke run</a></td>
-<td>One short prefix</td>
-<td>Console; optional numeric artifact</td>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/particles/1_launch_from_surface.py">1_launch_from_surface.py</a></td>
+<td>Five particles launched straight up from a site on Dimorphos, with initial conditions made from arrays in the script</td>
+<td>1 min</td>
 </tr>
 <tr>
-<td>Build your own binary</td>
-<td><a href="#custom-binary">Custom binary</a></td>
-<td>One short prefix</td>
-<td>Null-aware console summary</td>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/particles/2_orbits_around_the_binary.py">2_orbits_around_the_binary.py</a></td>
+<td>Inertial initial conditions and the Hou gravity model, for orbits around the whole binary</td>
+<td>2 min</td>
 </tr>
 <tr>
-<td>Understand component reuse</td>
-<td><a href="#reuse-noise-priors-and-channels">Noise/prior/channel reuse</a></td>
-<td>Initial propagation only</td>
-<td>Compared summaries</td>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/particles/3_many_particles_from_a_file.py">3_many_particles_from_a_file.py</a></td>
+<td>A table of initial conditions from a CSV file, several worker processes, all figures and two animations</td>
+<td>5 min</td>
 </tr>
 <tr>
-<td>Reproduce the paper</td>
-<td><a href="#one-hera-paper-case">One Hera case</a></td>
-<td>Full 16 orbits</td>
-<td>Standard results and figures</td>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/particles/4_redraw_saved_trajectories.py">4_redraw_saved_trajectories.py</a></td>
+<td>Load saved trajectories and redraw them at other zoom levels and for your own groups of particles</td>
+<td>1 min</td>
 </tr>
 <tr>
-<td>Reproduce Table 2</td>
-<td><a href="#all-four-hera-cases">All Hera cases</a></td>
-<td>Four independent full propagations</td>
-<td>Table 2 and per-case runs</td>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/particles/5_bed1_all_sites.py">5_bed1_all_sites.py</a></td>
+<td>A whole study: both bodies, pole and equator, one PDF and animations</td>
+<td>1 h to propagate, minutes to redraw</td>
 </tr>
 <tr>
-<td>Check analytic versus AD</td>
-<td><a href="#hou-native-versus-ad">Derivative comparison</a></td>
-<td>Both routes</td>
-<td>Asserted report agreement</td>
-</tr>
-<tr>
-<td>Fit Kaula laws</td>
-<td><a href="#kaula-laws-and-new-shapes">Kaula and new shapes</a></td>
-<td>No trajectory dynamics</td>
-<td>Laws, figures, tables, manifest</td>
-</tr>
-<tr>
-<td>Compare degrees/priors</td>
-<td><a href="#degree-prior-and-gravity-trades">Degree and gravity trades</a></td>
-<td><code>propagate</code>: yes; <code>compare</code>: no</td>
-<td>Study reports and plots</td>
-</tr>
-<tr>
-<td>Assess tracking gaps/arcs</td>
-<td><a href="#multi-arc-and-tracking-gaps">Multi-arc</a></td>
-<td>Continuous and arc transports; sweep reused</td>
-<td>Console; optional artifact</td>
-</tr>
-<tr>
-<td>Compare fixed, considered and estimated gravity</td>
-<td><a href="consider-and-histories.html#hera-example-and-numerical-evidence">Hera uncertainty histories</a></td>
-<td>One shared transport</td>
-<td>Mass histories, gravity bars and binary-position uncertainty</td>
-</tr>
-<tr>
-<td>Propagate declared spacecraft uncertainty</td>
-<td><a href="landing-covariance.html#example">RF3BP covariance</a></td>
-<td>One shared binary/particle trajectory</td>
-<td>Six-state covariance histories, standard artifacts and figures; no simulated measurements</td>
-</tr>
-<tr>
-<td>Release using a retained Hera covariance</td>
-<td><a href="#hera-spacecraft-release">Hera spacecraft release</a></td>
-<td>Post-release binary/particle propagation; original binary transport reused</td>
-<td>Coestimated/considered source comparison, six-state histories and source/release metadata</td>
-</tr>
-<tr>
-<td>Map or supply local gravity uncertainty</td>
-<td><a href="#near-field-gravity-covariance">Near-field gravity covariance</a></td>
-<td>No trajectory dynamics</td>
-<td>Coefficient, fixed-point and correlated encountered-acceleration reports</td>
-</tr>
-<tr>
-<td>Visualize a direct local-field mesh approach</td>
-<td><a href="#3d-approach-and-landing">3D approach and landing</a></td>
-<td>Shared RF3BP state/variational transport and own-event probes</td>
-<td>Target mesh/domains, position regions, smooth contact covariance, finite-horizon outcomes, videos and interactive views</td>
-</tr>
-<tr>
-<td>Follow long curved spacecraft paths</td>
-<td><a href="long-trajectories.html">Long approaches and flybys</a></td>
-<td>One transport per nominal case; source-factor comparisons reused</td>
-<td>Fixed target, moving companion, target-relative position covariance, retained inertial comparisons, videos and interactive views</td>
-</tr>
-<tr>
-<td>Explore old model comparisons</td>
-<td><a href="#legacy-gravity-comparison">Legacy gravity</a></td>
-<td>Several two-orbit runs</td>
-<td>Printed comparison</td>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/particles/6_compare_gravity_models.py">6_compare_gravity_models.py</a></td>
+<td>The same particles under polyhedral gravity and under the Hou series</td>
+<td>3 min</td>
 </tr>
 </tbody>
 </table></div>
-<p>For a short paper script and an editable custom model, start with <a href="hera-start.html">Run and customize Hera covariance</a>, <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/hera_one_case.py">hera_one_case.py</a> and <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/hera_custom.py">hera_custom.py</a>.</p>
-<p>The <a href="ejecta-trajectories.html">ejecta trajectories</a> guide covers one or many nominal massless particles, optional solar forces, polyhedral particle gravity and standard exports.</p>
-<p>The separate <a href="tumbling-playground.html">Dimorphos tumbling playground</a> runs nominal dynamics only for attitude/spin experiments, with no covariance calculation.</p>
-<h2 id="running-examples-reliably">Environment and execution</h2>
-<p><a href="quickstart.html">Quick start</a> explains <code>bootstrap</code>, <code>build</code>, <code>ad_environment</code> and <code>plot_environment</code>. Use the managed launcher from the repository root:</p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>examples/custom_binary.py
-python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--ad<span class="w"> </span>examples/ad_covariance.py
-python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/hera_kaula.py
+<p><a href="particle-simulation.html">How the particle simulation works</a> explains what these scripts
+call.</p>
+<h2 id="covariance-analysis-basics">Covariance analysis: basics</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Script</th>
+<th>What it shows</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/basics/synthetic_binary.py">synthetic_binary.py</a></td>
+<td>A made-up binary: which masses and gravity terms the observations constrain</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/basics/custom_binary.py">custom_binary.py</a></td>
+<td>A binary of your own from ellipsoids and an initial state</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/basics/reuse_design_matrix.py">reuse_design_matrix.py</a></td>
+<td>New a priori covariances, noise and observation types on a design matrix already computed, with no new propagation</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/basics/ad_and_analytic_partials.py">ad_and_analytic_partials.py</a></td>
+<td>The same analysis with automatic differentiation and with the hand-derived partials</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/basics/gravity_models.py">gravity_models.py</a></td>
+<td>Legacy alternative mutual-gravity models compared with Hou</td>
+<td>5 min</td>
+</tr>
+</tbody>
+</table></div>
+<p><a href="covariance-tutorial.html">How the covariance analysis works</a> explains what these scripts
+call.</p>
+<h2 id="covariance-analysis-the-hera-paper">Covariance analysis: the Hera paper</h2>
+<p>Times are for the paper's 16 orbits; set <code>ORBITS = 1</code> for a quick look.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Script</th>
+<th>What it shows</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/hera/one_case.py">one_case.py</a></td>
+<td>One case of the paper next to its Table 2; edit <code>CASE</code></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/hera/paper_case.py">paper_case.py</a></td>
+<td>The full-tumbling case with tables and figures</td>
+<td>25 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/hera/all_cases.py">all_cases.py</a></td>
+<td>All four rotation states of Table 2, one after the other</td>
+<td>100 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/hera/custom_system.py">custom_system.py</a></td>
+<td>Your own masses, secondary shape and secondary rotation</td>
+<td>25 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/hera/degree_trades.py">degree_trades.py</a></td>
+<td>Which degrees are estimated and whether the Kaula rule is used, from one design matrix</td>
+<td>25 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/hera/consider_and_histories.py">consider_and_histories.py</a></td>
+<td>Higher degrees estimated, considered or fixed, and the covariance as observations accumulate</td>
+<td>30 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/hera/multi_arc.py">multi_arc.py</a></td>
+<td>Independent arcs and a daily gap in the observations</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/hera/kaula_priors.py">kaula_priors.py</a></td>
+<td>The paper's Kaula rules fitted again from its shape ensembles</td>
+<td>seconds</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/hera/kaula_from_a_shape.py">kaula_from_a_shape.py</a></td>
+<td>A Kaula rule for a shape of your own</td>
+<td>1 min</td>
+</tr>
+</tbody>
+</table></div>
+<p><a href="hera-start.html">Run and customize the Hera analysis</a> walks through them, and
+<a href="hera.html">The Hera results</a> has the numbers.</p>
+<h2 id="covariance-of-a-particles-trajectory">Covariance of a particle's trajectory</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Script</th>
+<th>What it shows</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/trajectory/quickstart.py">quickstart.py</a></td>
+<td>The smallest complete case</td>
+<td>seconds</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/trajectory/particle_covariance.py">particle_covariance.py</a></td>
+<td>The contributions of the binary's and of the particle's own uncertainty</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/trajectory/from_saved_hera_analyses.py">from_saved_hera_analyses.py</a></td>
+<td>A particle whose initial covariance comes from saved Hera covariance analyses (run <code>consider_and_histories.py</code> first)</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/trajectory/impact_covariance.py">impact_covariance.py</a></td>
+<td>The covariance of the time and the point of an impact on Dimorphos or Didymos</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/trajectory/long_trajectories.py">long_trajectories.py</a></td>
+<td>A particle that coasts for hours, kilometres from the binary</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/trajectory/local_field_from_hou.py">local_field_from_hou.py</a></td>
+<td>A local gravity field near the surface fitted to the Hou series, with its covariance</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/examples/covariance/trajectory/local_field_direct.py">local_field_direct.py</a></td>
+<td>A local gravity field with coefficients and covariance given directly</td>
+<td>seconds</td>
+</tr>
+</tbody>
+</table></div>
+<p>The chapters <a href="landing-covariance.html">Particle and impact covariance</a>,
+<a href="near-field-gravity.html">Local-field gravity</a>, <a href="long-trajectories.html">Long approaches and flybys</a>
+and <a href="landing-visualization.html">3D approach and impact</a> explain the methods and show the
+results.</p>
+<h2 id="evidence-tools-are-separate-from-user-examples">Scripts that take options</h2>
+<p>The figures and numbers in this manual were produced by scripts that take command-line
+options and write checksummed result folders. They live in <code>tools/evidence/</code> and call the
+same library functions as the examples. Use them to reproduce a figure exactly; use the
+examples to learn and to start your own work.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Evidence script</th>
+<th>Corresponding example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tools/evidence/synthetic_binary_artifact.py</code></td>
+<td><code>basics/synthetic_binary.py</code></td>
+</tr>
+<tr>
+<td><code>tools/evidence/hera_all_cases.py</code></td>
+<td><code>hera/all_cases.py</code></td>
+</tr>
+<tr>
+<td><code>tools/evidence/hera_degree_trades.py</code></td>
+<td><code>hera/degree_trades.py</code></td>
+</tr>
+<tr>
+<td><code>tools/evidence/hera_consider_and_histories.py</code></td>
+<td><code>hera/consider_and_histories.py</code></td>
+</tr>
+<tr>
+<td><code>tools/evidence/hera_multi_arc.py</code></td>
+<td><code>hera/multi_arc.py</code></td>
+</tr>
+<tr>
+<td><code>tools/evidence/hera_kaula_priors.py</code></td>
+<td><code>hera/kaula_priors.py</code></td>
+</tr>
+<tr>
+<td><code>tools/evidence/particle_covariance_cases.py</code></td>
+<td><code>trajectory/particle_covariance.py</code></td>
+</tr>
+<tr>
+<td><code>tools/evidence/particle_from_saved_hera_analyses.py</code></td>
+<td><code>trajectory/from_saved_hera_analyses.py</code></td>
+</tr>
+<tr>
+<td><code>tools/evidence/local_field_cases.py</code></td>
+<td><code>trajectory/local_field_from_hou.py</code>, <code>local_field_direct.py</code></td>
+</tr>
+<tr>
+<td><code>tools/evidence/landing_covariance.py</code></td>
+<td><code>trajectory/impact_covariance.py</code></td>
+</tr>
+<tr>
+<td><code>tools/evidence/mission_scale_trajectories.py</code></td>
+<td><code>trajectory/long_trajectories.py</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Each prints its options with <code>--help</code>, for example:</p>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>tools/evidence/hera_all_cases.py<span class="w"> </span>--help
 </code></pre></div>
 
-<p>Plain <code>run</code> and <code>--ad</code> select the JAX environment. <code>--plot</code> selects JAX plus plotting. <code>--native</code> selects the analytic-only environment. <strong>The environment flag does not change the transport selected inside your script.</strong> A script that omits <code>transport</code> still requests default AD; without JAX it raises an actionable error. For native-only execution the script must pass <code>bc.NativeAnalyticTransport()</code> or expose its own corresponding option.</p>
-<p>The launcher changes the working directory to the machine cache. Resolve data relative to <code>__file__</code> or pass absolute input/output paths, for example <code>--output "$PWD/results/my-new-run"</code>. Existing scripts already resolve their own bundled inputs. Numeric artifact writers refuse an existing target; standard exports create descriptive unique run folders. Add <code>--tex</code> only when a working external LaTeX installation is available.</p>
-<p>Historical timings below are observations from an Apple M4 Pro, not performance guarantees. AD compilation, active CPU jobs and selected gravity degree matter. The <a href="consider-and-histories.html#hera-example-and-numerical-evidence">uncertainty-history increment</a> has its own numerical checks; building this site runs no science.</p>
-<h2 id="s0-smoke-run">S0 smoke run</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/s0_covariance.py">Source: s0_covariance.py</a> · <a href="api-basco-references.html">Reference factories</a></p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>example
-python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>examples/s0_covariance.py<span class="w"> </span>--prefix
-python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--native<span class="w"> </span>examples/s0_covariance.py<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--prefix<span class="w"> </span>--derivatives<span class="w"> </span>manual<span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/s0-native-prefix&quot;</span>
-</code></pre></div>
-
-<p>The synthetic S0 study exercises a rigid binary, degree-2 estimated parameters, initial-state errors, position and attitude observations. <code>--prefix</code> integrates only one 600-second output interval and costs seconds. The deliberately small observation set leaves null directions; unavailable formal uncertainty is the correct result.</p>
-<p>Without <code>--prefix</code> the script runs the full configured S0 study. <code>--dt</code> changes RK4 seconds; <code>--derivatives ad|manual</code> selects AD or hand-derived native partials. <code>--output</code> saves a <strong>numeric artifact</strong>, not the full standard figure gallery: epochs, native states, transition/sensitivity matrices, rows, layouts, singular/null information, covariance when available, reports and source hashes.</p>
-<h2 id="custom-binary">Custom binary</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/custom_binary.py">Source: custom_binary.py</a> · <a href="bodies-and-states.html">Bodies and states</a></p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>examples/custom_binary.py
-</code></pre></div>
-
-<p>This is the smallest fully explicit body/state construction: two SI ellipsoids, a 2 km separation, a near-circular velocity scale, spin vectors and identity rotations. It selects masses, moments and initial-state errors, then requests one 600-second observation epoch with an RK4 step of 60 s. Astropy quantities make unit intent visible. Default AD is required; no plotting is needed. It prints unresolved directions and writes no results folder.</p>
-<p>Use it as a starting point for your own script, but lengthen the study and validate its dynamics before interpreting scientific uncertainties. A geometrically convenient initial orbit is not a full-field equilibrium solve.</p>
-<h2 id="reuse-noise-priors-and-channels">Reuse noise, priors and channels</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/reuse_covariance.py">Source: reuse_covariance.py</a> · <a href="workflow.html">Reuse boundaries</a></p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>reuse
-</code></pre></div>
-
-<p>A 1,200-second S0 prefix is propagated once. The script compares data-only covariance, an independent 5% primary-mass prior, doubled measurement noise and position-only channels. The new prior does not change the information carried by the data. The new noise and prior need no ODE evaluations; the compatible channel change reuses the checked transport. Output is printed summaries and a mass-properties report. Cost is seconds plus first AD compilation.</p>
-<h2 id="one-hera-paper-case">One Hera paper case</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/hera_covariance.py">Source: hera_covariance.py</a> · <a href="hera.html">Complete annotated study</a></p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>hera
-</code></pre></div>
-
-<p>The default is full tumbling (<code>AC3</code>), 16 mutual orbits, gravity order 6, both masses and raw degree-2/3/4 moments, free barycenter offset/rate, and the paper's combined Kaula prior. The script prints the paper-normalized report and writes a standard results folder including <code>paper</code>, <code>harmonics</code> and <code>mass</code> tables and PNG/SVG/PDF figures. It requests external LaTeX. The managed plotting environment includes JAX; there is no native fallback.</p>
-<p>Historical full-case timings: about 1–2 minutes AD versus about 25 minutes native; Phase 2's concurrent AD acceptance took 199–201 seconds per case. To change the study, modify the readable <code>make_study(...)</code> call in your own runner. Available factory arguments are documented in the <a href="hera.html#a-readable-modular-runner">Hera chapter</a>.</p>
-<h2 id="all-four-hera-cases">All four Hera cases</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/hera_all_cases.py">Source: hera_all_cases.py</a></p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>hera_cases
-python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>hera_cases<span class="w"> </span>AC1<span class="w"> </span>AC3<span class="w"> </span>--jobs<span class="w"> </span><span class="m">1</span>
-python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>examples/hera_all_cases.py<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>AC3<span class="w"> </span>--orbits<span class="w"> </span><span class="m">2</span><span class="w"> </span>--no-export
-</code></pre></div>
-
-<p>The four cases share one factory and differ in initial rotation. Independent processes propagate each case, print progress and compare the nine selected uncertainty percentages to Table 2's printed rounding. With all cases the target is <strong>36/36</strong>. Default exports write one standard run per case; <code>--no-export</code> prints only; <code>--figures</code> adds plots when launched with <code>--plot</code>. Other options are <code>--orbits</code>, <code>--dt</code>, <code>--jobs</code> and <code>--output-root</code>.</p>
-<p>The two-orbit command is a diagnostic prefix; its percentages are not expected to reproduce the 16-orbit table. A numerical conditioning refusal is reported, not patched by silently weakening the solver.</p>
-<h2 id="hou-native-versus-ad">Hou native versus AD</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/ad_covariance.py">Source: ad_covariance.py</a> · <a href="derivatives.html">Derivative methods</a></p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>ad_example
-</code></pre></div>
-
-<p>The full S0 study runs twice with the same model, parameter selection, observation plan and RK4 settings. One provider is <code>NativeAnalyticTransport</code>; the other is the default Hou AD route. The script asserts equal posterior rank and mass/degree-2 sigma agreement at <code>rtol=1e-8</code>. Phase 2 observed a maximum mass/GM/ratio sigma difference of 5.5e-12 relative. It prints the checks and mass report; it writes no artifact. An earlier measured execution took about 35 seconds.</p>
-<p>This is a useful same-problem backend comparison. It does not replace <a href="derivatives.html">opt-in finite-difference checks</a> or certify all nonlinear inference behavior.</p>
-<h2 id="kaula-laws-and-new-shapes">Kaula laws and new shapes</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/hera_kaula.py">Source: hera_kaula.py</a> · <a href="shapes-and-kaula.html">Shapes and Kaula</a></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Refit the paper&#39;s retained coefficient clouds, no new meshes or trajectories.</span>
-python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/hera_kaula.py<span class="w"> </span>--tex
-
-<span class="c1"># Generate a small, new, seeded low-resolution shape/density ensemble.</span>
-python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/hera_kaula.py<span class="w"> </span>--fresh<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--max-degree<span class="w"> </span><span class="m">4</span><span class="w"> </span>--copies<span class="w"> </span><span class="m">3</span><span class="w"> </span>--subdivisions<span class="w"> </span><span class="m">1</span>
-</code></pre></div>
-
-<p>Archived mode verifies source cloud hashes, fits separate zonal/nonzonal power laws and checks all adopted law parameters/sigmas against the paper. It reproduces Figure 3 in roughly 10 seconds historically. The default input roots are BASCO's captured paper/Kaula ensembles; <code>--archive</code> and <code>--ensembles</code> replace them.</p>
-<p>Fresh mode calls the generic mesh, radial sampler and core/shell/torus density components with a fixed seed. The CLI permits <code>--max-degree</code> 3–12, <code>--copies</code> per correlation length and <code>--subdivisions</code> for ellipsoid resolution. This is preprocessing, not trajectory integration. Cost grows with degree, mesh resolution and ensemble size. The demonstration is not a claim to reconstruct the full original 200-member random ensemble.</p>
-<p>Outputs include PNG/SVG/PDF figures, <code>tables/kaula_laws.csv</code>, <code>tables/kaula_envelopes.csv</code>, <code>results.json</code>, <code>validation.json</code>, <code>README.md</code> and a byte manifest. <code>--output</code> selects a new destination; <code>--tex</code> is optional.</p>
-<h2 id="degree-prior-and-gravity-trades">Degree, prior and gravity trades</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/hera_degree_trades.py">Source: hera_degree_trades.py</a> · <a href="hera.html#degree-prior-and-gravity-trades">Hera trade interpretation</a></p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/hera_degree_trades.py<span class="w"> </span>--help
-
-<span class="c1"># A fresh active-gravity-4 transport, default AD.</span>
-python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--ad<span class="w"> </span>examples/hera_degree_trades.py<span class="w"> </span>propagate<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--gravity-degree<span class="w"> </span><span class="m">4</span><span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/hera-ac3-g4-ad-transport&quot;</span>
-
-<span class="c1"># Existing retained native transports are a different, explicit provider.</span>
-python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/hera_degree_trades.py<span class="w"> </span>compare<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--derivatives<span class="w"> </span>native<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--transport-root<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/artifacts/scientific&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--output<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/hera-degree-comparison&quot;</span><span class="w"> </span>--figures
-</code></pre></div>
-
-<p><code>propagate</code> accepts <code>--state</code>, <code>--gravity-degree</code>, <code>--dt</code>, <code>--duration</code>, required <code>--output</code> and <code>--derivatives ad|native</code>. It stores a fresh complete numeric transport artifact with source identity.</p>
-<p><code>compare</code> assembles six paper Figure 5 cases and additional symmetric degree/prior experiments from <strong>completed BASCO transports</strong>. It performs no new dynamics. It needs local transport artifacts named <code>hera-ac0-dt75-v1</code> through <code>hera-ac3-dt75-v1</code>; these large artifacts are ignored by Git and are not guaranteed to exist in a clean clone. The script does not download or fabricate them. <code>--gravity4-transport</code> adds a matched order-4 comparison, <code>--figures</code> draws the reports, and <code>--tex</code> requests LaTeX. Its default provider is native because the retained fixtures are native. All source transports in a comparison must match its declared provider.</p>
-<p>The two commands above demonstrate separate activities: the newly produced AD order-4 artifact cannot be substituted into an otherwise native comparison. Choose one backend consistently and create/reuse the matching completed inputs. See the <a href="hera.html">Hera chapter</a> for the precise Figure 5 parameter spaces and null-direction caveats. Historical <code>compare</code> cost was about 20 seconds.</p>
-<h2 id="multi-arc-and-tracking-gaps">Multi-arc and tracking gaps</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/multi_arc_covariance.py">Source: multi_arc_covariance.py</a> · <a href="multi-arc.html">Multi-arc guide</a></p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>multi_arc
-python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>examples/multi_arc_covariance.py<span class="w"> </span>--help
-python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>examples/multi_arc_covariance.py<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--state<span class="w"> </span>AC1<span class="w"> </span>--days<span class="w"> </span><span class="m">7</span><span class="w"> </span>--arc-days<span class="w"> </span><span class="m">3</span>.5<span class="w"> </span>--blackout<span class="w"> </span><span class="m">8</span>
-</code></pre></div>
-
-<p>Defaults are AC3 full tumbling, Hou order 2, 14 days, 15-minute cadence, 8 h/day off, four 3.5-day arcs, RK4 75 s and AD. Masses/gravity are shared; each arc gets its own binary initial state and channel nuisance coordinates. Order 2 uses no field prior; <code>--order 4|6</code> estimates moments through degree 4 with the paper prior. Other options are <code>--cadence</code> in minutes, <code>--dt</code> in seconds, <code>--derivatives ad|manual</code>, and optional numeric-artifact <code>--output</code>.</p>
-<p>The script compares a continuous ungapped study, the same continuous transport with a blackout, independent arcs, and a blackout sweep. Reweighting/selection in the sweep reuses per-arc transports. It prints a conditioning refusal when a continuous chaotic arc exceeds the solver guard; that refusal is an intended result. Historical default execution was about four minutes on the measured Mac; higher-order longer studies cost more.</p>
-<p>These are covariance studies. The separate generic nonlinear batch driver exists, but this example does not fit actual Hera observations or apply a sequential filter.</p>
-<h2 id="hera-spacecraft-release">Hera spacecraft release</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/hera_spacecraft_release.py">Source: hera_spacecraft_release.py</a> · <a href="landing-covariance.html#hera-informed-release">Release and covariance guide</a></p>
-<p>This example starts from completed Hera covariance runs exported with their original factors. It reloads the nominal/variational binary history, selects an exact stored release epoch, and propagates a massless spacecraft under both rotating Hou fields. It creates no observation values or new information and performs no refit.</p>
-<p>The runner separates <code>make_model()</code>, <code>run(source_runs, backend=...)</code>, <code>export_results(...)</code> and <code>make_plots(...)</code>. <code>source_runs</code> maps display labels to completed standard-run folders for the coestimated and considered cases. Backend-specific source artifacts must match the model, parameter definitions and retained binary transport; a changed nominal model is rejected rather than silently reused.</p>
-<p>These are saved formal covariance-study results, not fits to realized measurements. The original factor is mapped through the release before subsequent variational transport; this limits precision loss when large earlier-source sensitivities cancel, while preserving the original null-support policy. This change in multiplication order adds no latent errors or fitted information. See <a href="landing-covariance.html#numerical-covariance-transport">numerical covariance transport</a>.</p>
-<p>The current local source folders are under <code>artifacts/validation/consider-history-20261020/ad-v2/</code> and <code>native-v2/</code>. They are scientific run artifacts, ignored by Git and not guaranteed in a clean clone. The public loader is <code>from basco.spacecraft_io import load_covariance_source</code>; a run without the saved original factor is insufficient. The full script documents its input paths and exposes backend/output options.</p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/hera_spacecraft_release.py<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--estimated<span class="w"> </span>/absolute/path/to/completed-coestimated-run<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--considered<span class="w"> </span>/absolute/path/to/completed-considered-run<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--backend<span class="w"> </span>ad<span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/hera-spacecraft-release&quot;</span>
-</code></pre></div>
-
-<p>Use <code>--backend native</code> to select the native post-release transport. <code>--dt</code>, <code>--duration</code> and <code>--cadence</code> change its numerical settings. <code>--no-plots</code> saves only numerical results. The output preserves <code>transport/</code>, per-case <code>history/</code> and <code>source/</code>, plus <code>run.json</code> and a manifest. Figures are drawn separately and use time since release.</p>
-<p>The selected case uses AC3, Hou order 6, masses and field uncertainty through degree 4, and a secondary-body release offset <code>(0, 0, 250)</code> m with body-relative velocity <code>(0.01, 0.02, 0.03)</code> m/s. Independent release sigmas are 0.1 m and 0.0001 m/s per component. Original source coordinates are at 0 s; the included-information cutoff and retained release epoch are 654300 s. These are different concepts even when the last two values coincide.</p>
-<p>See the <a href="landing-covariance.html#keep-the-three-epochs-distinct">three-epoch explanation</a>, <a href="landing-covariance.html#release-map-and-retained-sensitivities">release equations</a> and <a href="landing-covariance.html#hera-release-plots">comparison figures</a>. This Hera release runner reports trajectory covariance after release. The separate <a href="landing-visualization.html">direct local-field approach</a> adds selected mesh contact/covariance demonstrations; those declared sources are not this saved Hera posterior.</p>
-<h2 id="near-field-gravity-covariance">Near-field gravity covariance</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/near_field_covariance.py">Source: near_field_covariance.py</a> · <a href="near-field-gravity.html">Local field and uncertainty guide</a></p>
-<p>This self-contained script demonstrates two input routes. <code>mapped_example</code> builds an S0 Hou order-6 model with uncertain masses and degree-2/3/4 moments, then maps a declared joint source factor into a finite cylindrical basis. <code>direct_example</code> supplies local coefficients and an explicitly correlated spacecraft/mass/coefficient factor without an exterior model or archive. Both preserve the same source cross terms and null-support policy.</p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>examples/near_field_covariance.py
-python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--native<span class="w"> </span>examples/near_field_covariance.py<span class="w"> </span>--backend<span class="w"> </span>native
-</code></pre></div>
-
-<p>The mapped study uses azimuthal degree 4, radial order 5 and radial scale 16. These are checked example settings, not universal field defaults. Check held-out field values and source sensitivities when changing a basis. The mapper requires an explicit continuation assumption; a fit to truncated Hou values is not an independent near-surface truth model.</p>
-<p>The direct example computes acceleration uncertainty at an uncertain query position using one combined source/coefficient Jacobian. It retains the position–gravity cross terms instead of adding separate independent budgets. The script prints numerical reports and representation rank. It creates no simulated observations, covariance solve, spacecraft propagation, contact event or landing footprint. The <a href="near-field-gravity.html#validation-and-example-figures">field guide</a> links the evidence figures and <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/docs/validation/NEAR_FIELD_MAPPING.md">validation record</a>.</p>
-<h2 id="legacy-gravity-comparison">Legacy gravity comparison</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/gravity_models.py">Source: gravity_models.py</a> · <a href="capabilities.html">Capability status</a></p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--ad<span class="w"> </span>examples/gravity_models.py
-</code></pre></div>
-
-<p>This retained reference creates two point-mass lattices, propagates two orbits under exact mascon gravity, Hou orders 2/4/6 and Cartesian multipole orders 3/5, and prints trajectory differences and mass sigmas. It uses AD and selects masses/initial-state errors. It does not produce the Hera paper reproduction.</p>
-<p>Cartesian multipole is deprecated compatibility code; the primary supported scientific workflow is Hou gravity. Mascons and second-degree reference utilities remain available but are outside current primary development. This example can be computationally heavier than a short S0 study and has no promised current timing.</p>
-<h2 id="evidence-tools-are-separate-from-user-examples">Evidence tools are separate from user examples</h2>
-<p>Scripts under <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/tools/evidence/README.md">tools/evidence</a> preserve numerical acceptance, archived replay and publication generation. They may require completed local artifacts. They are not all minimal tutorials, and not every one should be run to start a project. Use <a href="capabilities.html">capabilities</a> to distinguish available features from planned estimation/filter work.</p>
-<h2 id="3d-approach-and-landing">3D approach and landing</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/landing_covariance.py">Source: landing_covariance.py</a> · <a href="landing-visualization.html">3D guide, videos and interactive views</a></p>
-<p>This runner composes the same components for Didymos or Dimorphos. <code>make_problem</code> chooses mesh/model, a calibrated local nominal field and a declared full source factor. <code>run_problem</code> uses the shared approach/contact transport. <code>probe_problem</code> supplies selected unweighted source directions to independent value-only trajectories with their own events. <code>make_scene</code>, <code>export_run</code> and <code>render_run</code> separate numerical results from presentation.</p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/landing_covariance.py<span class="w"> </span>--target<span class="w"> </span>didymos<span class="w"> </span>--probes<span class="w"> </span><span class="m">4</span><span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/landing-didymos&quot;</span><span class="w"> </span>--figures<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/landing-didymos-figures&quot;</span><span class="w"> </span>--animation
-</code></pre></div>
-
-<p>Use <code>--target dimorphos</code>, <code>--backend native</code>, or <code>--wide --probes 12</code> as explicit study choices. The field calibration is deterministic preprocessing, not observation fitting. Free coefficient uncertainty and mass/release cross terms remain in the complete source factor. The wide case changes uncertainty under fixed nominal physics; compatible transport reuse is validated before remapping.</p>
-<p>These direct-start examples provide selected smooth contact covariance and geometric probe outcomes. They do not perform an automatic exterior/local model switch or infer miss/escape probabilities. Red means no contact within the recorded finite forecast; amber means the field domain ended. After nominal contact, later animation frames keep only its reference marker and mask the nominal covariance.</p>
-<p>For evidence and presentation from completed scenes, use <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/tools/evidence/landing_covariance.py">tools/evidence/landing_covariance.py</a>. Its <code>--presentation-only</code> mode redraws saved small/wide scenes without a dynamics or covariance rerun. <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/docs/validation/LANDING_VISUALIZATION.md">Acceptance</a> owns exact quantitative checks.</p>
-<h2 id="long-approaches-and-flybys">Long approaches and flybys</h2>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/examples/mission_scale_trajectories.py">Source: mission_scale_trajectories.py</a> · <a href="long-trajectories.html">Case results and views</a></p>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-B<span class="w"> </span>tools/dev.py<span class="w"> </span>run<span class="w"> </span>--plot<span class="w"> </span>examples/mission_scale_trajectories.py<span class="w"> </span>--scenario<span class="w"> </span>binary_flyby<span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">/results/binary-flyby&quot;</span>
-</code></pre></div>
-
-<p>Choose <code>binary_flyby</code>, <code>secondary_encounter</code> or <code>inward_approach</code>. The first two request six-hour gravity-only coasts; the inward case stops at its exterior field boundary. The runner saves the trajectory, scene, viewer and summary. The default scene uses the target body's rotating frame and its complete relative covariance. The linked chapter also retains inertial and nominal-spacecraft-following comparisons, source-factor reuse, saved-data rendering and physical limits. No measurement values or estimation updates are produced.</p>
-<h2 id="surface-close-ups">Surface close-ups</h2>
-<p><a href="surface-closeups.html">Five close-up animations</a> show the actual covariance at a local surface scale: 3D near-contact ellipsoids for both bodies, their evolving current-position marginals projected onto the smooth landing facet, and a target-only close Dimorphos encounter. The camera box and time interval are presentation choices. The displayed covariance retains its physical metre scale.</p>
-<p><a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/tools/evidence/landing_closeups.py">Saved-data producer</a> · <a href="api-basco-flight_closeups.html#basco-flight_closeups-CloseupCamera">Camera and projection API</a></p><nav class="page-pager" aria-label="Adjacent pages"><a href="ejecta-trajectories.html"><span>← Previous</span>Ejecta trajectories</a><a href="landing-covariance.html"><span>Next →</span>Spacecraft and landing covariance</a></nav><footer class="site-footer"><span>BASCO 0.1.0 · <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/src/basco/__init__.py">Source bdb5dd7</a></span><span><a href="coverage.html">Validation records</a> · <a href="capabilities.html">Capabilities and limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#choose-your-first-example">Script index</a><a class="toc-h2" href="#running-examples-reliably">Environment and execution</a><a class="toc-h2" href="#s0-smoke-run">S0 smoke run</a><a class="toc-h2" href="#custom-binary">Custom binary</a><a class="toc-h2" href="#reuse-noise-priors-and-channels">Reuse noise, priors and channels</a><a class="toc-h2" href="#one-hera-paper-case">One Hera paper case</a><a class="toc-h2" href="#all-four-hera-cases">All four Hera cases</a><a class="toc-h2" href="#hou-native-versus-ad">Hou native versus AD</a><a class="toc-h2" href="#kaula-laws-and-new-shapes">Kaula laws and new shapes</a><a class="toc-h2" href="#degree-prior-and-gravity-trades">Degree, prior and gravity trades</a><a class="toc-h2" href="#multi-arc-and-tracking-gaps">Multi-arc and tracking gaps</a><a class="toc-h2" href="#hera-spacecraft-release">Hera spacecraft release</a><a class="toc-h2" href="#near-field-gravity-covariance">Near-field gravity covariance</a><a class="toc-h2" href="#legacy-gravity-comparison">Legacy gravity comparison</a><a class="toc-h2" href="#evidence-tools-are-separate-from-user-examples">Evidence tools are separate from user examples</a><a class="toc-h2" href="#3d-approach-and-landing">3D approach and landing</a><a class="toc-h2" href="#long-approaches-and-flybys">Long approaches and flybys</a><a class="toc-h2" href="#surface-close-ups">Surface close-ups</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">PDF handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/examples.md" target="_blank" rel="noopener">View source ↗</a></div></aside></div>
+<p>Some of these scripts still use earlier words in their options (<code>--derivatives manual</code>,
+<code>--backend native</code>); both mean the hand-derived analytic partials.</p>
+<p>The separate <a href="tumbling-playground.html">Dimorphos tumbling playground</a> runs the nominal
+dynamics only, for experiments with attitude and spin.</p><nav class="page-pager" aria-label="Adjacent pages"><a href="ejecta-trajectories.html"><span>← Previous</span>Particle trajectories</a><a href="landing-covariance.html"><span>Next →</span>Particle and impact covariance</a></nav><footer class="site-footer"><span>BASCO 0.1.0 · <a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/src/basco/__init__.py">Source e58c50d</a></span><span><a href="coverage.html">Validation records</a> · <a href="capabilities.html">Capabilities and limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#choose-your-first-example">Particle simulation</a><a class="toc-h2" href="#covariance-analysis-basics">Covariance analysis: basics</a><a class="toc-h2" href="#covariance-analysis-the-hera-paper">Covariance analysis: the Hera paper</a><a class="toc-h2" href="#covariance-of-a-particles-trajectory">Covariance of a particle&#x27;s trajectory</a><a class="toc-h2" href="#evidence-tools-are-separate-from-user-examples">Scripts that take options</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">PDF handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/examples.md" target="_blank" rel="noopener">View source ↗</a></div></aside></div>
 <dialog class="search-dialog" id="search-dialog" aria-label="Search the BASCO manual"><form class="search-field" method="dialog"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search tasks, functions, variables…" aria-label="Search the manual" autocomplete="off"><button type="button" data-search-close>Esc</button></form><div id="search-results" class="search-results" role="region" aria-label="Search results" aria-live="polite"></div><div class="search-hint">↑ ↓ to choose &nbsp; Enter to open &nbsp; Esc to close &nbsp; · &nbsp; Search works offline</div></dialog></body></html>

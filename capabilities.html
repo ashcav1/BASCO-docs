@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Capabilities and limits · BASCO</title><meta name="description" content="Implemented capabilities, validation references and remaining work."><meta name="theme-color" content="#192439"><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/katex/katex.min.css"><script>try{const t=JSON.parse(localStorage.getItem('basco:manual:theme'));if(t)document.documentElement.dataset.theme=t;}catch{}</script><script src="assets/search-index.js" defer></script><script src="assets/search.js" defer></script><script src="assets/katex/katex.min.js" defer></script><script src="assets/site.js" defer></script></head>
 <body data-page-title="Capabilities and limits"><a class="skip-link" href="#main-content">Skip to content</a>
-<aside class="sidebar" aria-label="Documentation navigation"><a class="brand" href="index.html"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="#9a8ebd" transform="rotate(-29 24 24)"/><ellipse cx="19" cy="26" rx="10" ry="13" fill="#a696cf" transform="rotate(-29 19 26)"/><ellipse cx="38" cy="16" rx="5" ry="4" fill="#e5aa72"/></svg><b>BASCO</b></a><button class="nav-search" data-search-open><span>Search documentation</span><kbd>⌘ K</kbd></button><nav><details class="nav-group" data-group="Getting started" open><summary>Getting started</summary><a href="index.html">Overview</a><a href="quickstart.html">Installation and first example</a><a href="covariance-tutorial.html">Create a covariance run</a><a href="hera-start.html">Run and customize Hera covariance</a><a href="workflow.html">Study setup</a></details><details class="nav-group" data-group="Models and parameters" open><summary>Models and parameters</summary><a href="bodies-and-states.html">Bodies and states</a><a href="parameters.html">Gravity and estimated parameters</a><a href="shapes-and-kaula.html">Shapes and Kaula priors</a></details><details class="nav-group" data-group="Covariance analysis" open><summary>Covariance analysis</summary><a href="observations.html">Measurements and schedules</a><a href="statistics.html">Noise, priors and solvers</a><a href="consider-and-histories.html">Consider parameters and covariance histories</a><a href="near-field-gravity.html">Near-field gravity covariance</a><a href="multi-arc.html">Multi-arc covariance and estimation</a><a href="results.html">Results and exports</a><a href="reuse-and-trades.html">Model comparisons</a></details><details class="nav-group" data-group="Examples" open><summary>Examples</summary><a href="hera.html">Hera paper reproduction</a><a href="tumbling-playground.html">Dimorphos tumbling playground</a><a href="ejecta-trajectories.html">Ejecta trajectories</a><a href="examples.html">Example scripts</a><a href="landing-covariance.html">Spacecraft and landing covariance</a><a href="landing-visualization.html">3D approach and landing covariance</a><a href="long-trajectories.html">Long approaches and flybys</a><a href="surface-closeups.html">Surface close-ups</a></details><details class="nav-group" data-group="Reference" open><summary>Reference</summary><a href="api.html">API reference</a><a href="modules.html">Modules</a><a href="concepts.html">Equations and conventions</a><a href="glossary.html">Glossary and notation</a><a href="handbook.html">PDF handbook</a></details><details class="nav-group" data-group="Validation and development" open><summary>Validation and development</summary><a href="derivatives.html">Derivative validation</a><a href="coverage.html">Documentation and validation records</a><a href="extending.html">Extension interfaces</a><a href="capabilities.html" aria-current="page">Capabilities and limits</a><a href="troubleshooting.html">Troubleshooting</a></details></nav><div class="side-footer"><a href="basco-handbook.pdf">Download PDF</a><a href="coverage.html">Version and source information</a></div></aside>
+<aside class="sidebar" aria-label="Documentation navigation"><a class="brand" href="index.html"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="22" ry="10" fill="none" stroke="#9a8ebd" transform="rotate(-29 24 24)"/><ellipse cx="19" cy="26" rx="10" ry="13" fill="#a696cf" transform="rotate(-29 19 26)"/><ellipse cx="38" cy="16" rx="5" ry="4" fill="#e5aa72"/></svg><b>BASCO</b></a><button class="nav-search" data-search-open><span>Search documentation</span><kbd>⌘ K</kbd></button><nav><details class="nav-group" data-group="Getting started" open><summary>Getting started</summary><a href="index.html">Overview</a><a href="quickstart.html">Installation and first scripts</a><a href="particle-simulation.html">How the particle simulation works</a><a href="covariance-tutorial.html">How the covariance analysis works</a><a href="hera-start.html">Run and customize the Hera analysis</a><a href="workflow.html">Analysis setup</a></details><details class="nav-group" data-group="Models and parameters" open><summary>Models and parameters</summary><a href="bodies-and-states.html">Bodies and states</a><a href="parameters.html">Gravity and estimated parameters</a><a href="shapes-and-kaula.html">Shapes and Kaula priors</a></details><details class="nav-group" data-group="Covariance analysis" open><summary>Covariance analysis</summary><a href="observations.html">Observations and schedules</a><a href="statistics.html">Noise, a priori information and solvers</a><a href="consider-and-histories.html">Consider parameters and covariance histories</a><a href="near-field-gravity.html">Local-field gravity covariance</a><a href="multi-arc.html">Multi-arc covariance and estimation</a><a href="results.html">Results and exports</a><a href="reuse-and-trades.html">Model comparisons</a></details><details class="nav-group" data-group="Examples" open><summary>Examples</summary><a href="hera.html">Hera paper reproduction</a><a href="tumbling-playground.html">Dimorphos tumbling playground</a><a href="ejecta-trajectories.html">Particle trajectories</a><a href="examples.html">Example scripts</a><a href="landing-covariance.html">Particle and impact covariance</a><a href="landing-visualization.html">3D approach and impact covariance</a><a href="long-trajectories.html">Long approaches and flybys</a><a href="surface-closeups.html">Surface close-ups</a></details><details class="nav-group" data-group="Reference" open><summary>Reference</summary><a href="api.html">API reference</a><a href="modules.html">Modules</a><a href="concepts.html">Equations and conventions</a><a href="glossary.html">Glossary and notation</a><a href="handbook.html">PDF handbook</a></details><details class="nav-group" data-group="Validation and development" open><summary>Validation and development</summary><a href="derivatives.html">Derivative validation</a><a href="coverage.html">Documentation and validation records</a><a href="extending.html">Extension interfaces</a><a href="capabilities.html" aria-current="page">Capabilities and limits</a><a href="troubleshooting.html">Troubleshooting</a></details></nav><div class="side-footer"><a href="basco-handbook.pdf">Download PDF</a><a href="coverage.html">Version and source information</a></div></aside>
 <div class="mobile-backdrop"></div><header class="topbar"><button class="icon-button menu-button" data-menu aria-label="Open navigation" aria-expanded="false">☰</button><div class="breadcrumbs"><a href="index.html">Manual</a><span>/</span><span>Validation and development</span><span>/</span><span>Capabilities and limits</span></div><div class="top-actions"><button class="icon-button" data-back aria-label="Go back" title="Go back">←</button><button class="icon-button" data-forward aria-label="Go forward" title="Go forward">→</button><button class="icon-button" data-theme-toggle aria-label="Use dark theme" title="Toggle theme">◐</button><button class="icon-button" data-search-open aria-label="Search" title="Search (Ctrl/⌘ K)">⌕</button><a class="header-source" href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/capabilities.md" target="_blank" rel="noopener">View source ↗</a></div><div class="reading-progress"></div></header>
 <div class="page-layout"><main class="article" id="main-content" tabindex="-1"><div class="resume" aria-label="Saved reading position"></div><h1>Capabilities and limits</h1><p>BASCO computes <strong>formal local covariance for binary-asteroid masses and gravity</strong>, using the Hou/GUBAS full two-body dynamics. The tables below distinguish implemented and validated capabilities from partial interfaces and planned work.</p>
 <p><strong>Supported</strong> means implemented with recorded checks in the stated domain. <strong>Partial</strong> means some components are implemented, while the complete workflow or its validation remains open. <strong>Legacy</strong> means retained compatibility/reference functionality. <strong>Planned</strong> means unimplemented work.</p>
@@ -18,42 +18,42 @@
 <tr>
 <td>Rigid autonomous binary</td>
 <td>Supported</td>
-<td>Centered principal-axis body representation; <a href="api-basco-models.html#basco-models-BinarySystem">BinarySystem</a>, <a href="api-basco-models.html#basco-models-BinaryDynamics">BinaryDynamics</a></td>
+<td>Centered principal-axis body representation; <a href="api-basco-binary-models.html#basco-binary-models-BinarySystem">BinarySystem</a>, <a href="api-basco-binary-models.html#basco-binary-models-BinaryModel">BinaryModel</a></td>
 </tr>
 <tr>
 <td>Uniform ellipsoids</td>
 <td>Supported</td>
-<td>SI axes/density and nominal moments; <a href="api-basco-models.html#basco-models-UniformEllipsoid">UniformEllipsoid</a></td>
+<td>SI axes/density and nominal moments; <a href="api-basco-binary-models.html#basco-binary-models-UniformEllipsoid">UniformEllipsoid</a></td>
 </tr>
 <tr>
 <td>Explicit moment tables</td>
 <td>Supported</td>
-<td>Complete nominal moments with fixed reference/bounding radii; <a href="api-basco-models.html#basco-models-MomentDistribution">MomentDistribution</a></td>
+<td>Complete nominal moments with fixed reference/bounding radii; <a href="api-basco-binary-models.html#basco-binary-models-InertiaIntegrals">InertiaIntegrals</a></td>
 </tr>
 <tr>
 <td>Closed triangular meshes/OBJ</td>
 <td>Supported</td>
-<td>Geometry validation, centering/principal alignment, moments and distribution construction; <a href="api-basco-shapes.html#basco-shapes-TriangleMesh">TriangleMesh</a></td>
+<td>Geometry validation, centering/principal alignment, moments and distribution construction; <a href="api-basco-binary-shapes.html#basco-binary-shapes-TriangleMesh">TriangleMesh</a></td>
 </tr>
 <tr>
 <td>Seeded shape/density ensembles</td>
 <td>Supported</td>
-<td>Radial perturbations and core/shell/torus alternatives; <a href="api-basco-shapes.html#basco-shapes-RadialShapeSampler">RadialShapeSampler</a>, <a href="api-basco-shapes.html#basco-shapes-DensityVariation">DensityVariation</a></td>
+<td>Radial perturbations and core/shell/torus alternatives; <a href="api-basco-binary-shapes.html#basco-binary-shapes-RadialShapeSampler">RadialShapeSampler</a>, <a href="api-basco-binary-shapes.html#basco-binary-shapes-DensityVariation">DensityVariation</a></td>
 </tr>
 <tr>
 <td>Hou mutual orders 2, 4, 6</td>
 <td>Supported, primary path</td>
-<td>Order is independent of nominal input degree and selected estimated parameters; <a href="api-basco-models.html#basco-models-HouGravity">HouGravity</a></td>
+<td>Order is independent of nominal input degree and selected estimated parameters; <a href="api-basco-binary-models.html#basco-binary-models-HouGravity">HouGravity</a></td>
 </tr>
 <tr>
-<td>Fixed-step RK4 augmented transport</td>
+<td>Fixed-step RK4 augmented variational solution</td>
 <td>Supported</td>
-<td>Native30 storage with consistent state/sensitivity epochs; <a href="api-basco-transport.html#basco-transport-RK4">RK4</a></td>
+<td>The GUBAS state storage with consistent state/sensitivity epochs; <a href="api-basco-dynamics-variational_equations.html#basco-dynamics-variational_equations-RK4">RK4</a></td>
 </tr>
 <tr>
 <td>Exterior-domain checks</td>
 <td>Supported</td>
-<td>Available body moments and declared bounding geometry checked; this is not a contact/collision dynamics model</td>
+<td>Available body moments and declared bounding geometry checked; this is not an impact/collision dynamics model</td>
 </tr>
 <tr>
 <td>Exact mascon, second-degree reference models</td>
@@ -63,7 +63,7 @@
 <tr>
 <td>Cartesian multipole gravity</td>
 <td>Deprecated legacy</td>
-<td>Old imports remain; construction warns; implementation under <code>basco.ad.legacy</code></td>
+<td>Old imports remain; construction warns; implementation under <code>basco.dynamics.ad.legacy</code></td>
 </tr>
 <tr>
 <td>Independent degree-5/6 estimated parameters</td>
@@ -78,11 +78,11 @@
 <tr>
 <td>Deformation, rebound and free non-principal representation</td>
 <td>Planned</td>
-<td>Pre-contact spacecraft surface events are separate from rigid-body contact mechanics</td>
+<td>Pre-contact particle surface events are separate from rigid-body impact mechanics</td>
 </tr>
 </tbody>
 </table></div>
-<p>See <a href="bodies-and-states.html">bodies and states</a>, <a href="derivatives.html">derivatives</a> and <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/docs/validation/GRAVITY_MODELS.md">gravity compatibility evidence</a>.</p>
+<p>See <a href="bodies-and-states.html">bodies and states</a>, <a href="derivatives.html">derivatives</a> and <a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/docs/validation/GRAVITY_MODELS.md">gravity compatibility evidence</a>.</p>
 <h2 id="parameters-and-physical-reports">Parameters and physical reports</h2>
 <div class="table-scroll"><table>
 <thead>
@@ -96,7 +96,7 @@
 <tr>
 <td>Both masses</td>
 <td>Supported</td>
-<td>Positive mass coordinates with full effect on force, inertia and reports; <a href="api-basco-coordinates.html#basco-coordinates-Parameters">Parameters</a></td>
+<td>Positive mass coordinates with full effect on force, inertia and reports; <a href="api-basco-binary-parameters.html#basco-binary-parameters-EstimatedParameters">EstimatedParameters</a></td>
 </tr>
 <tr>
 <td>Degree-2 normalized moments</td>
@@ -116,17 +116,17 @@
 <tr>
 <td>18 physical initial-state errors</td>
 <td>Supported</td>
-<td>SI position, velocity, spins and six local attitude errors; distinct from native30 storage</td>
+<td>SI position, velocity, spins and six local attitude errors; distinct from GUBAS state storage</td>
 </tr>
 <tr>
 <td>Explicit coordinate scales/layouts</td>
 <td>Supported</td>
-<td>Stable labels and units; scales improve numerical conditioning and add no information; <a href="api-basco-coordinates.html#basco-coordinates-CoordinateLayout">CoordinateLayout</a></td>
+<td>Stable labels and units; scales improve numerical conditioning and add no information; <a href="api-basco-binary-parameters.html#basco-binary-parameters-ParameterLayout">ParameterLayout</a></td>
 </tr>
 <tr>
 <td>Fixed-G mass, GM, total and ratio reports</td>
 <td>Supported</td>
-<td>Uses full joint covariance; <a href="api-basco-results.html#basco-results-CovarianceResult">CovarianceResult</a></td>
+<td>Uses full joint covariance; <a href="api-basco-covariance-results.html#basco-covariance-results-CovarianceResult">CovarianceResult</a></td>
 </tr>
 <tr>
 <td>Harmonics and dimensional inertia reports</td>
@@ -169,22 +169,22 @@
 <tr>
 <td>Inertial relative position</td>
 <td>Supported</td>
-<td>Three components; <a href="api-basco-observations.html#basco-observations-RelativePosition">RelativePosition</a></td>
+<td>Three components; <a href="api-basco-covariance-observations.html#basco-covariance-observations-RelativePosition">RelativePosition</a></td>
 </tr>
 <tr>
 <td>Both body-attitude covariance tangents</td>
 <td>Supported</td>
-<td>Three local directions per body; <a href="api-basco-observations.html#basco-observations-BodyAttitude">BodyAttitude</a></td>
+<td>Three local directions per body; <a href="api-basco-covariance-observations.html#basco-covariance-observations-BodyAttitude">BodyAttitude</a></td>
 </tr>
 <tr>
 <td>Primary barycentric position</td>
 <td>Supported</td>
-<td>Direct mass-ratio partial plus propagated dependence; <a href="api-basco-observations.html#basco-observations-PrimaryBarycentricPosition">PrimaryBarycentricPosition</a></td>
+<td>Direct mass-ratio partial plus propagated dependence; <a href="api-basco-covariance-observations.html#basco-covariance-observations-PrimaryBarycentricPosition">PrimaryBarycentricPosition</a></td>
 </tr>
 <tr>
 <td>Polynomial observation bias</td>
 <td>Supported</td>
-<td>Explicit SI offset/rate/higher polynomial terms; <a href="api-basco-nuisance.html#basco-nuisance-PolynomialBias">PolynomialBias</a></td>
+<td>Explicit SI offset/rate/higher polynomial terms; <a href="api-basco-covariance-nuisance.html#basco-covariance-nuisance-PolynomialBias">PolynomialBias</a></td>
 </tr>
 <tr>
 <td>Uniform positive elapsed epochs</td>
@@ -194,22 +194,22 @@
 <tr>
 <td>Blackouts, passes, windows/duty cycles</td>
 <td>Supported</td>
-<td>Masks on the base uniform grid; <a href="api-basco-schedules.html#basco-schedules-PeriodicBlackout">PeriodicBlackout</a>, <a href="api-basco-schedules.html#basco-schedules-Periodic">Periodic</a>, <a href="api-basco-schedules.html#basco-schedules-Windows">Windows</a></td>
+<td>Masks on the base uniform grid; <a href="api-basco-covariance-schedules.html#basco-covariance-schedules-PeriodicBlackout">PeriodicBlackout</a>, <a href="api-basco-covariance-schedules.html#basco-covariance-schedules-TrackingPasses">TrackingPasses</a>, <a href="api-basco-covariance-schedules.html#basco-covariance-schedules-Windows">Windows</a></td>
 </tr>
 <tr>
 <td>Per-stream schedules/cadence masks</td>
 <td>Supported</td>
-<td><a href="api-basco-observations.html#basco-observations-Scheduled">Scheduled</a>, <a href="api-basco-schedules.html#basco-schedules-Every">Every</a>, schedule composition with <code>&amp;</code>, <code>|</code>, <code>~</code></td>
+<td><a href="api-basco-covariance-observations.html#basco-covariance-observations-ScheduledObservation">ScheduledObservation</a>, <a href="api-basco-covariance-schedules.html#basco-covariance-schedules-Every">Every</a>, schedule composition with <code>&amp;</code>, <code>|</code>, <code>~</code></td>
 </tr>
 <tr>
-<td>Custom analytic observation channels</td>
+<td>Custom analytic observation types</td>
 <td>Supported extension point</td>
 <td>Conform to the observation contract, with explicit value/derivative availability and tests</td>
 </tr>
 <tr>
 <td>Arbitrary custom-observable AD</td>
 <td>Planned</td>
-<td>Default AD differentiates the maintained dynamics; it does not automatically differentiate every user channel</td>
+<td>Default AD differentiates the maintained dynamics; it does not automatically differentiate every user observation type</td>
 </tr>
 <tr>
 <td>Irregular off-grid observations</td>
@@ -233,7 +233,7 @@
 </tr>
 </tbody>
 </table></div>
-<p>See <a href="observations.html">observations</a> and <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/docs/validation/MULTI_ARC_SCHEDULES.md">schedule/multi-arc evidence</a>.</p>
+<p>See <a href="observations.html">observations</a> and <a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/docs/validation/MULTI_ARC_SCHEDULES.md">schedule/multi-arc evidence</a>.</p>
 <h2 id="statistics-and-covariance">Statistics and covariance</h2>
 <div class="table-scroll"><table>
 <thead>
@@ -247,37 +247,37 @@
 <tr>
 <td>Independent measurement noise</td>
 <td>Supported</td>
-<td><a href="api-basco-noise.html#basco-noise-DiagonalNoise">DiagonalNoise</a></td>
+<td><a href="api-basco-covariance-noise.html#basco-covariance-noise-DiagonalNoise">DiagonalNoise</a></td>
 </tr>
 <tr>
 <td>Full correlated measurement noise</td>
 <td>Supported</td>
-<td>Exact scalar row order and mixed physical units matter; <a href="api-basco-noise.html#basco-noise-CorrelatedNoise">CorrelatedNoise</a></td>
+<td>Exact scalar row order and mixed physical units matter; <a href="api-basco-covariance-noise.html#basco-covariance-noise-CorrelatedNoise">CorrelatedNoise</a></td>
 </tr>
 <tr>
 <td>Correlated Gaussian priors</td>
 <td>Supported</td>
-<td>Named coordinates, explicit units/reference/mean; <a href="api-basco-priors.html#basco-priors-GaussianPrior">GaussianPrior</a></td>
+<td>Named coordinates, explicit units/reference/mean; <a href="api-basco-covariance-priors.html#basco-covariance-priors-APrioriCovariance">APrioriCovariance</a></td>
 </tr>
 <tr>
 <td>Mapped prior rows</td>
 <td>Supported</td>
-<td><a href="api-basco-priors.html#basco-priors-PriorBlock">PriorBlock</a>; independent composition with provenance</td>
+<td><a href="api-basco-covariance-priors.html#basco-covariance-priors-APrioriInformation">APrioriInformation</a>; independent composition with provenance</td>
 </tr>
 <tr>
 <td>Kaula prior from shape ensembles</td>
 <td>Supported</td>
-<td>Separate fit/apply degrees, zonal/nonzonal laws, optional raw-moment rows; <a href="api-basco-kaula.html#basco-kaula-KaulaRule">KaulaRule</a>, <a href="api-basco-kaula.html#basco-kaula-KaulaPrior">KaulaPrior</a></td>
+<td>Separate fit/apply degrees, zonal/nonzonal laws, optional raw-moment rows; <a href="api-basco-covariance-kaula.html#basco-covariance-kaula-KaulaRule">KaulaRule</a>, <a href="api-basco-covariance-kaula.html#basco-covariance-kaula-KaulaPrior">KaulaPrior</a></td>
 </tr>
 <tr>
 <td>Scaled joint QR/SVD covariance</td>
 <td>Supported</td>
-<td>Rank/null support recorded; <a href="api-basco-solvers.html#basco-solvers-SquareRootSolver">SquareRootSolver</a></td>
+<td>Rank/null support recorded; <a href="api-basco-covariance-solvers.html#basco-covariance-solvers-SquareRootInformationSolver">SquareRootInformationSolver</a></td>
 </tr>
 <tr>
 <td>Local nuisance projection</td>
 <td>Supported</td>
-<td>Householder elimination, marginal physical support and local condition guard; <a href="api-basco-projected_solver.html#basco-projected_solver-NuisanceProjectedSolver">NuisanceProjectedSolver</a></td>
+<td>Householder elimination, marginal physical support and local condition guard; <a href="api-basco-covariance-partitioned_solver.html#basco-covariance-partitioned_solver-PartitionedSquareRootSolver">PartitionedSquareRootSolver</a></td>
 </tr>
 <tr>
 <td>Full joint/cross covariance</td>
@@ -307,12 +307,12 @@
 <tr>
 <td>Source-factor output maps</td>
 <td>Supported</td>
-<td>Retained QR/SVD factors avoid dense covariance cancellation; <code>derived_stable()</code> and history helpers</td>
+<td>Retained QR/SVD factors avoid dense covariance cancellation; <code>derived_from_factor()</code> and history helpers</td>
 </tr>
 <tr>
-<td>Original latent-factor transport</td>
+<td>Mapping a covariance factor</td>
 <td>Implemented and validated</td>
-<td><code>map_factor</code> on covariance/consider/source results; spacecraft transports mapped initialization/raw factors before squaring. Original full-source null policy and latent-column basis remain; <a href="landing-covariance.html#numerical-covariance-transport">explanation</a></td>
+<td><code>map_factor</code> on covariance/consider/source results; particle variational solutions mapped initialization/raw factors before squaring. Original full-source null policy and latent-column basis remain; <a href="landing-covariance.html#numerical-covariance-transport">explanation</a></td>
 </tr>
 <tr>
 <td>Formal covariance bias/truncation-error prediction</td>
@@ -335,22 +335,22 @@
 <tr>
 <td>High-level independent-arc covariance</td>
 <td>Supported</td>
-<td>Shared masses/field, separate local state and channel nuisance per arc; <a href="api-basco-arcs.html#basco-arcs-MultiArcCovarianceStudy">MultiArcCovarianceStudy</a></td>
+<td>Shared masses/field, separate local state and observation type nuisance per arc; <a href="api-basco-covariance-multi_arc_analysis.html#basco-covariance-multi_arc_analysis-MultiArcAnalysis">MultiArcAnalysis</a></td>
 </tr>
 <tr>
 <td>Composition of frozen arc linearizations</td>
 <td>Supported</td>
-<td>Label/unit/physical-definition checks, shared prior once, cross-arc whitening; <a href="api-basco-multi_arc.html#basco-multi_arc-MultiArcStudy">MultiArcStudy</a></td>
+<td>Label/unit/physical-definition checks, shared prior once, cross-arc whitening; <a href="api-basco-covariance-multi_arc.html#basco-covariance-multi_arc-MultiArcDesignMatrix">MultiArcDesignMatrix</a></td>
 </tr>
 <tr>
 <td>Linearized residual correction</td>
 <td>Supported</td>
-<td>Weighted local least-squares correction and nullspace-aware covariance; <code>MultiArcStudy.estimate</code></td>
+<td>Weighted local least-squares correction and nullspace-aware covariance; <code>MultiArcDesignMatrix.estimate</code></td>
 </tr>
 <tr>
 <td>Callback-based nonlinear batch/MAP driver</td>
 <td>Partial pipeline</td>
-<td>Implemented objective/backtracking/relinearization framework with independent recovery checks; <a href="api-basco-multi_arc.html#basco-multi_arc-MultiArcBatchEstimator">MultiArcBatchEstimator</a></td>
+<td>Implemented objective/backtracking/relinearization framework with independent recovery checks; <a href="api-basco-covariance-multi_arc.html#basco-covariance-multi_arc-MultiArcBatchLeastSquares">MultiArcBatchLeastSquares</a></td>
 </tr>
 <tr>
 <td>Ready-to-use real binary observation fit</td>
@@ -368,12 +368,12 @@
 <td>Existing arcs are independent; no hidden process noise or continuity penalty</td>
 </tr>
 <tr>
-<td>Partial state resets/shared channel biases</td>
+<td>Partial state resets/shared observation type biases</td>
 <td>Planned</td>
 <td>High-level arc state and nuisance coordinates are local; inspect lower-level composition before custom use</td>
 </tr>
 <tr>
-<td>Global binary state with per-arc spacecraft state</td>
+<td>Global binary state with per-arc particle state</td>
 <td>Planned</td>
 <td>Different from the current independent binary-state formulation</td>
 </tr>
@@ -393,27 +393,27 @@
 <tr>
 <td>Atomic numeric artifacts</td>
 <td>Supported</td>
-<td>JSON/NPY, hashes, no-overwrite completion; <a href="api-basco-artifacts.html#basco-artifacts-write_artifact">write_artifact</a>, <a href="api-basco-artifacts.html#basco-artifacts-read_artifact">read_artifact</a></td>
+<td>JSON/NPY, hashes, no-overwrite completion; <a href="api-basco-common-artifacts.html#basco-common-artifacts-write_artifact">write_artifact</a>, <a href="api-basco-common-artifacts.html#basco-common-artifacts-read_artifact">read_artifact</a></td>
 </tr>
 <tr>
-<td>Standard study export/reload</td>
+<td>Standard analysis export/reload</td>
 <td>Supported</td>
-<td>Descriptive run folders, tables, arrays, units and checksum verification; <a href="api-basco-exports.html#basco-exports-export_study">export_study</a>, <a href="api-basco-exports.html#basco-exports-read_run">read_run</a></td>
+<td>Descriptive run folders, tables, arrays, units and checksum verification; <a href="api-basco-covariance-exports.html#basco-covariance-exports-export_analysis">export_analysis</a>, <a href="api-basco-covariance-exports.html#basco-covariance-exports-read_results">read_results</a></td>
 </tr>
 <tr>
 <td>Shared presentation model</td>
 <td>Supported</td>
-<td>Numerical tables feed all formats; <a href="api-basco-presentation.html#basco-presentation-make_presentation">make_presentation</a></td>
+<td>Numerical tables feed all formats; <a href="api-basco-covariance-results_tables.html#basco-covariance-results_tables-make_results_tables">make_results_tables</a></td>
 </tr>
 <tr>
 <td>PNG/SVG/PDF and table formats</td>
 <td>Supported</td>
-<td>Common paper palette, grids/fonts, CSV/Markdown/LaTeX, optional external TeX; <a href="api-basco-plot_style.html#basco-plot_style-PlotTheme">PlotTheme</a></td>
+<td>Common paper palette, grids/fonts, CSV/Markdown/LaTeX, optional external TeX; <a href="api-basco-plotting-style.html#basco-plotting-style-PlotTheme">PlotTheme</a></td>
 </tr>
 <tr>
 <td>User plot definitions</td>
 <td>Supported</td>
-<td>Replaceable figure builder consumes the shared result dataset; <a href="api-basco-plot_style.html#basco-plot_style-PlotDefinition">PlotDefinition</a></td>
+<td>Replaceable figure builder consumes the shared result dataset; <a href="api-basco-plotting-style.html#basco-plotting-style-PlotDefinition">PlotDefinition</a></td>
 </tr>
 <tr>
 <td>Hera Table 2</td>
@@ -428,10 +428,10 @@
 <tr>
 <td>Hera Figure 5</td>
 <td>Supported reproduction</td>
-<td>Exact degree/basis/prior cases, reused completed BASCO transports</td>
+<td>Exact degree/basis/prior cases, reused completed BASCO variational solutions</td>
 </tr>
 <tr>
-<td>All original R21 studies</td>
+<td>All original R21 analyses</td>
 <td>Partial</td>
 <td>Six same-dynamics variants checked; 13 remain unverified</td>
 </tr>
@@ -441,24 +441,24 @@
 <td>Exact observation prefixes and fixed-information ideal-output propagation; <a href="consider-and-histories.html">guide and Hera plots</a></td>
 </tr>
 <tr>
-<td>Massless spacecraft trajectory covariance</td>
+<td>Massless particle trajectory covariance</td>
 <td>Supported selected RF3BP scope</td>
-<td>Full rotating Hou binary; six-state covariance, correlated source factors, AD/native and degree-6 declared-source validation; <a href="landing-covariance.html">guide and plots</a></td>
+<td>Full rotating Hou binary; six-state covariance, correlated source factors, AD/analytic and degree-6 declared-source validation; <a href="landing-covariance.html">guide and plots</a></td>
 </tr>
 <tr>
-<td>Body-fixed release and retained binary handoff</td>
+<td>Body-fixed release and retained binary epoch mapping</td>
 <td>Implemented and validated</td>
 <td>Either body, explicit COM offset/body-relative velocity, on-grid nominal state and original-source sensitivities without projection; <a href="landing-covariance.html#hera-informed-release">release guide</a></td>
 </tr>
 <tr>
-<td>Reload original spacecraft covariance source</td>
+<td>Reload original particle covariance source</td>
 <td>Implemented and validated</td>
-<td>Completed run with original factor, consider cancellation/null support and compatible binary transport; <a href="api-basco-spacecraft_io.html">load_covariance_source</a></td>
+<td>Completed run with original factor, consider cancellation/null support and compatible binary variational solution; <a href="api-basco-covariance-trajectory-saved_analysis.html">load_covariance_analysis</a></td>
 </tr>
 <tr>
 <td>Local cylindrical gravity and derivatives</td>
 <td>Implemented selected domain</td>
-<td>Regular one-sided finite harmonic family in a declared mass-free patch; AD/native; geometry does not certify shape clearance; <a href="near-field-gravity.html#local-field-and-domain">guide</a></td>
+<td>Regular one-sided finite harmonic family in a declared mass-free patch; AD/analytic; geometry does not certify shape clearance; <a href="near-field-gravity.html#local-field-and-domain">guide</a></td>
 </tr>
 <tr>
 <td>Hou-to-local coefficient uncertainty</td>
@@ -478,7 +478,7 @@
 <tr>
 <td>Smooth first-contact covariance</td>
 <td>Implemented selected scope</td>
-<td>Plane/sphere/mesh events, uncertain contact time, fixed tangent chart, domain/edge/grazing outcomes; conditional Didymos/Dimorphos demonstrations; <a href="landing-visualization.html">guide</a></td>
+<td>Plane/sphere/mesh events, uncertain impact time, fixed tangent chart, domain/edge/grazing outcomes; conditional Didymos/Dimorphos demonstrations; <a href="landing-visualization.html">guide</a></td>
 </tr>
 <tr>
 <td>3D domains, position ellipsoids and animation</td>
@@ -488,7 +488,7 @@
 <tr>
 <td>Hit/miss probability or global escape</td>
 <td>Not inferred</td>
-<td>Unweighted nonlinear probes report contact/no_contact within a declared horizon/domain_exit, not probabilities</td>
+<td>Unweighted nonlinear probes report impact/no_impact within a declared horizon/domain_exit, not probabilities</td>
 </tr>
 <tr>
 <td>Automatic exterior/local switching and arbitrary multi-face regions</td>
@@ -509,14 +509,14 @@
 </thead>
 <tbody>
 <tr>
-<td>Hou AD transport</td>
+<td>Hou AD variational equations</td>
 <td>Supported, default</td>
-<td>Optional JAX CPU float64 backend; lazy imports; no silent native fallback</td>
+<td>Optional JAX CPU float64 backend; lazy imports; no silent fallback to the analytic partials</td>
 </tr>
 <tr>
-<td>Hou native analytic transport</td>
+<td>Hou analytic variational equations</td>
 <td>Supported, explicit</td>
-<td>Preserved hand-derived math/native implementation</td>
+<td>Hand-derived partials of the GUBAS code</td>
 </tr>
 <tr>
 <td>Native-versus-AD acceptance</td>
@@ -531,7 +531,7 @@
 <tr>
 <td>Complete end-to-end covariance FD</td>
 <td>Partial</td>
-<td>Complete transport, covariance-propagation and prior coverage remains incomplete</td>
+<td>Complete variational solution, covariance-propagation and prior coverage remains incomplete</td>
 </tr>
 <tr>
 <td>Bitwise refactor snapshots</td>
@@ -539,9 +539,9 @@
 <td>Native 87/87 and AD 117/117 equal the Mac Phase 1 baselines after Phase 2</td>
 </tr>
 <tr>
-<td>Managed locked macOS arm64 runtime</td>
+<td>Locked environment on macOS arm64</td>
 <td>Validated</td>
-<td>CPython 3.13.16; native development dependencies and current macOS deployment constraints apply</td>
+<td>One environment built by <code>tools/dev.py setup</code> from <code>uv.lock</code>; the compiled parts need a C++ compiler, Armadillo and OpenBLAS</td>
 </tr>
 <tr>
 <td>Linux portability</td>
@@ -555,9 +555,9 @@
 </tr>
 </tbody>
 </table></div>
-<p>The <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/docs/validation/PHASE2.md">Phase 2 record</a> contains exact installed-source/runtime identities, ordinary suite outcomes and opt-in validation results. Ordinary covariance execution does not launch finite-difference probes. <a href="derivatives.html">Derivative methods</a> shows how to request checks deliberately.</p>
+<p>The <a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/docs/validation/PHASE2.md">Phase 2 record</a> contains exact installed-source/runtime identities, ordinary suite outcomes and opt-in validation results. Ordinary covariance execution does not launch finite-difference probes. <a href="derivatives.html">Derivative methods</a> shows how to request checks deliberately.</p>
 <h2 id="where-future-work-is-tracked">Where future work is tracked</h2>
-<p>The authoritative scope is <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/docs/REQUIREMENTS.md">requirements</a>. <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/docs/IMPLEMENTATION_STATUS.md">Implementation status</a> distinguishes complete increments from remaining work; <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/docs/DECISIONS.md">decisions</a> record selected scientific/API policy. Phase 2 is complete; later modularity phases and wider real estimation/filtering scope are separate work.</p>
+<p>The authoritative scope is <a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/docs/project/REQUIREMENTS.md">requirements</a>. <a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/docs/project/IMPLEMENTATION_STATUS.md">Implementation status</a> distinguishes complete increments from remaining work; <a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/docs/project/DECISIONS.md">decisions</a> record selected scientific/API policy. Phase 2 is complete; later modularity phases and wider real estimation/filtering scope are separate work.</p>
 <h2 id="nominal-particles">Nominal particles</h2>
 <div class="table-scroll"><table>
 <thead>
@@ -599,5 +599,5 @@
 <td>This nominal field has an analytic spatial gradient, not uncertain-source/shape/AD derivatives</td>
 </tr>
 </tbody>
-</table></div><nav class="page-pager" aria-label="Adjacent pages"><a href="extending.html"><span>← Previous</span>Extension interfaces</a><a href="troubleshooting.html"><span>Next →</span>Troubleshooting</a></nav><footer class="site-footer"><span>BASCO 0.1.0 · <a href="https://github.com/ashcav1/BASCO/blob/bdb5dd78e1622b7066dd170d40b5bcb84661a7ca/src/basco/__init__.py">Source bdb5dd7</a></span><span><a href="coverage.html">Validation records</a> · <a href="capabilities.html">Capabilities and limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#bodies-gravity-and-integration">Bodies, gravity and integration</a><a class="toc-h2" href="#parameters-and-physical-reports">Parameters and physical reports</a><a class="toc-h2" href="#measurements-and-schedules">Measurements and schedules</a><a class="toc-h2" href="#statistics-and-covariance">Statistics and covariance</a><a class="toc-h2" href="#independent-arcs-and-actual-estimation">Independent arcs and actual estimation</a><a class="toc-h2" href="#results-plots-and-reproducibility">Results, plots and reproducibility</a><a class="toc-h2" href="#derivative-and-platform-evidence">Derivative and platform evidence</a><a class="toc-h2" href="#where-future-work-is-tracked">Where future work is tracked</a><a class="toc-h2" href="#nominal-particles">Nominal particles</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">PDF handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/capabilities.md" target="_blank" rel="noopener">View source ↗</a></div></aside></div>
+</table></div><nav class="page-pager" aria-label="Adjacent pages"><a href="extending.html"><span>← Previous</span>Extension interfaces</a><a href="troubleshooting.html"><span>Next →</span>Troubleshooting</a></nav><footer class="site-footer"><span>BASCO 0.1.0 · <a href="https://github.com/ashcav1/BASCO/blob/e58c50debf272e411989d8d481e47bb2fbbacc47/src/basco/__init__.py">Source e58c50d</a></span><span><a href="coverage.html">Validation records</a> · <a href="capabilities.html">Capabilities and limits</a></span></footer></main><aside class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-h2" href="#bodies-gravity-and-integration">Bodies, gravity and integration</a><a class="toc-h2" href="#parameters-and-physical-reports">Parameters and physical reports</a><a class="toc-h2" href="#measurements-and-schedules">Measurements and schedules</a><a class="toc-h2" href="#statistics-and-covariance">Statistics and covariance</a><a class="toc-h2" href="#independent-arcs-and-actual-estimation">Independent arcs and actual estimation</a><a class="toc-h2" href="#results-plots-and-reproducibility">Results, plots and reproducibility</a><a class="toc-h2" href="#derivative-and-platform-evidence">Derivative and platform evidence</a><a class="toc-h2" href="#where-future-work-is-tracked">Where future work is tracked</a><a class="toc-h2" href="#nominal-particles">Nominal particles</a><hr><div class="tools"><a href="#" data-top>↑ Back to top</a><a href="handbook.html">PDF handbook</a><a href="basco-handbook.pdf">Download PDF</a><a href="https://github.com/ashcav1/BASCO/blob/main/documentation/content/capabilities.md" target="_blank" rel="noopener">View source ↗</a></div></aside></div>
 <dialog class="search-dialog" id="search-dialog" aria-label="Search the BASCO manual"><form class="search-field" method="dialog"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search tasks, functions, variables…" aria-label="Search the manual" autocomplete="off"><button type="button" data-search-close>Esc</button></form><div id="search-results" class="search-results" role="region" aria-label="Search results" aria-live="polite"></div><div class="search-hint">↑ ↓ to choose &nbsp; Enter to open &nbsp; Esc to close &nbsp; · &nbsp; Search works offline</div></dialog></body></html>
